@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.project.dao.ProjectInfoDao">
+    
+	<sql id="projectInfoColumns">
+		a.id AS "id",
+		a.office_id AS "office.id",
+		a.area_id AS "area.id",
+		a.project_name AS "projectName",
+		a.project_grade AS "projectGrade",
+		a.primary_person AS "primaryPerson.id",
+		a.deputy_person AS "deputyPerson.id",
+		a.industry_domain AS "industryDomain",
+		a.main_business AS "mainBusiness",
+		a.filepath AS "filepath",
+		a.filename AS "filename",
+		a.annual_income AS "annualIncome",
+		a.annual_net_profit AS "annualNetProfit",
+		a.project_progress AS "projectProgress",
+		a.progress_update_date AS "progressUpdateDate",
+		a.progress_update_by AS "progressUpdateBy",
+		a.progress_update_remarks AS "progressUpdateRemarks",
+		a.start_date AS "startDate",
+		a.recommended_man AS "recommendedMan",
+		a.recommended_date AS "recommendedDate",
+		a.project_type AS "projectType",
+		a.intended_money AS "intendedMoney",
+		a.project_status AS "projectStatus",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		o2.name AS "office.name",
+		a3.name AS "area.name",
+		u6.name AS "primaryPerson.name",
+		u7.name AS "deputyPerson.name"
+	</sql>
+	
+	<sql id="projectInfoJoins">
+		LEFT JOIN sys_office o2 ON o2.id = a.office_id
+		LEFT JOIN sys_area a3 ON a3.id = a.area_id
+		LEFT JOIN sys_user u6 ON u6.id = a.primary_person
+		LEFT JOIN sys_user u7 ON u7.id = a.deputy_person
+	</sql>
+    
+	<select id="get" resultType="ProjectInfo">
+		SELECT 
+			<include refid="projectInfoColumns"/>
+		FROM project_info a
+		<include refid="projectInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ProjectInfo">
+		SELECT 
+			<include refid="projectInfoColumns"/>
+		FROM project_info a
+		<include refid="projectInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office_id = #{office.id}
+			</if>
+			<if test="area != null and area.id != null and area.id != ''">
+				AND a.area_id = #{area.id}
+			</if>
+			<if test="projectName != null and projectName != ''">
+				AND a.project_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{projectName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{projectName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{projectName},'%')</if>
+			</if>
+			<if test="projectGrade != null and projectGrade != ''">
+				AND a.project_grade = #{projectGrade}
+			</if>
+			<if test="industryDomain != null and industryDomain != ''">
+				AND a.industry_domain = #{industryDomain}
+			</if>
+			<if test="projectProgress != null and projectProgress != ''">
+				AND a.project_progress = #{projectProgress}
+			</if>
+			<if test="projectType != null and projectType != ''">
+				AND a.project_type = #{projectType}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ProjectInfo">
+		SELECT 
+			<include refid="projectInfoColumns"/>
+		FROM project_info a
+		<include refid="projectInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO project_info(
+			id,
+			office_id,
+			area_id,
+			project_name,
+			project_grade,
+			primary_person,
+			deputy_person,
+			industry_domain,
+			main_business,
+			filepath,
+			filename,
+			annual_income,
+			annual_net_profit,
+			project_progress,
+			progress_update_date,
+			progress_update_by,
+			progress_update_remarks,
+			start_date,
+			recommended_man,
+			recommended_date,
+			project_type,
+			intended_money,
+			project_status,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{office.id},
+			#{area.id},
+			#{projectName},
+			#{projectGrade},
+			#{primaryPerson.id},
+			#{deputyPerson.id},
+			#{industryDomain},
+			#{mainBusiness},
+			#{filepath},
+			#{filename},
+			#{annualIncome},
+			#{annualNetProfit},
+			#{projectProgress},
+			#{progressUpdateDate},
+			#{progressUpdateBy},
+			#{progressUpdateRemarks},
+			#{startDate},
+			#{recommendedMan},
+			#{recommendedDate},
+			#{projectType},
+			#{intendedMoney},
+			#{projectStatus},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE project_info SET 	
+			office_id = #{office.id},
+			area_id = #{area.id},
+			project_name = #{projectName},
+			project_grade = #{projectGrade},
+			primary_person = #{primaryPerson.id},
+			deputy_person = #{deputyPerson.id},
+			industry_domain = #{industryDomain},
+			main_business = #{mainBusiness},
+			filepath = #{filepath},
+			filename = #{filename},
+			annual_income = #{annualIncome},
+			annual_net_profit = #{annualNetProfit},
+			project_progress = #{projectProgress},
+			progress_update_date = #{progressUpdateDate},
+			progress_update_by = #{progressUpdateBy},
+			progress_update_remarks = #{progressUpdateRemarks},
+			start_date = #{startDate},
+			recommended_man = #{recommendedMan},
+			recommended_date = #{recommendedDate},
+			project_type = #{projectType},
+			intended_money = #{intendedMoney},
+			project_status = #{projectStatus},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE project_info SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

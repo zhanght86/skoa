@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/jflow-core/jflow-core.iml" filepath="$PROJECT_DIR$/jflow-core/jflow-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jflow-parent/jflow-parent.iml" filepath="$PROJECT_DIR$/jflow-parent/jflow-parent.iml" />
+      <module fileurl="file://$USER_HOME$/SpaceX/shouke/skoa/jeesite-oa/oa.iml" filepath="$USER_HOME$/SpaceX/shouke/skoa/jeesite-oa/oa.iml" />
+    </modules>
+  </component>
+</project>

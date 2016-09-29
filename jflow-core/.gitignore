@@ -1,0 +1,10 @@
+.mymetadata
+.checkstyle
+.classpath
+.project
+.class
+/src/main/webapp/WEB-INF/classes/*
+/target/*
+/target
+/bin
+/jflow-core.iml
