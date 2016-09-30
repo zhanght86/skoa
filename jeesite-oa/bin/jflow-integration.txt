@@ -8,17 +8,21 @@ mvn install:install-file -Dfile=./lib/ojdbc14-10.2.0.4.0.jar -DgroupId=com.oracl
 
 ============================数据库集成======================================
 1.部门表视图
+DROP table IF EXISTS `port_dept`;
 DROP VIEW IF EXISTS `port_dept`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_dept` AS select `sys_office`.`id` AS `no`,`sys_office`.`name` AS `name`,`sys_office`.`parent_id` AS `ParentNo`,NULL AS `Idx`,NULL AS `NameOfPath`,NULL AS `TreeNo`,NULL AS `Leader`,`sys_office`.`phone` AS `Tel`,NULL AS `IsDir`,NULL AS `FK_DeptType` from `sys_office`
 
 2.岗位视图表
+DROP table IF EXISTS `port_station`;
 DROP VIEW IF EXISTS `port_station`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_station` AS select `sys_role`.`id` AS `No`,`sys_role`.`name` AS `Name`,NULL AS `FK_StationType`,NULL AS `DutyReq`,NULL AS `Makings`,NULL AS `StaGrade` from `sys_role`
 
 3.员工视图表
+DROP table IF EXISTS `port_emp`;
 DROP VIEW IF EXISTS `port_emp`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_emp` AS select `sys_user`.`login_name` AS `No`,`sys_user`.`name` AS `Name`,`sys_user`.`password` AS `Pass`,`sys_user`.`office_id` AS `FK_Dept`,floor((1 + (rand() * 10000))) AS `SID`,NULL AS `FK_Duty`,NULL AS `Leader`,`sys_user`.`no` AS `EmpNo`,`sys_user`.`phone` AS `Tel`,`sys_user`.`email` AS `Email`,NULL AS `NumOfDept`,NULL AS `Idx` from `sys_user`
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_emp` AS select `sys_user`.`login_name` AS `No`,`sys_user`.`name` AS `Name`,`sys_user`.`password` AS `Pass`,`sys_user`.`office_id` AS `FK_Dept`,cast(floor((1 + (rand() * 10000))) as char charset utf8) AS `SID`,NULL AS `FK_Duty`,NULL AS `Leader`,`sys_user`.`no` AS `EmpNo`,`sys_user`.`phone` AS `Tel`,`sys_user`.`email` AS `Email`,NULL AS `NumOfDept`,NULL AS `Idx` from `sys_user`
 
 4.员工岗位视图表
+DROP table IF EXISTS `port_empstation`;
 DROP VIEW IF EXISTS `port_empstation`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_empstation` AS select `u`.`login_name` AS `FK_Emp`,`ur`.`role_id` AS `FK_Station` from (`sys_user_role` `ur` join `sys_user` `u` on((`u`.`id` = `ur`.`user_id`)))
