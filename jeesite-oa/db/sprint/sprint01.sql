@@ -97,3 +97,9 @@ INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_
 ('c5c0266161c74f3bb7dd4f29c2af31da', 'A1', 'A1', 'projectGrade', '项目级别', 10, '0', '1', '2016-09-22 17:22:23', '1', '2016-09-22 17:22:23', '', '0'),
 ('d324e9a9e8824390a9a63c46ecf41f8c', '3', '预研10%', 'projectProgress', '项目进度', 10, '0', '1', '2016-09-22 17:24:22', '1', '2016-09-22 17:24:22', '', '0'),
 ('fdf311be46774255beb71b0da142df1a', '1', '负责人管理', 'projectStatus', '项目负责人管理状态', 20, '0', '1', '2016-09-23 09:53:25', '1', '2016-09-23 09:53:25', '项目负责人对项目进行管理维护', '0');
+
+
+/* 插入 字典表: sys_role_type 角色类型 */
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('4d30063c6bc64be6a5020904d52cb977', '3', '基层', 'sys_role_type', '角色类型', 30, '0', '1', '2016-09-30 16:46:52', '1', '2016-09-30 16:46:52', '', '0'),
+('9de2afd5e8314f3981417e8b31036a7d', '2', '中层', 'sys_role_type', '角色类型', 20, '0', '1', '2016-09-30 16:46:41', '1', '2016-09-30 16:46:41', '', '0'),
+('e04859219e8b423e8bb02e6fd8f8f6b4', '1', '高层', 'sys_role_type', '角色类型', 10, '0', '1', '2016-09-30 16:46:24', '1', '2016-09-30 16:46:24', '', '0');
