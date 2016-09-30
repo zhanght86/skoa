@@ -9,9 +9,9 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
-import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm.Principal;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -78,9 +78,6 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 			ServletResponse response) throws Exception {
 //		Principal p = UserUtils.getPrincipal();
 //		if (p != null && !p.isMobileLogin()){
-
-		Principal p = UserUtils.getPrincipal();
-		UserUtils.setJflowNo(p.getLoginName());
 			 WebUtils.issueRedirect(request, response, getSuccessUrl(), null, true);
 //		}else{
 //			super.issueSuccessRedirect(request, response);
@@ -109,5 +106,12 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
         request.setAttribute(getMessageParam(), message);
         return true;
 	}
-	
+
+	@Override
+	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
+		//集成Jflow:设置session.setAttribute("No",usesrName)
+		SystemAuthorizingRealm.Principal p = UserUtils.getPrincipal();
+		UserUtils.setJflowNo(p.getLoginName());
+		return super.onLoginSuccess(token, subject, request, response);
+	}
 }
