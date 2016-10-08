@@ -97,7 +97,7 @@ li {
 				<form class="am-form" method="post" action="Tools.jsp" id="form1"
 					onkeypress="NoSubmit(event);">
 					<table width='100%' align='left'>
-						<caption class="CaptionMsg">系统设置</caption>
+						<caption class="CaptionMsg">工作流相关设置</caption>
 						<tr>
 							<td valign=top width='20%' align='center' style="font-size:14px;height:100%;color:#026ac1;border-width: 1px; border-color: #C2D5E3;border-right-style:solid !important">
 								<%

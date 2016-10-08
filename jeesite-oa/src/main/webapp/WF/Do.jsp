@@ -222,7 +222,9 @@
 				Emp emp = new Emp(fk_emp);
 				//首先退出，再进行登录
 				WebUser.Exit();
-				WebUser.SignInOfGener(emp,WebUser.getSysLang());
+				//退出授权再进行登录时,不能使用授权方式登录了,下面api调用有问题,特此修正
+//				WebUser.SignInOfGener(emp,WebUser.getSysLang());
+				WebUser.SignInOfGener(emp, true);
 				base.WinClose();
 				return;
 		}

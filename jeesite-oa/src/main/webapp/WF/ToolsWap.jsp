@@ -264,7 +264,7 @@ jQuery(function($){
 		<%
 			return;
 			}
-			if (RefNo.equals("AthFlows")) {
+			if ("AthFlows".equals(RefNo)) {
 				FlowSorts sorts = new FlowSorts();
 				sorts.RetrieveAll();
 				Flows fls = new Flows();
@@ -329,7 +329,7 @@ jQuery(function($){
 			</tr>
 		</table>
 		<%
-			} else if (RefNo.equals("Skin")) {
+			} else if ("Skin".equals(RefNo)) {
 				String pageID = PageID;
 				String setNo = request.getParameter("SetNo");
 				if (setNo != null) {
@@ -361,7 +361,7 @@ jQuery(function($){
 			<input type="button" class="Btn" value="Save" id="Btn_Save">
 		</fieldset>
 		<%
-			} else if (RefNo.equals("MyWorks")) {
+			} else if ("MyWorks".equals(RefNo)) {
 				Flows fls = new Flows();
 				fls.RetrieveAll();
 				Nodes nds = new Nodes();
@@ -425,9 +425,9 @@ jQuery(function($){
 		</table>
 
 		<%
-			} else if (RefNo.equals("Siganture")) {
+			} else if ("Siganture".equals(RefNo)) {
 				String path1 = BP.Sys.SystemConfig.getPathOfDataUser()
-						+ "\\Siganture\\T.jpg";
+						+ File.separator+"Siganture"+File.separator+"T.jpg";
 				File file = new File(path1);
 				if (DoType != null || !file.exists()) {
 					String pathMe = BP.Sys.SystemConfig.getPathOfDataUser()
@@ -496,7 +496,7 @@ jQuery(function($){
 			</fieldset>
 			<%
 				}
-					if (RefNo.equals("AdminSet")) {
+					if ("AdminSet".equals(RefNo)) {
 			%>
 			<fieldset width='100%'>
 				<legend>&nbsp;系统设置&nbsp;</legend>
@@ -534,7 +534,7 @@ jQuery(function($){
 				</table>
 			</fieldset>
 			<%
-				} else if (RefNo.equals("AutoLog")) {
+				} else if ("AutoLog".equals(RefNo)) {
 						String sql = "";
 
 						switch (SystemConfig.getAppCenterDBType()) {
@@ -543,7 +543,9 @@ jQuery(function($){
 									+ WebUser.getNo() + "' AND AuthorWay >= 1";
 							break;
 						default:
-							sql = "SELECT a.No + a.Name as Empstr,AuthorDate, a.No ,AuthorToDate FROM WF_Emp a WHERE Author='"
+							/*sql = "SELECT a.No + a.Name as Empstr,AuthorDate, a.No ,AuthorToDate FROM WF_Emp a WHERE Author='"
+									+ WebUser.getNo() + "' AND AuthorWay >= 1";*/
+							sql = "SELECT concat_ws(',',a.`No`,a.`Name`) as Empstr,AuthorDate, a.No ,AuthorToDate FROM WF_Emp a WHERE Author='"
 									+ WebUser.getNo() + "' AND AuthorWay >= 1";
 							break;
 						}
@@ -602,7 +604,7 @@ jQuery(function($){
 					</ul>
 				</fieldset>
 				<%
-					} else if (RefNo.equals("Password")) {
+					} else if ("Password".equals(RefNo)) {
 								if (WebUser.getIsWap()) {
 				%>
 				<fieldset width='100%'>
@@ -644,7 +646,7 @@ jQuery(function($){
 						<br>
 					</fieldset>
 					<%
-						} else if (RefNo.equals("Profile")) {
+						} else if ("Profile".equals(RefNo)) {
 										BP.WF.Port.WFEmp emp = new BP.WF.Port.WFEmp(WebUser.getNo());
 										if (WebUser.getIsWap()) {
 					%>
@@ -711,7 +713,7 @@ jQuery(function($){
 							<br>
 						</fieldset>
 						<%
-							} else if (RefNo.equals("Auto")) {
+							} else if ("Auto".equals(RefNo)) {
 												String sql = "SELECT a.No,a.Name,b.Name as DeptName FROM Port_Emp a, Port_Dept b WHERE a.FK_Dept=b.No AND a.FK_Dept LIKE '"
 														+ WebUser.getFK_Dept() + "%' ORDER  BY a.FK_Dept ";
 												DataTable dt = BP.DA.DBAccess.RunSQLReturnTable(sql);
@@ -774,7 +776,7 @@ jQuery(function($){
 								<br>
 							</fieldset>
 							<%
-								} else if (RefNo.equals("AutoDtl")) {
+								} else if ("AutoDtl".equals(RefNo)) {
 														if (WebUser.getIsWap()) {
 							%>
 							<fieldset width='100%'>
@@ -853,7 +855,7 @@ jQuery(function($){
 									<br>
 								</fieldset>
 								<%
-									} else if (RefNo.equals("Times")) {
+									} else if ("Times".equals(RefNo)) {
 																if (request.getParameter("FK_Node").toString() != null) {
 																	int nodeid = Integer.parseInt(request
 																			.getParameter("FK_Node"));
@@ -949,7 +951,7 @@ jQuery(function($){
 									%>
 								</table>
 								<%
-									} else if (RefNo.equals("FtpSet")) {
+									} else if ("FtpSet".equals(RefNo)) {
 								%>
 								<fieldset width='100%'>
 									<legend>&nbsp;ftp setting&nbsp;</legend>
@@ -978,7 +980,7 @@ jQuery(function($){
 									</Table>
 								</fieldset>
 								<%
-									} else if (RefNo.equals("PerPng")) {
+									} else if ("PerPng".equals(RefNo)) {
 																if (WebUser.getIsWap()) {
 								%>
 								<fieldset width='100%'>
@@ -1101,7 +1103,7 @@ jQuery(function($){
 										<br>
 									</fieldset>
 									<%
-										} else if (RefNo.equals("BitmapCutter")) {
+										} else if ("BitmapCutter".equals(RefNo)) {
 																		if (WebUser.getIsWap()) {
 									%>
 									<fieldset width='100%'>
@@ -1155,7 +1157,7 @@ jQuery(function($){
 											%>
 										</fieldset>
 										<%
-											} else if (RefNo.equals("Per") || RefNo.equals("")) {
+											} else if ("Per".equals(RefNo) || "".equals(RefNo)) {
 												if (WebUser.getAuth() != null) {
 										%>
 										<fieldset width='100%'>
@@ -1164,7 +1166,7 @@ jQuery(function($){
 											<ul>
 												<li><a
 													href="javascript:ExitAuth('<%=WebUser.getAuth()%>')">退出授权模式</a></li>
-												<li><a href="<%=PageID%>.jsp">设置</a></li>
+												<%--<li><a href="<%=PageID%>.jsp">设置</a></li>--%>
 												<%
 													if (WebUser.getIsWap()) {
 												%>
@@ -1208,13 +1210,13 @@ jQuery(function($){
 														<br>用户名:&nbsp;&nbsp;<font color="green"><%=WebUser.getName()%></font>&nbsp;&nbsp;
 
 													
-													<hr>
+													<%--<hr>
 													<b>电子签字:<img
 														src='<%=basePath%>/DataUser/Siganture/<%=WebUser.getNo()%>.jpg'
 														border="1"
 														onerror="this.src='<%=basePath%>/DataUser/Siganture/UnName.jpg'" />
 														，<a href='<%=PageID%>.jsp?RefNo=Siganture'>设置/修改</a>。
-													</b> <br>
+													</b> <br>--%>
 													<hr>
 													主部门 : <font color="green"><%=WebUser.getFK_DeptName()%></font>
 													<br> <br>
@@ -1241,11 +1243,11 @@ jQuery(function($){
 													<%
 														}
 													%>
-													&nbsp;我要:<a href='<%=PageID%>.jsp?RefNo=Password'>修改密码</a> <br>
+													<%--&nbsp;我要:<a href='<%=PageID%>.jsp?RefNo=Password'>修改密码</a> <br>
 													<hr>
 													<b>信息提示：</b><a href='<%=PageID%>.jsp?RefNo=Profile'>设置/修改</a>
 													<br> <br>接受短消息提醒手机号 : <font color="green"><%=au.getTelHtml()%></font>
-													<br> <br>接受E-mail提醒 : <font color="green"><%=au.getEmailHtml()%></font>
+													<br> <br>接受E-mail提醒 : <font color="green"><%=au.getEmailHtml()%></font>--%>
 													<hr>
 													<%
 														Stations sts = WebUser.getHisStations();
