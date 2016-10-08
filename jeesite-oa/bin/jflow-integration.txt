@@ -9,6 +9,10 @@ mvn install:install-file -Dfile=./lib/ojdbc14-10.2.0.4.0.jar -DgroupId=com.oracl
 3. 必须加上useOldAliasMetadataBehavior=true
 jdbc.url=jdbc:mysql://127.0.0.1:3306/jeesite?useUnicode=true&characterEncoding=utf-8&useOldAliasMetadataBehavior=true
 
+
+4.web.xml中必须加入cn.jflow.common.context.RequestResponseFilter过滤器,并且在Servlets.java中调用Servlets.getRequest()时,使用
+JFLOW提供的工具类ContextHolderUtils.getRequest();否则在JFLOW前台在跑一个流程时,比如保存,或者向下流转流程时报错:FK_Dept相关的错误
+
 ============================数据库集成======================================
 # 1.部门表视图
 DROP table IF EXISTS `port_dept`;
@@ -26,9 +30,13 @@ DROP VIEW IF EXISTS `PORT_StationType`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_stationtype` AS select `sys_dict`.`value` AS `No`,`sys_dict`.`label` AS `Name` from `sys_dict` where (`sys_dict`.`type` = 'sys_role_type')
 
 # 4.员工视图表
+注:员工表里必须有admin账号,否则后台设计器登录时账号密码报错或者在创建(打开)流程时报错;
+
 DROP table IF EXISTS `port_emp`;
 DROP VIEW IF EXISTS `port_emp`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_emp` AS select `sys_user`.`login_name` AS `No`,`sys_user`.`name` AS `Name`,`sys_user`.`password` AS `Pass`,`sys_user`.`office_id` AS `FK_Dept`,cast(floor((1 + (rand() * 10000))) as char charset utf8) AS `SID`,NULL AS `FK_Duty`,NULL AS `Leader`,`sys_user`.`no` AS `EmpNo`,`sys_user`.`phone` AS `Tel`,`sys_user`.`email` AS `Email`,NULL AS `NumOfDept`,NULL AS `Idx` from `sys_user`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_emp` AS select `sys_user`.`login_name` AS `No`,`sys_user`.`name` AS `Name`,`sys_user`.`password` AS `Pass`,`sys_user`.`office_id` AS `FK_Dept`,cast(floor((1 + (rand() * 10000))) as char charset utf8) AS `SID`,NULL AS `FK_Duty`,NULL AS `Leader`,`sys_user`.`no` AS `EmpNo`,`sys_user`.`phone` AS `Tel`,`sys_user`.`email` AS `Email`,NULL AS `NumOfDept`,NULL AS `Idx` from `sys_user`
+union
+select 'admin' AS `No`,'admin' AS `Name`,'pub' AS `Pass`,NULL AS `FK_Dept`,cast(floor((1 + (rand() * 10000))) as char charset utf8) AS `SID`,NULL AS `FK_Duty`,NULL AS `Leader`,NULL AS `EmpNo`,NULL AS `Tel`,NULL AS `Email`,NULL AS `NumOfDept`,NULL AS `Idx`
 
 # 5.员工岗位视图表
 DROP table IF EXISTS `port_empstation`;

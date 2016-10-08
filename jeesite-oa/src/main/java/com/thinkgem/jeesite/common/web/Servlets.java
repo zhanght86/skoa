@@ -5,28 +5,21 @@
  */
 package com.thinkgem.jeesite.common.web;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.Validate;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
+import cn.jflow.common.util.ContextHolderUtils;
 import com.google.common.net.HttpHeaders;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.utils.Encodes;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm.Principal;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import org.apache.commons.lang3.Validate;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Http与Servlet工具类.
@@ -227,11 +220,15 @@ public class Servlets {
 	 * @return
 	 */
 	public static HttpServletRequest getRequest(){
-		try{
-			return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		}catch(Exception e){
-			return null;
-		}
+		//try{
+		//	return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		//}catch(Exception e){
+		//	return null;
+		//}
+
+		//web.xml 过滤器 cn.jflow.common.context.RequestResponseFilter,封装了ServletRequestAttributes
+		//这里使用JFLOW里提供的静态工具类ContextHolderUtils
+		return ContextHolderUtils.getRequest();
 	}
 
 	/**
