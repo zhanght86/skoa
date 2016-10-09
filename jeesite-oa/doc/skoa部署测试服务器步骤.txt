@@ -16,9 +16,10 @@ cd ../jflow-core
 mvn clean install
 cd ../jeesite-oa
 mvn clean install
-cp -rf target/jeesite-oa/* /data/tomcat_skoa/webapps/ROOT
-/data/tomcat_skoa/bin/shutdown.sh
-/data/tomcat_skoa/bin/startup.sh
+# 注意,在tomcat中webapps中新建skoa目录
+cp -rf target/jeesite-oa/* /data/tomcat_skoa/webapps/skoa
+/data/tomcat/bin/shutdown.sh
+/data/tomcat/bin/startup.sh
 
 3.下载jar文件到本地仓库
 	3.1 cd skoa/jeesite-oa 进入jeesite-oa目录，安装jflow-core工作流所需要的jta的jar文件
