@@ -47,4 +47,4 @@ cp -rf target/jeesite-oa/* /data/tomcat/webapps/skoa
 
 5.执行 ./deploy_skoa.sh 命令;成功后执行第6步骤
 
-6.访问 http://test.shoukeplus.com:8080/skoa
+6.访问 http://test.shoukeplus.com:8080/skoa ;用户名thinkgem;所有用户密码为admin
