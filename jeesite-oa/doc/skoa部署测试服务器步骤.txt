@@ -7,7 +7,7 @@ branch="develop";
 if [ -n "$1" ]; then
 branch="feature/"$1
 fi
-cd /home/brian/java
+cd /home/brian/skoa
 git checkout $branch
 git pull
 cd jflow-parent
@@ -16,8 +16,7 @@ cd ../jflow-core
 mvn clean install
 cd ../jeesite-oa
 mvn clean install
-# 注意,在tomcat中webapps中新建skoa目录
-cp -rf target/jeesite-oa/* /data/tomcat_skoa/webapps/skoa
+cp -rf target/jeesite-oa/* /data/tomcat/webapps/skoa
 /data/tomcat/bin/shutdown.sh
 /data/tomcat/bin/startup.sh
 
@@ -40,4 +39,12 @@ cp -rf target/jeesite-oa/* /data/tomcat_skoa/webapps/skoa
 		然后，执行在此文件夹下，对jeesite-oa项目进行构建
 		mvn clean install
 
+4.执行安装数据库
+    4.1 创建空数据库jeesite,utf8编码等等.
+    4.2 cd skoa/jeesite-oa 进入jeesite-oa目录，执行初始化安装数据库命令
+        mvn antrun:run -Pinit-db
+        执行 skoa/jeesite-oa/db/sprint/sprint01.sql脚本文件
 
+5.执行 ./deploy_skoa.sh 命令;成功后执行第6步骤
+
+6.访问 http://test.shoukeplus.com:8080/skoa
