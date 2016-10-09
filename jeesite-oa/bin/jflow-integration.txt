@@ -1,5 +1,5 @@
 1.安装缺少的jar
-mvn install:install-file -DgroupId=javax.transaction -DartifactId=jta -Dversion=1.0.1B -Dpackaging=jar -Dfile=./lib/jta-1.0.1B.jar
+mvn install:install-file -DgroupId=jta -DartifactId=jta -Dversion=1.0.1B -Dpackaging=jar -Dfile=./lib/jta-1.0.1B.jar
 若使用oracle,则安装驱动:
 mvn install:install-file -Dfile=./lib/ojdbc14-10.2.0.4.0.jar -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar
 2.当在mac下运行程序时,jflow.properties文件中需要更改jdbc的User为其他字符串,否则会获取mac电脑当前用户,可能User是关键字吧
