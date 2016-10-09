@@ -432,7 +432,7 @@
 		<section id="content">
 			<form method="post" action="Login.jsp?DoType=Login" id="form1">
 				<h1>
-					驰骋<span style="color: Red;">CC</span><span style="color: Blue;">BPM</span>流程设计器
+					流程设计器
 				</h1>
 				<div>
 					<input name="TB_UserName" type="text" id="TB_UserName" 

@@ -8,7 +8,7 @@
     bpmd.page_load(request, response);
     %>
 <head>
-<title>CCBPM2.0</title>
+<title>BPM2.0</title>
 <link rel="stylesheet" type="text/css" href="normalize/css/demo.css" />
 <link rel="stylesheet" type="text/css" href="normalize/css/ns-default.css" />
 <link rel="stylesheet" type="text/css" href="normalize/css/ns-style-bar.css" />
@@ -464,7 +464,10 @@
     <div class="window-mask mymask" style="width: 100%; height: 100%; display: block;
         z-index: 21006;">
     </div>
-    <div data-options="region:'west',border:true,split:true" title="<div class='logpanel'><div class='icon-logPic'></div><div class='logPicspan'>驰骋BPM</div></div>" style="width: 280px;">
+    <div data-options="region:'west',border:true,split:true"
+         <%--title="<div class='logpanel'><div class='icon-logPic'></div><div class='logPicspan'>驰骋BPM</div></div>"--%>
+         title="<div class='logpanel'><div class='logPicspan'>工作流设计器</div></div>"
+         style="width: 280px;">
         <div id="menuTab" class="easyui-tabs" data-options="fit:true,border:false">
         </div>
     </div>
