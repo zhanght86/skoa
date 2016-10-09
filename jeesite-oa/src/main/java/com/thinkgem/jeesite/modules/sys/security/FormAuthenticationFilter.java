@@ -112,7 +112,13 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 		//集成Jflow:设置session.setAttribute("No",usesrName)
 		SystemAuthorizingRealm.Principal p = UserUtils.getPrincipal();
 		//UserUtils.setJflowNo(p.getLoginName());
-		BP.WF.Dev2Interface.Port_Login(p.getLoginName());
+		try {
+			//工作流登录;异常不做处理;
+			BP.WF.Dev2Interface.Port_Login(p.getLoginName());
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 		return super.onLoginSuccess(token, subject, request, response);
 	}
 }
