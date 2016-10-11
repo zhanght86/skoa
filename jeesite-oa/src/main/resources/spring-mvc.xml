@@ -77,7 +77,9 @@
 	
 	<!-- 静态资源映射 -->
     <mvc:resources mapping="/static/**" location="/static/" cache-period="31536000"/>
-	
+	<!--nginx下需要对druid的静态资源放行-->
+	<mvc:resources mapping="/druid/**" location="/druid/"  cache-period="31536000"/>
+
 	<!-- 定义无Controller的path<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:${web.view.index}"/>
 	
