@@ -44,3 +44,23 @@ DROP table IF EXISTS `port_empstation`;
 DROP VIEW IF EXISTS `port_empstation`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_empstation` AS select `u`.`login_name` AS `FK_Emp`,`ur`.`role_id` AS `FK_Station` from
 (`sys_user_role` `ur` join `sys_user` `u` on((`u`.`id` = `ur`.`user_id`)));
+
+
+============================集成工作流菜单至jeesite菜单==============================
+# 1.修改工作流二级菜单名称
+update sys_menu set name='工作流' where id='63' and parent_id='62' and parent_ids='0,1,62,';
+# 2.插入工作流相关菜单
+INSERT INTO jeesite.sys_menu (id, parent_id, parent_ids, name, sort, href, target, icon, is_show, permission, create_by, create_date, update_by, update_date, remarks, del_flag)
+VALUES
+('0309bbb85e4b4488a339f8a43fdc16f7', '63', '0,1,62,63,', '流程相关设置', 480, 'http://localhost:8080/WF/Tools.jsp', '', '', '1', '', '1', '2016-10-08 16:08:23', '1', '2016-10-08 17:22:10', '', '0'),
+('3cd647f62e084b3fa8770c73a692c59c', '63', '0,1,62,63,', '工作流消息', 450, 'http://localhost:8080/WF/App/Classic/messages.jsp', '', '', '1', '', '1', '2016-10-08 17:21:41', '1', '2016-10-08 17:22:00', '', '0'),
+('b271e392176f4fe2b1786b81add0486c', '63', '0,1,62,63,', '待办流程', 360, 'http://localhost:8080/WF/App/Classic/Todolist.jsp', '', '', '1', '', '1', '2016-10-08 15:18:22', '1', '2016-10-08 15:18:22', '', '0'),
+('b6a00aa1d9e94b8397095e03a5fbf805', '63', '0,1,62,63,', '发起流程', 330, 'http://localhost:8080/WF/App/Classic/Start.jsp', '', '', '1', '', '1', '2016-10-08 14:21:28', '1', '2016-10-08 15:15:54', '', '0'),
+('d80354b056a44364a0a1dae5e1f9af79', '63', '0,1,62,63,', '查询流程', 420, 'http://localhost:8080/WF/App/Classic/Search.jsp', '', '', '1', '', '1', '2016-10-08 15:19:21', '1', '2016-10-08 15:19:21', '', '0'),
+('eb1e72343b154cc1bde5727c0f061125', '63', '0,1,62,63,', '在途流程', 390, 'http://localhost:8080/WF/App/Classic/Runing.jsp', '', '', '1', '', '1', '2016-10-08 15:18:49', '1', '2016-10-08 15:18:49', '', '0');
+
+
+INSERT INTO jeesite.sys_menu (id, parent_id, parent_ids, name, sort, href, target, icon, is_show, permission, create_by, create_date, update_by, update_date, remarks, del_flag)
+VALUES
+('7bfabc82ad3344a196bbef8935f7bde1', '69', '0,1,62,69,', '流程设计器', 130, 'http://localhost:8080/WF/Admin/CCBPMDesigner/Login.jsp', '_blank', '', '1', '', '1', '2016-10-09 09:57:23', '1', '2016-10-09 10:14:17', '', '0');
+

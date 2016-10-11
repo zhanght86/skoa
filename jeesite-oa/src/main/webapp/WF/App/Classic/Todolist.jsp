@@ -174,7 +174,7 @@
         int colspan = 10;
 
         sBuilder.append("<table width='100%'  cellspacing='0' cellpadding='0' align=left>");
-        sBuilder.append("<Caption ><div class='CaptionMsg' >待办</div></Caption>");
+        sBuilder.append("<caption class=\"CaptionMsgLong\">待办</caption>");
 
         String extStr = "";
         if (IsHungUp)

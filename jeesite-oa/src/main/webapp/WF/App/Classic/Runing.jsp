@@ -100,15 +100,15 @@
         String appPath = Glo.getCCFlowAppPath();
 
         int colspan = 6;
-        sBuilder.append("<table border=1px align=center width='100%'>");
+        sBuilder.append("<table border=1px align=left width='100%'>");
 
         if (WebUser.getIsWap())
         {
-            sBuilder.append("<Caption ><div class='CaptionMsg' >" + "<a href='Home.jsp' >Home</a>-<img src='"+appPath+"WF/Img/EmpWorks.gif' >在途工作" + "</div></Caption>");
+            sBuilder.append("<caption class=\"CaptionMsgLong\"><a href='Home.jsp' >Home</a>-<img src='"+appPath+"WF/Img/EmpWorks.gif'>在途工作</caption>");
         }
         else
         {
-            sBuilder.append("<Caption ><div class='CaptionMsg' >在途工作</div></Caption>");
+            sBuilder.append("<caption class=\"CaptionMsgLong\">在途工作</caption>");
         }
 
         sBuilder.append("<tr class='centerTitle'>");
