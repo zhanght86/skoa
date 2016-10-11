@@ -1,14 +1,10 @@
-skoa部署测试服务器步骤
+skoa部署生产服务器步骤
 1.克隆一个本地版本库：git clone ssh://git@139.196.43.234:22123/skoa
 
 2.创建脚本文件 deploy_skoa.sh;复制以下命令保存,此时不要执行./deploy_skoa.sh命令。
 #!/bin/bash
-branch="develop";
-if [ -n "$1" ]; then
-branch="feature/"$1
-fi
-cd /home/brian/skoa
-git checkout $branch
+cd skoa
+git checkout master
 git pull
 cd jflow-parent
 mvn clean install
@@ -16,10 +12,11 @@ cd ../jflow-core
 mvn clean install
 cd ../jeesite-oa
 mvn clean install
-cp -rf target/jeesite-oa/* /data/tomcat/webapps/skoa
-/data/tomcat/bin/shutdown.sh
-/data/tomcat/bin/startup.sh
+cp -rf target/jeesite-oa/* /data/tomcat_skoa/webapps/ROOT/
+/data/tomcat_skoa/bin/shutdown.sh
+/data/tomcat_skoa/bin/startup.sh
 
+另外,需要部署tomcat_skoa容器,配置略;
 3.下载jar文件到本地仓库
 	3.1 cd skoa/jeesite-oa 进入jeesite-oa目录，安装jflow-core工作流所需要的jta的jar文件
 		mvn install:install-file -DgroupId=jta -DartifactId=jta -Dversion=1.0.1B -Dpackaging=jar -Dfile=./lib/jta-1.0.1B.jar
@@ -49,11 +46,52 @@ cp -rf target/jeesite-oa/* /data/tomcat/webapps/skoa
         c). 再次使用命令登录:mysql -uroot -p,执行命令(show variables like '%lower_case_table_names%';),查看是否为1.
     4.2 创建空数据库jeesite,utf8编码等等.
     4.2 cd skoa/jeesite-oa 进入jeesite-oa目录，执行初始化安装数据库命令
+
         mvn antrun:run -Pinit-db
-        执行 skoa/jeesite-oa/db/sprint/sprint01.sql脚本文件
+
+        数据库下执行 skoa/jeesite-oa/db/sprint/sprint01.sql脚本文件(注意,sprint01.sql还未开发完成,暂时不执行此脚本)
 
 5.执行 ./deploy_skoa.sh 命令;成功后执行第6步骤
 
-6.访问 http://test.shoukeplus.com:8080/skoa ;用户名thinkgem;所有用户密码为admin
+6.配置nginx;
+    6.1  sudo vi /usr/local/tengine-2.1.2/conf/nginx.conf
+    6.2  粘贴如下代码,并保存.
+    server {
+            listen       80;
+            server_name  oa.shoukeplus.com;
+            root    /data/tomcat_skoa/webapps/ROOT;
+            charset utf-8;
 
-7.参照 jeesite-oa/bin/jflow-integration.txt 集成工作流至jeesite菜单中
+            access_log  /data/logs/skoa.access.log  main;
+
+            location ~ .*\.(ico|gif|jpg|jpeg|png|bmp|swf|htm|js|css)$
+            {
+                    expires 30d;
+            }
+
+            error_page  404             /404.htm;
+
+            if ( $http_user_agent ~* "webbench(.*)|apachebench(.*)"){
+                return 403;
+            }
+
+            location / {
+                proxy_pass http://localhost:4040;
+            }
+            # redirect server error pages to the static page /50x.htm
+            #
+            error_page   500 502 503 504  /50x.htm;
+            location = /50x.htm {
+                root   html;
+            }
+
+        }
+
+    6.3 执行热重启nginx命令
+        sudo /usr/local/tengine-2.1.2/sbin/nginx -s reload
+
+
+
+7.访问 http://oa.shoukeplus.com ;用户名thinkgem;所有用户密码为admin
+
+8.参照 jeesite-oa/bin/jflow-integration.txt 集成工作流至jeesite菜单中
