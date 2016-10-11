@@ -1,0 +1,59 @@
+skoa部署测试服务器步骤
+1.克隆一个本地版本库：git clone ssh://git@139.196.43.234:22123/skoa
+
+2.创建脚本文件 deploy_skoa.sh;复制以下命令保存,此时不要执行./deploy_skoa.sh命令。
+#!/bin/bash
+branch="develop";
+if [ -n "$1" ]; then
+branch="feature/"$1
+fi
+cd /home/brian/skoa
+git checkout $branch
+git pull
+cd jflow-parent
+mvn clean install
+cd ../jflow-core
+mvn clean install
+cd ../jeesite-oa
+mvn clean install
+cp -rf target/jeesite-oa/* /data/tomcat/webapps/skoa
+/data/tomcat/bin/shutdown.sh
+/data/tomcat/bin/startup.sh
+
+3.下载jar文件到本地仓库
+	3.1 cd skoa/jeesite-oa 进入jeesite-oa目录，安装jflow-core工作流所需要的jta的jar文件
+		mvn install:install-file -DgroupId=jta -DartifactId=jta -Dversion=1.0.1B -Dpackaging=jar -Dfile=./lib/jta-1.0.1B.jar
+
+    3.2 cd skoa/jflow-core 先进入jflow-core目录，对该工作流项目进行构建
+		mvn clean install
+
+	3.3 cd skoa/jeesite-oa 再次进入jeesite-oa目录，安装jeesite-oa项目所需要的7个jar文件
+		mvn install:install-file -Dfile=./lib/analyzer-2012_u6.jar -DgroupId=org.wltea -DartifactId=analyzer -Dversion=2012_u6 -Dpackaging=jar
+		mvn install:install-file -Dfile=./lib/apache-ant-zip-2.3.jar -DgroupId=com.ckfinder -DartifactId=apache-ant-zip -Dversion=2.3 -Dpackaging=jar
+		mvn install:install-file -Dfile=./lib/ckfinder-2.3.jar -DgroupId=com.ckfinder -DartifactId=ckfinder -Dversion=2.3 -Dpackaging=jar
+		mvn install:install-file -Dfile=./lib/ckfinderplugin-fileeditor-2.3.jar -DgroupId=com.ckfinder -DartifactId=ckfinderplugin-fileeditor -Dversion=2.3 -Dpackaging=jar
+		mvn install:install-file -Dfile=./lib/ckfinderplugin-imageresize-2.3.jar -DgroupId=com.ckfinder -DartifactId=ckfinderplugin-imageresize -Dversion=2.3 -Dpackaging=jar
+		mvn install:install-file -Dfile=./lib/UserAgentUtils-1.13.jar -DgroupId=bitwalker -DartifactId=UserAgentUtils -Dversion=1.13 -Dpackaging=jar
+		mvn install:install-file -Dfile=./lib/ojdbc14-10.2.0.4.0.jar -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar
+
+		然后，执行在此文件夹下，对jeesite-oa项目进行构建
+		mvn clean install
+
+4.执行安装数据库
+    4.1 首先,检查linux服务器下mysql的表名是否区分大小写
+        a). 使用命令登录:mysql -uroot -p,执行命令(show variables like '%lower_case_table_names%';),
+            lower_case_table_names参数详解：0：区分大小写 1：不区分大小写.若为1,需要设置mysql的配置文件(/etc/mysql/my.cnf),
+            执行命令(sed -i '/\[mysqld\]/a\lower_case_table_names=1' /etc/mysql/my.cnf),或者手动进入my.cnf在[mysqld]
+            后面追加一行lower_case_table_names=1
+        b). 重启mysql(sudo /etc/init.d/mysql restart)
+        c). 再次使用命令登录:mysql -uroot -p,执行命令(show variables like '%lower_case_table_names%';),查看是否为1.
+    4.2 创建空数据库jeesite,utf8编码等等.
+    4.2 cd skoa/jeesite-oa 进入jeesite-oa目录，执行初始化安装数据库命令
+        mvn antrun:run -Pinit-db
+        执行 skoa/jeesite-oa/db/sprint/sprint01.sql脚本文件
+
+5.执行 ./deploy_skoa.sh 命令;成功后执行第6步骤
+
+6.访问 http://test.shoukeplus.com:8080/skoa ;用户名thinkgem;所有用户密码为admin
+
+7.参照 jeesite-oa/bin/jflow-integration.txt 集成工作流至jeesite菜单中
