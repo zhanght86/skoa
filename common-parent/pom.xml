@@ -1,11 +1,83 @@
 ﻿<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>jflow</groupId>
-	<artifactId>jflow-parent</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	<packaging>pom</packaging>	
+	<groupId>com.shoukeplus.oa</groupId>
+	<artifactId>common-parent</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>common-parent</name>
+	<url>http://maven.apache.org</url>
+
+	<!-- 全局属性配置 -->
+	<profiles>
+		<!-- 开发环境 -->
+		<profile>
+			<id>develop</id>
+			<properties>
+				<!-- 部署环境(对应配置文件版本) -->
+				<env>develop</env>
+				<maven.test.skip>false</maven.test.skip>
+			</properties>
+			<!-- 设置默认环境 -->
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+
+		<!-- 测试环境  -->
+		<profile>
+			<id>qa</id>
+			<properties>
+				<!-- 部署环境(对应配置文件版本) -->
+				<env>qa</env>
+			</properties>
+			<!-- 设置默认环境 -->
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+		<!-- 生产环境  -->
+		<profile>
+			<id>product</id>
+			<properties>
+				<!-- 生产环境(对应配置文件版本) -->
+				<env>product</env>
+			</properties>
+			<!-- 设置默认环境 -->
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+
+	<!-- 指定Maven分发构件的位置 -->
+	<!--<distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://192.168.4.221:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>http://192.168.4.221:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>-->
+
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.version>1.7</jdk.version>
+
+		<!-- ========================================================== -->
+		<!-- 首科OA工程： 项目的工程版本号 begin -->
+		<common-config.version>1.0-SNAPSHOT</common-config.version>
+		<!-- jeesite-oa projects -->
+		<jeesite-oa.version>1.0-SNAPSHOT</jeesite-oa.version>
+		<!-- jflow-core projects -->
+		<jflow-core.version>1.0-SNAPSHOT</jflow-core.version>
+		<!-- 首科OA工程： 项目的工程版本号 end -->
+		<!-- ========================================================== -->
 
 		<org.apache.poi.version>3.11</org.apache.poi.version>
 		<freemarker.version>2.3.20</freemarker.version>
@@ -27,10 +99,9 @@
 		<mybatis-spring.version>1.2.3</mybatis-spring.version>
 		<mybatis.version>3.2.8</mybatis.version>
 		<validator.version>5.2.4.Final</validator.version>
-		<jdk.version>1.6</jdk.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<javax.transaction.version>1.0.1B</javax.transaction.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
  		<spring.version>4.1.9.RELEASE</spring.version>
 		<!-- <spring.version>3.2.0.RELEASE</spring.version> -->
 		<dom4j.version>1.6.1</dom4j.version>
@@ -59,6 +130,9 @@
 		<jaxen.version>1.1.4</jaxen.version>
 		<commons-codec.version>1.10</commons-codec.version>
 		<morph.version>1.1.1</morph.version>
+
+		<!--<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>-->
+		<maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -694,10 +768,20 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
+					<showWarnings>true</showWarnings>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<uniqueVersion>false</uniqueVersion>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -707,11 +791,14 @@
 
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
+					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
 		</plugins>

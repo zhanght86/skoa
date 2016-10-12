@@ -2,13 +2,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>jflow</groupId>
-		<artifactId>jflow-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-        <relativePath>../jflow-parent/pom.xml</relativePath>
+		<groupId>com.shoukeplus.oa</groupId>
+		<artifactId>common-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+        <relativePath>../common-parent</relativePath>
 	</parent>
 	<groupId>jflow-core</groupId>
 	<artifactId>jflow-core</artifactId>
+	<version>${jflow-core.version}</version>
+	<packaging>jar</packaging>
 	<dependencies>
 	
 		<!-- SPRING begin -->

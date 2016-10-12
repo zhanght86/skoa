@@ -6,12 +6,16 @@ skoa部署生产服务器步骤
 cd skoa
 git checkout master
 git pull
-cd jflow-parent
+cd common-parent
 mvn clean install
+cd ../common-config
+# 或者使用(mvn clean install -Pproduct)
+# mvn -Pxxx引用profile id为xxx;mvn -Dxxx=yyy 指定java全局属性
+mvn clean install -DskipTests -Denv=product
 cd ../jflow-core
 mvn clean install
 cd ../jeesite-oa
-mvn clean install
+mvn clean install -DskipTests -Denv=product
 cp -rf target/jeesite-oa/* /data/tomcat_skoa/webapps/ROOT/
 /data/tomcat_skoa/bin/shutdown.sh
 /data/tomcat_skoa/bin/startup.sh

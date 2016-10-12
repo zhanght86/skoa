@@ -4,30 +4,27 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>jflow</groupId>
-		<artifactId>jflow-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../jflow-parent/pom.xml</relativePath>
+		<groupId>com.shoukeplus.oa</groupId>
+		<artifactId>common-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../common-parent</relativePath>
 	</parent>
 	
-	<groupId>com.shouke</groupId>
+	<groupId>com.shoukeplus.oa</groupId>
 	<artifactId>jeesite-oa</artifactId>
-	<version>1.2.7</version>
+	<version>${jeesite-oa.version}</version>
 	<packaging>war</packaging>
 	
-	<name>jeesite</name>
+	<name>jeesite-oa</name>
 	<url>http://thinkgem.github.com/jeesite</url>
 	<inceptionYear>2012-2016</inceptionYear>
 	
 	<!-- 项目属性 -->
 	<properties>
-
 		<!-- environment setting -->
-		<jdk.version>1.6</jdk.version>
 		<tomcat.version>2.2</tomcat.version>
 		<jetty.version>7.6.14.v20131031</jetty.version>
 		<webserver.port>8181</webserver.port>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<downloadSources>true</downloadSources>
 	</properties>
 	
@@ -55,11 +52,16 @@
 	
 	<!-- 依赖项定义 -->
 	<dependencies>
+		<dependency>
+			<groupId>com.shoukeplus.oa</groupId>
+			<artifactId>common-config</artifactId>
+			<version>${env}-${common-config.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>jflow-core</groupId>
 			<artifactId>jflow-core</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${jflow-core.version}</version>
 		</dependency>
 
 		<!-- servlet -->
@@ -373,10 +375,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
