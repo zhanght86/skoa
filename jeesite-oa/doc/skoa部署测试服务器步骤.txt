@@ -13,13 +13,13 @@ git pull
 cd common-parent
 mvn clean install
 cd ../common-config
-# 或者使用(mvn clean install -Pdevelop)
+# 或者使用(mvn clean install -Pqa)
 # mvn -Pxxx引用profile id为xxx;mvn -Dxxx=yyy 指定java全局属性
-mvn clean install -DskipTests -Denv=develop
+mvn clean install -DskipTests -Denv=qa
 cd ../jflow-core
 mvn clean install
 cd ../jeesite-oa
-mvn clean install -DskipTests -Denv=develop
+mvn clean install -DskipTests -Denv=qa
 
 cp -rf target/jeesite-oa/* /data/tomcat/webapps/skoa
 /data/tomcat/bin/shutdown.sh
