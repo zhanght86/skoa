@@ -12,7 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>在途</title>
 <link href="<%=Glo.getCCFlowAppPath() %>DataUser/Style/Table0.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="./Comm/JScript.js"></script>
+<script type="text/javascript" src="../../Comm/JScript.js"></script>
     <script type="text/javascript" >
         function Do(warning, url) {
             if (window.confirm(warning) == false)
@@ -182,8 +182,11 @@
 
                 workid =dr.getValue("WorkID").toString();
                 fk_flow =dr.getValue("FK_Flow").toString();
-
-                sBuilder.append("<td class=TTD><a href=\"javascript:WinOpen('"+appPath+"WF/WFRpt.jsp?WorkID=" + workid + "&FK_Flow=" + fk_flow + "&FID=" +dr.getValue("FID") + "')\" >" + title + "</a></td>");
+                if (BP.WF.Glo.getIsWinOpenEmpWorks()) {
+                    sBuilder.append("<td class=TTD><a href=\"javascript:WinOpen('" + appPath + "WF/WFRpt.jsp?WorkID=" + workid + "&FK_Flow=" + fk_flow + "&FID=" + dr.getValue("FID") + "')\" >" + title + "</a></td>");
+                } else {
+                    sBuilder.append("<td class=TTD><a href=\"" + appPath + "WF/WFRpt.jsp?WorkID=" + workid + "&FK_Flow=" + fk_flow + "&FID=" + dr.getValue("FID") + "\" >" + title + "</a></td>");
+                }
                 if (!GroupBy.equals("FlowName"))
                 {
                     sBuilder.append("<td  nowrap >" +dr.getValue("FlowName").toString() + "</td>");
