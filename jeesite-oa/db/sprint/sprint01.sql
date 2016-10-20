@@ -103,3 +103,47 @@ INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_
 INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('4d30063c6bc64be6a5020904d52cb977', '3', '基层', 'sys_role_type', '角色类型', 30, '0', '1', '2016-09-30 16:46:52', '1', '2016-09-30 16:46:52', '', '0'),
 ('9de2afd5e8314f3981417e8b31036a7d', '2', '中层', 'sys_role_type', '角色类型', 20, '0', '1', '2016-09-30 16:46:41', '1', '2016-09-30 16:46:41', '', '0'),
 ('e04859219e8b423e8bb02e6fd8f8f6b4', '1', '高层', 'sys_role_type', '角色类型', 10, '0', '1', '2016-09-30 16:46:24', '1', '2016-09-30 16:46:24', '', '0');
+
+
+
+/* 岗位管理表 */
+DROP TABLE IF EXISTS sys_station;
+
+CREATE TABLE `sys_station` (
+  `id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '编号',
+  `parent_id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '父级编号',
+  `parent_ids` varchar(2000) COLLATE utf8_bin NOT NULL COMMENT '所有父级编号',
+  `office_id` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '归属机构',
+  `name` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '岗位名称',
+  `enname` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '英文名称',
+  `code` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '编码',
+  `role_type` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '角色类型',
+  `sort` decimal(10,0) NOT NULL COMMENT '排序',
+  `create_by` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '创建者',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '更新者',
+  `update_date` datetime NOT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`),
+  KEY `sys_station_parent_id` (`parent_id`),
+  KEY `sys_station_del_flag` (`del_flag`),
+  KEY `sys_station_enname` (`enname`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='岗位管理';
+
+
+/* 岗位管理 菜单添加 */
+insert into `jeesite`.`sys_menu` ( `id`, `create_date`, `parent_id`, `href`, `create_by`, `permission`, `update_date`, `update_by`, `is_show`, `target`, `icon`, `del_flag`, `parent_ids`, `sort`, `name`, `remarks`) values ( '8243aef876304ffa8d2505c0bf645dc2', '2016-10-19 15:01:05', '13', '/sys/station', '1', '', '2016-10-19 16:39:39', '1', '1', '', 'user-md', '0', '0,1,2,13,', '60', '岗位管理', '');
+insert into `jeesite`.`sys_menu` ( `id`, `create_date`, `parent_id`, `href`, `create_by`, `permission`, `update_date`, `update_by`, `is_show`, `target`, `icon`, `del_flag`, `parent_ids`, `sort`, `name`, `remarks`) values ( '6b80d0af4eb5498b85262355e31d711f', '2016-10-19 15:06:29', '8243aef876304ffa8d2505c0bf645dc2', '', '1', 'sys:station:view', '2016-10-19 16:14:25', '1', '0', '', '', '0', '0,1,2,13,8243aef876304ffa8d2505c0bf645dc2,', '30', '查看', '');
+insert into `jeesite`.`sys_menu` ( `id`, `create_date`, `parent_id`, `href`, `create_by`, `permission`, `update_date`, `update_by`, `is_show`, `target`, `icon`, `del_flag`, `parent_ids`, `sort`, `name`, `remarks`) values ( '2c8d9d9627124e698b17999306d9ccff', '2016-10-19 15:07:12', '8243aef876304ffa8d2505c0bf645dc2', '', '1', 'sys:station:edit', '2016-10-19 16:10:03', '1', '0', '', '', '0', '0,1,2,13,8243aef876304ffa8d2505c0bf645dc2,', '60', '修改', '');
+
+
+/* 用户岗位 */
+DROP TABLE IF EXISTS sys_user_station;
+
+CREATE TABLE `sys_user_station` (
+  `user_id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '用户编号',
+  `station_id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '岗位编号',
+  PRIMARY KEY (`user_id`,`station_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户-岗位';
+
