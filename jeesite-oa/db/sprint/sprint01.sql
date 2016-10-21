@@ -99,10 +99,10 @@ INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_
 ('fdf311be46774255beb71b0da142df1a', '1', '负责人管理', 'projectStatus', '项目负责人管理状态', 20, '0', '1', '2016-09-23 09:53:25', '1', '2016-09-23 09:53:25', '项目负责人对项目进行管理维护', '0');
 
 
-/* 插入 字典表: sys_role_type 角色类型 */
-INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('4d30063c6bc64be6a5020904d52cb977', '3', '基层', 'sys_role_type', '角色类型', 30, '0', '1', '2016-09-30 16:46:52', '1', '2016-09-30 16:46:52', '', '0'),
-('9de2afd5e8314f3981417e8b31036a7d', '2', '中层', 'sys_role_type', '角色类型', 20, '0', '1', '2016-09-30 16:46:41', '1', '2016-09-30 16:46:41', '', '0'),
-('e04859219e8b423e8bb02e6fd8f8f6b4', '1', '高层', 'sys_role_type', '角色类型', 10, '0', '1', '2016-09-30 16:46:24', '1', '2016-09-30 16:46:24', '', '0');
+/* 插入 字典表: sys_station_type 角色类型 */
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('4d30063c6bc64be6a5020904d52cb977', '3', '基层', 'sys_station_type', '岗位类型', 30, '0', '1', '2016-09-30 16:46:52', '1', '2016-09-30 16:46:52', '', '0'),
+('9de2afd5e8314f3981417e8b31036a7d', '2', '中层', 'sys_station_type', '岗位类型', 20, '0', '1', '2016-09-30 16:46:41', '1', '2016-09-30 16:46:41', '', '0'),
+('e04859219e8b423e8bb02e6fd8f8f6b4', '1', '高层', 'sys_station_type', '岗位类型', 10, '0', '1', '2016-09-30 16:46:24', '1', '2016-09-30 16:46:24', '', '0');
 
 
 
@@ -117,7 +117,7 @@ CREATE TABLE `sys_station` (
   `name` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '岗位名称',
   `enname` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '英文名称',
   `code` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '编码',
-  `role_type` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '角色类型',
+  `station_type` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '岗位类型',
   `sort` decimal(10,0) NOT NULL COMMENT '排序',
   `create_by` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '创建者',
   `create_date` datetime NOT NULL COMMENT '创建时间',

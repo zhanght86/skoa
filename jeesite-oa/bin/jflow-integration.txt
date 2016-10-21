@@ -23,12 +23,12 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 # 2.岗位视图表
 DROP table IF EXISTS `port_station`;
 DROP VIEW IF EXISTS `port_station`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_station` AS select `sys_role`.`id` AS `No`,`sys_role`.`name` AS `Name`,`sys_role`.`role_type` AS `FK_StationType`,NULL AS `DutyReq`,NULL AS `Makings`,NULL AS `StaGrade` from `sys_role`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_station` AS select `sys_station`.`id` AS `No`,`sys_station`.`name` AS `Name`,`sys_station`.`station_type` AS `FK_StationType`,NULL AS `DutyReq`,NULL AS `Makings`,NULL AS `StaGrade` from `sys_station`;
 
 # 3.岗位类型视图表
 DROP table IF EXISTS `PORT_StationType`;
 DROP VIEW IF EXISTS `PORT_StationType`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_stationtype` AS select `sys_dict`.`value` AS `No`,`sys_dict`.`label` AS `Name` from `sys_dict` where (`sys_dict`.`type` = 'sys_role_type');
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_stationtype` AS select `sys_dict`.`value` AS `No`,`sys_dict`.`label` AS `Name` from `sys_dict` where (`sys_dict`.`type` = 'sys_station_type');
 
 # 4.员工视图表
 # 注:员工表里必须有admin账号,否则后台设计器登录时账号密码报错或者在创建(打开)流程时报错;
