@@ -304,6 +304,23 @@
 			</if>
 		</foreach>
 	</insert>
+
+
+	<!-- 删除用户和岗位关联表数据 -->
+	<delete id="deleteUserStation">
+		DELETE FROM sys_user_station WHERE user_id = #{id}
+	</delete>
+
+	<!-- 插入用户和岗位关联表数据 -->
+	<insert id="insertUserStation">
+		INSERT INTO sys_user_station(user_id, station_id)
+		<foreach collection="stationList" item="station" separator=" union all ">
+			SELECT #{id}, #{station.id}
+			<if test="dbName != 'mssql'">
+			FROM dual
+			</if>
+		</foreach>
+	</insert>
 	
 	<!-- 更新用户信息  -->
 	<update id="updateUserInfo">

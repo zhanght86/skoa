@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.thinkgem.jeesite.common.utils.excel.fieldtype.StationListType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
@@ -53,6 +54,7 @@ public class User extends DataEntity<User> {
 	private Role role;	// 根据角色查询用户条件
 	
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
+	private List<Station> stationList = Lists.newArrayList(); // 拥有岗位列表
 
 	public User() {
 		super();
@@ -308,6 +310,43 @@ public class User extends DataEntity<User> {
 	public String getRoleNames() {
 		return Collections3.extractToString(roleList, "name", ",");
 	}
+
+
+	@JsonIgnore
+	@ExcelField(title = "拥有岗位", align = 1, sort = 800, fieldType = StationListType.class)
+	public List<Station> getStationList() {
+		return stationList;
+	}
+
+	public void setStationList(List<Station> stationList) {
+		this.stationList = stationList;
+	}
+
+	@JsonIgnore
+	public List<String> getStationIdList() {
+		List<String> stationIdList = Lists.newArrayList();
+		for (Station station : stationList) {
+			stationIdList.add(station.getId());
+		}
+		return stationIdList;
+	}
+
+//	public void setStattionIdList(List<String> stationIdList) {
+//		stationList = Lists.newArrayList();
+//		for (String stationId : stationIdList) {
+//			Station station = new Station();
+//			station.setId(stationId);
+//			stationList.add(station);
+//		}
+//	}
+
+	/**
+	 * 用户拥有的岗位名称字符串, 多个角色名称用','分隔.
+	 */
+	public String getStationNames() {
+		return Collections3.extractToString(stationList, "name", ",");
+	}
+
 	
 	public boolean isAdmin(){
 		return isAdmin(this.id);

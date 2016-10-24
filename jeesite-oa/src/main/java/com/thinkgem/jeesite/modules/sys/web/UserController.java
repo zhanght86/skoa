@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.sys.web;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.thinkgem.jeesite.modules.sys.entity.Station;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -125,6 +127,20 @@ public class UserController extends BaseController {
 			}
 		}
 		user.setRoleList(roleList);
+
+		// 岗位数据有效性验证，过滤不存在的岗位
+		List<Station> stationList = Lists.newArrayList();
+		String stationIds = request.getParameter("stationIdList");
+		if (StringUtils.isNotBlank(stationIds)) {
+			List<String> stationIdList = Arrays.asList(stationIds.split(","));
+			for (Station r : systemService.findAllStation()) {
+				if (stationIdList.contains(r.getId())) {
+					stationList.add(r);
+				}
+			}
+		}
+		user.setStationList(stationList);
+
 		// 保存用户信息
 		systemService.saveUser(user);
 		// 清除当前用户缓存

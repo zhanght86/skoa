@@ -121,5 +121,36 @@ public class StationController extends BaseController {
 		}
 		return mapList;
 	}
+
+
+
+	/**
+	 * 获取岗位数据。（选择控件）
+	 * @param extId 排除的ID
+	 * @param response
+	 * @return
+	 */
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "treeDataStation")
+	public List<Map<String, Object>> treeData(@RequestParam(required=false) String extId,
+											  @RequestParam(required=false) Long grade,
+											  @RequestParam(required=false) Boolean isAll,
+											  HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		List<Station> list = stationService.findList(new Station());
+		for (int i=0; i<list.size(); i++){
+			Station e = list.get(i);
+			if ((StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1))){
+				Map<String, Object> map = Maps.newHashMap();
+				map.put("id", e.getId());
+				map.put("pId", e.getParentId());
+				map.put("pIds", e.getParentIds());
+				map.put("name", e.getName());
+				mapList.add(map);
+			}
+		}
+		return mapList;
+	}
 	
 }

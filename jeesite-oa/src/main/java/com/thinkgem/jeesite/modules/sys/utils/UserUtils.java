@@ -26,6 +26,7 @@ public class UserUtils {
 
 	private static UserDao userDao = SpringContextHolder.getBean(UserDao.class);
 	private static RoleDao roleDao = SpringContextHolder.getBean(RoleDao.class);
+	private static StationDao stationDao = SpringContextHolder.getBean(StationDao.class);
 	private static MenuDao menuDao = SpringContextHolder.getBean(MenuDao.class);
 	private static AreaDao areaDao = SpringContextHolder.getBean(AreaDao.class);
 	private static OfficeDao officeDao = SpringContextHolder.getBean(OfficeDao.class);
@@ -36,6 +37,7 @@ public class UserUtils {
 	public static final String USER_CACHE_LIST_BY_OFFICE_ID_ = "oid_";
 
 	public static final String CACHE_ROLE_LIST = "roleList";
+	public static final String CACHE_STATION_LIST = "stationList";
 	public static final String CACHE_MENU_LIST = "menuList";
 	public static final String CACHE_AREA_LIST = "areaList";
 	public static final String CACHE_OFFICE_LIST = "officeList";
@@ -54,6 +56,7 @@ public class UserUtils {
 				return null;
 			}
 			user.setRoleList(roleDao.findList(new Role(user)));
+			user.setStationList(stationDao.findList(new Station(user)));
 			CacheUtils.put(USER_CACHE, USER_CACHE_ID_ + user.getId(), user);
 			CacheUtils.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName(), user);
 		}
@@ -140,6 +143,31 @@ public class UserUtils {
 			putCache(CACHE_ROLE_LIST, roleList);
 		}
 		return roleList;
+	}
+
+	/**
+	 * 获取所有岗位列表
+	 * @return
+	 */
+	public static List<Station> getStationList(){
+//		@SuppressWarnings("unchecked")
+//		List<Station> stationList = (List<Station>)getCache(CACHE_STATION_LIST);
+//		if (stationList == null){
+//			User user = getUser();
+//			if (user.isAdmin()){
+//				stationList = stationDao.findAllList(new Station());
+//			}else{
+//				Station station = new Station();
+//				station.getSqlMap().put("dsf", BaseService.dataScopeFilter(user.getCurrentUser(), "o", "u"));
+//				stationList = stationDao.findList(station);
+//			}
+//			putCache(CACHE_STATION_LIST, stationList);
+//		}
+//		return stationList;
+
+		//暂时不做缓存
+		List<Station> stationList = stationDao.findAllList(new Station());
+		return stationList;
 	}
 	
 	/**

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.sys.entity.*;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
 import org.apache.shiro.session.Session;
@@ -29,10 +30,6 @@ import com.thinkgem.jeesite.common.web.Servlets;
 import com.thinkgem.jeesite.modules.sys.dao.MenuDao;
 import com.thinkgem.jeesite.modules.sys.dao.RoleDao;
 import com.thinkgem.jeesite.modules.sys.dao.UserDao;
-import com.thinkgem.jeesite.modules.sys.entity.Menu;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
-import com.thinkgem.jeesite.modules.sys.entity.Role;
-import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -150,6 +147,16 @@ public class SystemService extends BaseService implements InitializingBean {
 			}else{
 				throw new ServiceException(user.getLoginName() + "没有设置角色！");
 			}
+
+			// 更新用户与岗位关联
+			userDao.deleteUserStation(user);
+			if (user.getStationList() != null && user.getStationList().size() > 0){
+				userDao.insertUserStation(user);
+			}
+//			else{
+//				throw new ServiceException(user.getLoginName() + "没有设置岗位！");
+//			}
+
 			// 将当前用户同步到Activiti
 			saveActivitiUser(user);
 			// 清除用户缓存
@@ -258,6 +265,10 @@ public class SystemService extends BaseService implements InitializingBean {
 	
 	public List<Role> findAllRole(){
 		return UserUtils.getRoleList();
+	}
+
+	public List<Station> findAllStation(){
+		return UserUtils.getStationList();
 	}
 	
 	@Transactional(readOnly = false)

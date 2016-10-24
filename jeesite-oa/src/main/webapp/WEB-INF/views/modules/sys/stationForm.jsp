@@ -67,14 +67,13 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">角色类型：</label>
+			<label class="control-label">岗位类型：</label>
 			<div class="controls">
-				<form:select path="roleType" class="input-xlarge">
+				<form:select path="stationType" class="input-xlarge required">
 					<form:option value="" label="请选择"/>
-					<form:options items="${fns:getDictList('sys_role_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('sys_station_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-				<span class="help-inline" title="activiti有3种预定义的组类型：security-role、assignment、user 如果使用Activiti Explorer，需要security-role才能看到manage页签，需要assignment才能claim任务">
-					工作流组用户组类型（任务分配：assignment、管理角色：security-role、普通角色：user）</span>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">

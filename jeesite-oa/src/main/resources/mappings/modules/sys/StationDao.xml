@@ -10,7 +10,7 @@
 		a.name AS "name",
 		a.enname AS "enname",
 		a.code AS "code",
-		a.role_type AS "roleType",
+		a.station_type AS "stationType",
 		a.sort AS "sort",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -38,6 +38,11 @@
 			<include refid="stationColumns"/>
 		FROM sys_station a
 		<include refid="stationJoins"/>
+
+		<if test="user != null and user.id != null and user.id != ''">
+		LEFT JOIN sys_user_station us ON us.station_id = a.id
+		</if>
+
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="parent != null and parent.id != null and parent.id != ''">
@@ -55,6 +60,11 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
+
+			<if test="user != null and user.id != null and user.id != ''">
+				AND us.user_id = #{user.id}
+			</if>
+
 		</where>
 		ORDER BY a.sort ASC
 	</select>
@@ -93,7 +103,7 @@
 			name,
 			enname,
 			code,
-			role_type,
+			station_type,
 			sort,
 			create_by,
 			create_date,
@@ -109,7 +119,7 @@
 			#{name},
 			#{enname},
 			#{code},
-			#{roleType},
+			#{stationType},
 			#{sort},
 			#{createBy.id},
 			#{createDate},
@@ -128,7 +138,7 @@
 			name = #{name},
 			enname = #{enname},
 			code = #{code},
-			role_type = #{roleType},
+			station_type = #{stationType},
 			sort = #{sort},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
