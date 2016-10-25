@@ -9,17 +9,14 @@
 		a.project_name AS "projectName",
 		a.project_grade AS "projectGrade",
 		a.primary_person AS "primaryPerson.id",
-		a.deputy_person AS "deputyPerson.id",
+		a.team_members AS "teamMembers",
+		a.team_member_names AS "teamMemberNames",
 		a.industry_domain AS "industryDomain",
 		a.main_business AS "mainBusiness",
 		a.filepath AS "filepath",
-		a.filename AS "filename",
 		a.annual_income AS "annualIncome",
 		a.annual_net_profit AS "annualNetProfit",
 		a.project_progress AS "projectProgress",
-		a.progress_update_date AS "progressUpdateDate",
-		a.progress_update_by AS "progressUpdateBy",
-		a.progress_update_remarks AS "progressUpdateRemarks",
 		a.start_date AS "startDate",
 		a.recommended_man AS "recommendedMan",
 		a.recommended_date AS "recommendedDate",
@@ -34,15 +31,13 @@
 		a.del_flag AS "delFlag",
 		o2.name AS "office.name",
 		a3.name AS "area.name",
-		u6.name AS "primaryPerson.name",
-		u7.name AS "deputyPerson.name"
+		u6.name AS "primaryPerson.name"
 	</sql>
 	
 	<sql id="projectInfoJoins">
 		LEFT JOIN sys_office o2 ON o2.id = a.office_id
 		LEFT JOIN sys_area a3 ON a3.id = a.area_id
 		LEFT JOIN sys_user u6 ON u6.id = a.primary_person
-		LEFT JOIN sys_user u7 ON u7.id = a.deputy_person
 	</sql>
     
 	<select id="get" resultType="ProjectInfo">
@@ -75,6 +70,9 @@
 			<if test="projectGrade != null and projectGrade != ''">
 				AND a.project_grade = #{projectGrade}
 			</if>
+			<if test="primaryPerson != null and primaryPerson.id != null and primaryPerson.id != ''">
+				AND a.primary_person = #{primaryPerson.id}
+			</if>
 			<if test="industryDomain != null and industryDomain != ''">
 				AND a.industry_domain = #{industryDomain}
 			</if>
@@ -83,6 +81,9 @@
 			</if>
 			<if test="projectType != null and projectType != ''">
 				AND a.project_type = #{projectType}
+			</if>
+			<if test="projectStatus != null and projectStatus != ''">
+				AND a.project_status = #{projectStatus}
 			</if>
 		</where>
 		<choose>
@@ -121,17 +122,14 @@
 			project_name,
 			project_grade,
 			primary_person,
-			deputy_person,
+			team_members,
+			team_member_names,
 			industry_domain,
 			main_business,
 			filepath,
-			filename,
 			annual_income,
 			annual_net_profit,
 			project_progress,
-			progress_update_date,
-			progress_update_by,
-			progress_update_remarks,
 			start_date,
 			recommended_man,
 			recommended_date,
@@ -151,17 +149,14 @@
 			#{projectName},
 			#{projectGrade},
 			#{primaryPerson.id},
-			#{deputyPerson.id},
+			#{teamMembers},
+			#{teamMemberNames},
 			#{industryDomain},
 			#{mainBusiness},
 			#{filepath},
-			#{filename},
 			#{annualIncome},
 			#{annualNetProfit},
 			#{projectProgress},
-			#{progressUpdateDate},
-			#{progressUpdateBy},
-			#{progressUpdateRemarks},
 			#{startDate},
 			#{recommendedMan},
 			#{recommendedDate},
@@ -184,17 +179,14 @@
 			project_name = #{projectName},
 			project_grade = #{projectGrade},
 			primary_person = #{primaryPerson.id},
-			deputy_person = #{deputyPerson.id},
+			team_members = #{teamMembers},
+			team_member_names = #{teamMemberNames},
 			industry_domain = #{industryDomain},
 			main_business = #{mainBusiness},
 			filepath = #{filepath},
-			filename = #{filename},
 			annual_income = #{annualIncome},
 			annual_net_profit = #{annualNetProfit},
 			project_progress = #{projectProgress},
-			progress_update_date = #{progressUpdateDate},
-			progress_update_by = #{progressUpdateBy},
-			progress_update_remarks = #{progressUpdateRemarks},
 			start_date = #{startDate},
 			recommended_man = #{recommendedMan},
 			recommended_date = #{recommendedDate},

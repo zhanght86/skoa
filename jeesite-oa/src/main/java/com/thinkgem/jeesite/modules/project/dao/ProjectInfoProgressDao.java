@@ -5,7 +5,7 @@ package com.thinkgem.jeesite.modules.project.dao;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.project.entity.ProjectInfo;
+import com.thinkgem.jeesite.modules.project.entity.ProjectInfoProgress;
 
 /**
  * 项目管理DAO接口
@@ -13,6 +13,6 @@ import com.thinkgem.jeesite.modules.project.entity.ProjectInfo;
  * @version 2016-10-25
  */
 @MyBatisDao
-public interface ProjectInfoDao extends CrudDao<ProjectInfo> {
+public interface ProjectInfoProgressDao extends CrudDao<ProjectInfoProgress> {
 	
 }

@@ -42,6 +42,10 @@
 					<form:options items="${fns:getDictList('projectGrade')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
+			<li><label>项目负责人：</label>
+				<sys:treeselect id="primaryPerson" name="primaryPerson.id" value="${projectInfo.primaryPerson.id}" labelName="primaryPerson.name" labelValue="${projectInfo.primaryPerson.name}"
+					title="用户" url="/sys/office/treeData?type=3" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/>
+			</li>
 			<li><label>行业领域：</label>
 				<form:select path="industryDomain" class="input-medium">
 					<form:option value="" label=""/>
@@ -60,6 +64,12 @@
 					<form:options items="${fns:getDictList('projectType')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
+			<li><label>项目状态：</label>
+				<form:select path="projectStatus" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('projectStatus')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -68,13 +78,13 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>归属部门</th>
 				<th>项目名称</th>
 				<th>项目负责人</th>
 				<th>行业领域</th>
-				<th>年收入</th>
-				<th>年净利润</th>
 				<th>项目进度</th>
 				<th>项目类型</th>
+				<th>项目状态</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
 				<shiro:hasPermission name="project:projectInfo:edit"><th>操作</th></shiro:hasPermission>
@@ -84,8 +94,11 @@
 		<c:forEach items="${page.list}" var="projectInfo">
 			<tr>
 				<td><a href="${ctx}/project/projectInfo/form?id=${projectInfo.id}">
-					${projectInfo.projectName}
+					${projectInfo.office.name}
 				</a></td>
+				<td>
+					${projectInfo.projectName}
+				</td>
 				<td>
 					${projectInfo.primaryPerson.name}
 				</td>
@@ -93,16 +106,13 @@
 					${fns:getDictLabel(projectInfo.industryDomain, 'industryDomain', '')}
 				</td>
 				<td>
-					${projectInfo.annualIncome}
-				</td>
-				<td>
-					${projectInfo.annualNetProfit}
-				</td>
-				<td>
 					${fns:getDictLabel(projectInfo.projectProgress, 'projectProgress', '')}
 				</td>
 				<td>
 					${fns:getDictLabel(projectInfo.projectType, 'projectType', '')}
+				</td>
+				<td>
+					${fns:getDictLabel(projectInfo.projectStatus, 'projectStatus', '')}
 				</td>
 				<td>
 					<fmt:formatDate value="${projectInfo.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
