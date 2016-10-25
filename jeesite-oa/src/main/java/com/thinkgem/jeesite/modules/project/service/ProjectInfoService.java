@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.project.service;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Sets;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
@@ -12,11 +14,13 @@ import com.thinkgem.jeesite.modules.project.entity.ProjectInfo;
 import com.thinkgem.jeesite.modules.project.entity.ProjectInfoProgress;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 项目管理Service
@@ -39,23 +43,38 @@ public class ProjectInfoService extends CrudService<ProjectInfoDao, ProjectInfo>
 	public List<ProjectInfo> findList(ProjectInfo projectInfo) {
 		return super.findList(projectInfo);
 	}
-	
-	public Page<ProjectInfo> findPage(Page<ProjectInfo> page, ProjectInfo projectInfo) {
+
+	/**
+	 * 带数据访问权限的查询项目列表
+	 * @param page
+	 * @param projectInfo
+	 * @return
+	 */
+	public Page<ProjectInfo> findPageDSF(Page<ProjectInfo> page, ProjectInfo projectInfo) {
 
 		StringBuffer sb=new StringBuffer();
 		User currentUser=UserUtils.getUser();
 
-		//sb.append(" and (");
-		//1.当前用户 自己创建的项目,并且项目进度<3
-		sb.append(" or (a.create_by = '"+currentUser.getId()+"' and a.project_progress='0' )");
+		sb.append(" and (");
+		//1.当前用户可以看到 自己创建的项目,并且该项目进度为空或者为0或者为1
+		sb.append(" (a.create_by = '"+currentUser.getId()+"' and (a.project_progress is null or a.project_progress<2 )) ");
+		//2.当前用户可以看到 自己负责的项目
+		sb.append(" or (a.primary_person='"+currentUser.getId()+"')");
+		//3.当前用户可以看到 自己参与的(所在项目小组)项目,并且项目进度为空或者0或者1
+		sb.append(" or (find_in_set('"+currentUser.getId()+"',a.team_members)>=0 and (a.project_progress is null or a.project_progress<2 ))");
+		//4.当前用户可以看到 按 自己所在角色与项目进度绑定的集合 ,进行筛选
+		Set<String> progressSet= Sets.newHashSet();//从数据库获取该用户拥有的项目进度;
+		if(CollectionUtils.isNotEmpty(progressSet)){
+			String progressIn= Joiner.on("','").skipNulls().join(progressSet);
+			sb.append(" or (a.project_progress in ("+progressIn+"))");
+		}
 
-
-
-
-
-		//sb.append(")");
+		sb.append(")");
 
 		projectInfo.getSqlMap().put("dsf",sb.toString());
+		return super.findPage(page, projectInfo);
+	}
+	public Page<ProjectInfo> findPage(Page<ProjectInfo> page, ProjectInfo projectInfo) {
 		return super.findPage(page, projectInfo);
 	}
 	

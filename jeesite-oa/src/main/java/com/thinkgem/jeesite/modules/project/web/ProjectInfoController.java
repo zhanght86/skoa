@@ -48,7 +48,7 @@ public class ProjectInfoController extends BaseController {
 	@RequiresPermissions("project:projectInfo:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(ProjectInfo projectInfo, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<ProjectInfo> page = projectInfoService.findPage(new Page<ProjectInfo>(request, response), projectInfo); 
+		Page<ProjectInfo> page = projectInfoService.findPageDSF(new Page<ProjectInfo>(request, response), projectInfo);
 		model.addAttribute("page", page);
 		return "modules/project/projectInfoList";
 	}

@@ -141,7 +141,7 @@
 				<form:input path="annualNetProfit" htmlEscape="false" maxlength="100" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
+		<%--<div class="control-group">
 			<label class="control-label">项目进度：</label>
 			<div class="controls">
 				<form:select path="projectProgress" class="input-xlarge ">
@@ -149,7 +149,7 @@
 					<form:options items="${fns:getDictList('projectProgress')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
-		</div>
+		</div>--%>
 		<div class="control-group">
 			<label class="control-label">项目的开始时间：</label>
 			<div class="controls">

@@ -85,6 +85,7 @@
 			<if test="projectStatus != null and projectStatus != ''">
 				AND a.project_status = #{projectStatus}
 			</if>
+			${sqlMap.dsf}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
