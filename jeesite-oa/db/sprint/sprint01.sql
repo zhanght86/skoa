@@ -27,7 +27,7 @@ CREATE TABLE project_info
 	project_type char(2) COMMENT '项目类型',
   intended_money DECIMAL(20,2) DEFAULT NULL COMMENT '拟投金额',
   project_status char(1) DEFAULT '0' NOT NULL COMMENT '项目状态:0,推介人编辑;1,负责人管理;2暂停;3完成',
-  
+
 	create_by varchar(64) NOT NULL COMMENT '创建者',
 	create_date datetime NOT NULL COMMENT '创建时间',
 	update_by varchar(64) NOT NULL COMMENT '更新者',
@@ -40,7 +40,8 @@ CREATE TABLE project_info
 /* Create Indexes */
 CREATE INDEX project_info_del_flag ON project_info (del_flag ASC);
 
-
+/* Drop Tables */
+DROP TABLE IF EXISTS project_info_progress;
 /* 项目进度变更表 */
 CREATE TABLE project_info_progress
 (
