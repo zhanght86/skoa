@@ -26,9 +26,8 @@ CREATE TABLE project_info
 	recommended_date datetime COMMENT '项目的推荐时间',
 	project_type char(2) COMMENT '项目类型',
   intended_money DECIMAL(20,2) DEFAULT NULL COMMENT '拟投金额',
-
   project_status char(1) DEFAULT '0' NOT NULL COMMENT '项目状态:0,推介人编辑;1,负责人管理;2暂停;3完成',
-
+  
 	create_by varchar(64) NOT NULL COMMENT '创建者',
 	create_date datetime NOT NULL COMMENT '创建时间',
 	update_by varchar(64) NOT NULL COMMENT '更新者',
@@ -74,8 +73,23 @@ INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_
 ('4335f6bc4d7a4823b5b26f4d98139f0d', '2', '项目暂停', 'projectStatus', '项目负责人设置项目暂停状态', 30, '0', '1', '2016-09-23 09:54:10', '1', '2016-09-23 09:54:10', '项目负责人设置项目暂停状态', '1'),
 ('4d7e982b28ac47249943b310a0e2476a', '0', '先进制造', 'industryDomain', '行业领域', 10, '0', '1', '2016-09-22 17:23:36', '1', '2016-09-22 17:23:36', '', '0'),
 ('c5c0266161c74f3bb7dd4f29c2af31da', 'A1', 'A1', 'projectGrade', '项目级别', 10, '0', '1', '2016-09-22 17:22:23', '1', '2016-09-22 17:22:23', '', '0'),
-('d324e9a9e8824390a9a63c46ecf41f8c', '3', '预研10%', 'projectProgress', '项目进度', 10, '0', '1', '2016-09-22 17:24:22', '1', '2016-09-22 17:24:22', '', '0'),
 ('fdf311be46774255beb71b0da142df1a', '1', '负责人管理', 'projectStatus', '项目负责人管理状态', 20, '0', '1', '2016-09-23 09:53:25', '1', '2016-09-23 09:53:25', '项目负责人对项目进行管理维护', '0');
+
+/* 更新项目进度字典数据 */
+DELETE from jeesite.sys_dict WHERE type='projectProgress';
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('24899e2a99574351a65bd6732a29768e', '6', '协议签署70%', 'projectProgress', '项目进度', 70, '0', '1', '2016-10-25 15:29:27', '1', '2016-10-25 15:29:27', '', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('6c586aedca9e4aae93525add16cc4e98', '1', '立项20%', 'projectProgress', '项目进度', 20, '0', '1', '2016-10-25 15:26:23', '1', '2016-10-25 15:26:23', '', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('952684d71ab840fe87cc52d6449251f8', '3', '公司评审会40%', 'projectProgress', '项目进度', 40, '0', '1', '2016-10-25 15:28:07', '1', '2016-10-25 15:28:16', '', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('9ecfe55388a24138a87f9a5b337e33d9', '9', '投后管理100%', 'projectProgress', '项目进度', 100, '0', '1', '2016-10-25 15:30:23', '1', '2016-10-25 15:30:23', '', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('b1db8a2e07814c5babf41c30202e9513', '7', '划款80%', 'projectProgress', '项目进度', 80, '0', '1', '2016-10-25 15:29:47', '1', '2016-10-25 15:29:47', '', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('c085c3058f5f4114ac4401c661f96cca', '8', '工商变更90%', 'projectProgress', '项目进度', 90, '0', '1', '2016-10-25 15:30:05', '1', '2016-10-25 15:30:05', '', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('d324e9a9e8824390a9a63c46ecf41f8c', '0', '预研10%', 'projectProgress', '项目进度', 10, '0', '1', '2016-09-22 17:24:22', '1', '2016-10-25 15:25:51', '', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('d62b4d239b2446b6b0c745caf7ed0295', '2', '尽调报告30%', 'projectProgress', '项目进度', 30, '0', '1', '2016-10-25 15:26:49', '1', '2016-10-25 15:26:49', '', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('d6f0531e59b442858fa2907c0f31cfb9', '4', '基金投决会50%', 'projectProgress', '项目进度', 50, '0', '1', '2016-10-25 15:28:42', '1', '2016-10-25 15:28:42', '', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('df07b237499945259447d0761ef0191b', '5', '投资协议60%', 'projectProgress', '项目进度', 60, '0', '1', '2016-10-25 15:29:03', '1', '2016-10-25 15:29:03', '', '0');
+
+
+
 
 
 /* 插入 字典表: sys_station_type 角色类型 */

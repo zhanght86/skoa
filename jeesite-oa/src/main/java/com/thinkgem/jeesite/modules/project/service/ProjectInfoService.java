@@ -10,6 +10,8 @@ import com.thinkgem.jeesite.modules.project.dao.ProjectInfoDao;
 import com.thinkgem.jeesite.modules.project.dao.ProjectInfoProgressDao;
 import com.thinkgem.jeesite.modules.project.entity.ProjectInfo;
 import com.thinkgem.jeesite.modules.project.entity.ProjectInfoProgress;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,21 @@ public class ProjectInfoService extends CrudService<ProjectInfoDao, ProjectInfo>
 	}
 	
 	public Page<ProjectInfo> findPage(Page<ProjectInfo> page, ProjectInfo projectInfo) {
+
+		StringBuffer sb=new StringBuffer();
+		User currentUser=UserUtils.getUser();
+
+		//sb.append(" and (");
+		//1.当前用户 自己创建的项目,并且项目进度<3
+		sb.append(" or (a.create_by = '"+currentUser.getId()+"' and a.project_progress='0' )");
+
+
+
+
+
+		//sb.append(")");
+
+		projectInfo.getSqlMap().put("dsf",sb.toString());
 		return super.findPage(page, projectInfo);
 	}
 	
