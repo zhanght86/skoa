@@ -56,13 +56,15 @@ public class ProjectInfoService extends CrudService<ProjectInfoDao, ProjectInfo>
 		User currentUser=UserUtils.getUser();
 
 		sb.append(" and (");
-		//1.当前用户可以看到 自己创建的项目,并且该项目进度为空或者为0或者为1
-		sb.append(" (a.create_by = '"+currentUser.getId()+"' and (a.project_progress is null or a.project_progress<2 )) ");
-		//2.当前用户可以看到 自己负责的项目
+		//1.所有人都可以看到项目进度为0或者1的项目
+		sb.append(" a.project_progress<2 ");
+		//2.当前用户可以看到 自己创建的项目,并且该项目进度为空或者为0或者为1
+		sb.append(" or (a.create_by = '"+currentUser.getId()+"' and (a.project_progress is null or a.project_progress<2 )) ");
+		//3.当前用户可以看到 自己负责的项目
 		sb.append(" or (a.primary_person='"+currentUser.getId()+"')");
-		//3.当前用户可以看到 自己参与的(所在项目小组)项目,并且项目进度为空或者小于5
+		//4.当前用户可以看到 自己参与的(所在项目小组)项目,并且项目进度为空或者小于5
 		sb.append(" or (find_in_set('"+currentUser.getId()+"',a.team_members)>=0 and (a.project_progress is null or a.project_progress<5 ))");
-		//4.当前用户可以看到 按 自己所在角色与项目进度绑定的集合 ,进行筛选
+		//5.当前用户可以看到 按 自己所在角色与项目进度绑定的集合 ,进行筛选
 		Set<String> progressSet= Sets.newHashSet();//从数据库获取该用户拥有的项目进度;
 		if(CollectionUtils.isNotEmpty(progressSet)){
 			String progressIn= Joiner.on("','").skipNulls().join(progressSet);
