@@ -81,7 +81,7 @@
 		<div class="control-group">
 			<label class="control-label">项目名称：</label>
 			<div class="controls">
-				<form:input path="projectName" htmlEscape="false" maxlength="200" class="input-xlarge "/>
+				<form:input path="projectName" htmlEscape="false" maxlength="200" class="input-xlarge"/>
 			</div>
 		</div>
 		<div class="control-group">

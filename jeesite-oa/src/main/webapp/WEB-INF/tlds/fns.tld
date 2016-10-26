@@ -120,6 +120,14 @@
     <function-signature>java.lang.Boolean isProjectInfoNew(java.lang.Object)</function-signature>
     <example>${fns:isProjectInfoNew(projectInfo)}</example>
   </function>
+
+  <function>
+    <description>判断当前用户是否为项目负责人</description>
+    <name>isProjectInfoPrimaryPerson</name>
+    <function-class>com.thinkgem.jeesite.modules.sys.utils.ProjectInfoUtils</function-class>
+    <function-signature>java.lang.Boolean isProjectInfoPrimaryPerson(java.lang.Object)</function-signature>
+    <example>${fns:isProjectInfoPrimaryPerson(projectInfo)}</example>
+  </function>
 	
   <!-- DictUtils -->
   <function>

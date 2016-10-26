@@ -54,10 +54,8 @@ public class ProjectInfoUtils {
 		if(projectInfo instanceof  ProjectInfo) {
 			_projectInfo= (ProjectInfo) projectInfo;
 			return ProjectInfoUtils.editableProject(_projectInfo);
-
 		}
 		return false;
-
 	}
 
 	/**
@@ -75,5 +73,19 @@ public class ProjectInfoUtils {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * 判断当前用户是否为项目负责人(提供jstl fn自定义函数接口)
+	 * @param projectInfo
+	 * @return
+	 */
+	public static Boolean isProjectInfoPrimaryPerson(Object projectInfo){
+		ProjectInfo _projectInfo=null;
+		if(projectInfo instanceof  ProjectInfo) {
+			_projectInfo= (ProjectInfo) projectInfo;
+			return ProjectInfoUtils.isProjectInfoPrimaryPerson(_projectInfo);
+		}
+		return false;
 	}
 }

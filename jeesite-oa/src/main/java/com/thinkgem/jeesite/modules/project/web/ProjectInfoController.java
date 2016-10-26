@@ -79,4 +79,15 @@ public class ProjectInfoController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
 	}
 
+	@RequestMapping(value = "updateProgress")
+	public String updateProgress(String projectInfoId,String projectProgress,String filepath,String remarks, RedirectAttributes redirectAttributes) {
+		//projectInfoService.delete(projectInfo);
+		//addMessage(redirectAttributes, "删除项目成功");
+		System.out.println(projectInfoId);
+		System.out.println(projectProgress);
+		System.out.println(filepath);
+		System.out.println(remarks);
+		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
+	}
+
 }

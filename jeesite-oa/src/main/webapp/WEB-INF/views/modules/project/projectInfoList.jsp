@@ -6,7 +6,7 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+			top.$.jBox.tip.mess = null;
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -14,6 +14,11 @@
 			$("#searchForm").submit();
         	return false;
         }
+		function updateProgress(id, progress){
+            $('#myModal').modal();
+            $("#projectInfoId").val(id);
+            $("#progressBoxProgress").select2().val(progress).trigger("change");
+		}
 	</script>
 </head>
 <body>
@@ -108,7 +113,16 @@
 					${fns:getDictLabel(projectInfo.industryDomain, 'industryDomain', '')}
 				</td>
 				<td>
-					${fns:getDictLabel(projectInfo.projectProgress, 'projectProgress', '')}
+					<c:choose>
+						<c:when test="${fns:isProjectInfoPrimaryPerson(projectInfo)}">
+							<a href="javascript:updateProgress('${projectInfo.id}', '${projectInfo.projectProgress}')" title="设置进度">
+								${fns:getDictLabel(projectInfo.projectProgress, 'projectProgress', '暂无进度')}
+							</a>
+						</c:when>
+						<c:otherwise>
+							${fns:getDictLabel(projectInfo.projectProgress, 'projectProgress', '暂无进度')}
+						</c:otherwise>
+					</c:choose>
 				</td>
 				<td>
 					${fns:getDictLabel(projectInfo.projectType, 'projectType', '')}
@@ -124,6 +138,9 @@
 				</td>
 				<%--<shiro:hasPermission name="project:projectInfo:edit">--%>
 				<td>
+					<c:if test="${fns:isProjectInfoPrimaryPerson(projectInfo)}">
+					<a href="${ctx}/project/projectInfo/changProgress?id=${projectInfo.id}">进度更新</a>
+					</c:if>
 					<c:if test="${fns:editableProject(projectInfo)}">
 					<a href="${ctx}/project/projectInfo/form?id=${projectInfo.id}">修改</a>
 					<a href="${ctx}/project/projectInfo/delete?id=${projectInfo.id}" onclick="return confirmx('确认要删除该项目吗？', this.href)">删除</a>
@@ -134,6 +151,49 @@
 		</c:forEach>
 		</tbody>
 	</table>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="progressForm" action="${ctx}/project/projectInfo/updateProgress" method="post" enctype="multipart/form-data" class="form-search form-horizontal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">项目进度更新</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input id="projectInfoId" type="hidden" name="projectInfoId" value="" />
+                        <div class="control-group">
+                            <label class="control-label">项目进度：</label>
+                            <div class="controls">
+                                <select id="progressBoxProgress" name="projectProgress" class="input-xlarge">
+                                    <c:forEach items="${fns:getDictList('projectProgress')}" var="dict">
+                                        <option value="${dict.value}">${dict.label}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">附件：</label>
+                            <div class="controls">
+                                <input type="hidden" id="filepath" name="filepath"/>
+                                <sys:ckfinder input="filepath" type="files" uploadPath="/project/projectInfo" selectMultiple="true"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">备注：</label>
+                            <div class="controls">
+                                <textarea name="remarks" rows="4" maxlength="255" class="input-xlarge"></textarea>
+                            </div>
+                        </div>　
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 	<div class="pagination">${page}</div>
 </body>
 </html>
