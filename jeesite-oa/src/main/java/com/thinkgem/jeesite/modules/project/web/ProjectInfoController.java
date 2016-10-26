@@ -53,14 +53,14 @@ public class ProjectInfoController extends BaseController {
 		return "modules/project/projectInfoList";
 	}
 
-	@RequiresPermissions("project:projectInfo:view")
+	//@RequiresPermissions("project:projectInfo:view")
 	@RequestMapping(value = "form")
 	public String form(ProjectInfo projectInfo, Model model) {
 		model.addAttribute("projectInfo", projectInfo);
 		return "modules/project/projectInfoForm";
 	}
 
-	@RequiresPermissions("project:projectInfo:edit")
+	//@RequiresPermissions("project:projectInfo:edit")
 	@RequestMapping(value = "save")
 	public String save(ProjectInfo projectInfo, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, projectInfo)){

@@ -66,7 +66,7 @@ CREATE INDEX project_info_progress_projectInfo_id ON project_info_progress (proj
 
 /* 项目管理 菜单添加 */
 INSERT INTO jeesite.sys_menu (id, parent_id, parent_ids, name, sort, href, target, icon, is_show, permission, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('5c503ff8bdef4172a68233b2dfd8b048', '1', '0,1,', '燕园办公', 300, '', '', '', '1', '', '1', '2016-09-22 17:10:12', '1', '2016-09-22 17:13:12', '', '0'),
-('bf267b11cd124363b33b5ab5128be3b2', 'e22d3ad2e03b415fa1ceb212cd76ed5a', '0,1,5c503ff8bdef4172a68233b2dfd8b048,e22d3ad2e03b415fa1ceb212cd76ed5a,', '项目列表', 30, '/project/projectInfo', '', '', '1', 'project:projectInfo:view,project:projectInfo:edit', '1', '2016-09-22 17:16:49', '1', '2016-09-22 17:18:56', '', '0'),
+('bf267b11cd124363b33b5ab5128be3b2', 'e22d3ad2e03b415fa1ceb212cd76ed5a', '0,1,5c503ff8bdef4172a68233b2dfd8b048,e22d3ad2e03b415fa1ceb212cd76ed5a,', '项目列表', 30, '/project/projectInfo', '', '', '1', 'project:projectInfo:view', '1', '2016-09-22 17:16:49', '1', '2016-09-22 17:18:56', '', '0'),
 ('e22d3ad2e03b415fa1ceb212cd76ed5a', '5c503ff8bdef4172a68233b2dfd8b048', '0,1,5c503ff8bdef4172a68233b2dfd8b048,', '项目管理', 30, '', '', '', '1', '', '1', '2016-09-22 17:13:44', '1', '2016-09-22 17:16:07', '', '0');
 
 /* 项目有关的字典数据 */

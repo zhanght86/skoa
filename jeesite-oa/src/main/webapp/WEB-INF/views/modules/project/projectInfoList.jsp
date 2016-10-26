@@ -93,11 +93,13 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="projectInfo">
 			<tr>
-				<td><a href="${ctx}/project/projectInfo/form?id=${projectInfo.id}">
-					${projectInfo.office.name}
-				</a></td>
 				<td>
+					${projectInfo.office.name}
+				</td>
+				<td>
+					<a href="${ctx}/project/projectInfo/form?id=${projectInfo.id}">
 					${projectInfo.projectName}
+					</a>
 				</td>
 				<td>
 					${projectInfo.primaryPerson.name}
@@ -120,10 +122,14 @@
 				<td>
 					${projectInfo.remarks}
 				</td>
-				<shiro:hasPermission name="project:projectInfo:edit"><td>
-    				<a href="${ctx}/project/projectInfo/form?id=${projectInfo.id}">修改</a>
+				<%--<shiro:hasPermission name="project:projectInfo:edit">--%>
+				<td>
+					<c:if test="${fns:editableProject(projectInfo)}">
+					<a href="${ctx}/project/projectInfo/form?id=${projectInfo.id}">修改</a>
 					<a href="${ctx}/project/projectInfo/delete?id=${projectInfo.id}" onclick="return confirmx('确认要删除该项目吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
+					</c:if>
+				</td>
+				<%--</shiro:hasPermission>--%>
 			</tr>
 		</c:forEach>
 		</tbody>
