@@ -39,6 +39,9 @@ CREATE TABLE project_info
 
 /* Create Indexes */
 CREATE INDEX project_info_del_flag ON project_info (del_flag ASC);
+CREATE INDEX project_info_create_by ON project_info (create_by ASC);
+CREATE INDEX project_info_project_progress ON project_info (project_progress ASC);
+CREATE INDEX project_info_primary_person ON project_info (primary_person ASC);
 
 /* Drop Tables */
 DROP TABLE IF EXISTS project_info_progress;
