@@ -268,7 +268,7 @@
 			</div>
 		<div class="form-actions">
 			<%--<shiro:hasPermission name="project:projectInfo:edit">--%>
-				<c:if test="${fns:editableProject(projectInfo)}">
+				<c:if test="${fns:isProjectInfoNew(projectInfo) || fns:editableProject(projectInfo)}">
 				<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
 				</c:if>
 			<%--</shiro:hasPermission>--%>

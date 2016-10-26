@@ -104,12 +104,21 @@
     <example>${fns:getCache(cacheName, defaultValue)}</example>  
   </function>
 
+  <!-- ProjectInfoUtils -->
   <function>
     <description>获取当前用户是否拥有某个项目编辑权限</description>
     <name>editableProject</name>
-    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
+    <function-class>com.thinkgem.jeesite.modules.sys.utils.ProjectInfoUtils</function-class>
     <function-signature>java.lang.Boolean editableProject(java.lang.Object)</function-signature>
-    <example>${fns:getCache(cacheName, defaultValue)}</example>
+    <example>${fns:editableProject(projectInfo)}</example>
+  </function>
+
+  <function>
+    <description>获取当前用户是否新创建一个项目</description>
+    <name>isProjectInfoNew</name>
+    <function-class>com.thinkgem.jeesite.modules.sys.utils.ProjectInfoUtils</function-class>
+    <function-signature>java.lang.Boolean isProjectInfoNew(java.lang.Object)</function-signature>
+    <example>${fns:isProjectInfoNew(projectInfo)}</example>
   </function>
 	
   <!-- DictUtils -->
