@@ -203,69 +203,6 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-			<div class="control-group">
-				<label class="control-label">项目进度变更表：</label>
-				<div class="controls">
-					<table id="contentTable" class="table table-striped table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th class="hide"></th>
-								<th>项目进度-更新前</th>
-								<th>项目进度-更新前名称</th>
-								<th>项目进度-更新后</th>
-								<th>项目进度-更新后名称</th>
-								<th>附件路径</th>
-								<th>进度更新备注</th>
-								<shiro:hasPermission name="project:projectInfo:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
-							</tr>
-						</thead>
-						<tbody id="projectInfoProgressList">
-						</tbody>
-						<shiro:hasPermission name="project:projectInfo:edit"><tfoot>
-							<tr><td colspan="8"><a href="javascript:" onclick="addRow('#projectInfoProgressList', projectInfoProgressRowIdx, projectInfoProgressTpl);projectInfoProgressRowIdx = projectInfoProgressRowIdx + 1;" class="btn">新增</a></td></tr>
-						</tfoot></shiro:hasPermission>
-					</table>
-					<script type="text/template" id="projectInfoProgressTpl">//<!--
-						<tr id="projectInfoProgressList{{idx}}">
-							<td class="hide">
-								<input id="projectInfoProgressList{{idx}}_id" name="projectInfoProgressList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-								<input id="projectInfoProgressList{{idx}}_delFlag" name="projectInfoProgressList[{{idx}}].delFlag" type="hidden" value="0"/>
-							</td>
-							<td>
-								<input id="projectInfoProgressList{{idx}}_statusOrigin" name="projectInfoProgressList[{{idx}}].statusOrigin" type="text" value="{{row.statusOrigin}}" maxlength="2" class="input-small "/>
-							</td>
-							<td>
-								<input id="projectInfoProgressList{{idx}}_statusOriginName" name="projectInfoProgressList[{{idx}}].statusOriginName" type="text" value="{{row.statusOriginName}}" maxlength="100" class="input-small "/>
-							</td>
-							<td>
-								<input id="projectInfoProgressList{{idx}}_statusCurrent" name="projectInfoProgressList[{{idx}}].statusCurrent" type="text" value="{{row.statusCurrent}}" maxlength="2" class="input-small "/>
-							</td>
-							<td>
-								<input id="projectInfoProgressList{{idx}}_statusCurrentName" name="projectInfoProgressList[{{idx}}].statusCurrentName" type="text" value="{{row.statusCurrentName}}" maxlength="100" class="input-small "/>
-							</td>
-							<td>
-								<input id="projectInfoProgressList{{idx}}_filepath" name="projectInfoProgressList[{{idx}}].filepath" type="text" value="{{row.filepath}}" maxlength="200" class="input-small "/>
-							</td>
-							<td>
-								<textarea id="projectInfoProgressList{{idx}}_remarks" name="projectInfoProgressList[{{idx}}].remarks" rows="4" maxlength="255" class="input-small ">{{row.remarks}}</textarea>
-							</td>
-							<shiro:hasPermission name="project:projectInfo:edit"><td class="text-center" width="10">
-								{{#delBtn}}<span class="close" onclick="delRow(this, '#projectInfoProgressList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
-							</td></shiro:hasPermission>
-						</tr>//-->
-					</script>
-					<script type="text/javascript">
-						var projectInfoProgressRowIdx = 0, projectInfoProgressTpl = $("#projectInfoProgressTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-						$(document).ready(function() {
-							var data = ${fns:toJson(projectInfo.projectInfoProgressList)};
-							for (var i=0; i<data.length; i++){
-								addRow('#projectInfoProgressList', projectInfoProgressRowIdx, projectInfoProgressTpl, data[i]);
-								projectInfoProgressRowIdx = projectInfoProgressRowIdx + 1;
-							}
-						});
-					</script>
-				</div>
-			</div>
 		<div class="form-actions">
 			<%--<shiro:hasPermission name="project:projectInfo:edit">--%>
 				<c:if test="${fns:isProjectInfoNew(projectInfo) || fns:editableProject(projectInfo)}">

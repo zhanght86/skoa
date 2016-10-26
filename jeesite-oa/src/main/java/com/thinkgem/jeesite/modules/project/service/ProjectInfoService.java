@@ -105,7 +105,7 @@ public class ProjectInfoService extends CrudService<ProjectInfoDao, ProjectInfo>
 	@Transactional(readOnly = false)
 	public void delete(ProjectInfo projectInfo) {
 		super.delete(projectInfo);
-		projectInfoProgressDao.delete(new ProjectInfoProgress(projectInfo));
+		//projectInfoProgressDao.delete(new ProjectInfoProgress(projectInfo));
 	}
 	
 }

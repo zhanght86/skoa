@@ -71,7 +71,7 @@ public class ProjectInfoController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
 	}
 	
-	@RequiresPermissions("project:projectInfo:edit")
+	//@RequiresPermissions("project:projectInfo:edit")
 	@RequestMapping(value = "delete")
 	public String delete(ProjectInfo projectInfo, RedirectAttributes redirectAttributes) {
 		projectInfoService.delete(projectInfo);
