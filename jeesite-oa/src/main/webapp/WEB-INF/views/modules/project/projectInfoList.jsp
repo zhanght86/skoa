@@ -152,9 +152,6 @@
 				</td>
 				<%--<shiro:hasPermission name="project:projectInfo:edit">--%>
 				<td>
-					<c:if test="${fns:isProjectInfoPrimaryPerson(projectInfo)}">
-					<a href="${ctx}/project/projectInfo/changProgress?id=${projectInfo.id}">进度更新</a>
-					</c:if>
 					<c:if test="${fns:editableProject(projectInfo)}">
 					<a href="${ctx}/project/projectInfo/form?id=${projectInfo.id}">修改</a>
 					<a href="${ctx}/project/projectInfo/delete?id=${projectInfo.id}" onclick="return confirmx('确认要删除该项目吗？', this.href)">删除</a>
