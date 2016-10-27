@@ -203,6 +203,43 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
+		<c:if test="${!fns:isProjectInfoNew(projectInfo)}">
+		<div class="control-group">
+			<table class="table table-hover">
+				<thead>
+				<tr>
+					<th>序号</th>
+					<th>进度变更</th>
+					<th>附件</th>
+					<th>备注</th>
+					<th>操作者</th>
+					<th>日期</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:if test="${not empty projectInfo.projectInfoProgressList}">
+				<c:forEach items="${projectInfo.projectInfoProgressList}" var="pp" varStatus="status">
+				<tr>
+					<td>${status.index+1}</td>
+					<td>
+						${fns:getDictLabel(pp.statusOrigin, 'projectProgress', '暂无进度')}=>${fns:getDictLabel(pp.statusCurrent, 'projectProgress', '暂无进度')}
+					</td>
+					<td>
+						<input id="filepathProgress_${pp.id}" type="hidden" value="${pp.filepath}"/>
+						<sys:ckfinder input="filepathProgress_${pp.id}" type="files" uploadPath="/project/projectInfo" selectMultiple="true" readonly="true"/>
+					</td>
+					<td>${pp.remarks}</td>
+					<td>${pp.createBy.name}</td>
+					<td>
+						<fmt:formatDate value="${pp.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					</td>
+				</tr>
+				</c:forEach>
+				</c:if>
+				</tbody>
+			</table>
+		</div>
+		</c:if>
 		<div class="form-actions">
 			<%--<shiro:hasPermission name="project:projectInfo:edit">--%>
 				<c:if test="${fns:isProjectInfoNew(projectInfo) || fns:editableProject(projectInfo)}">

@@ -17,9 +17,7 @@ public class ProjectInfoProgress extends DataEntity<ProjectInfoProgress> {
 	private static final long serialVersionUID = 1L;
 	private ProjectInfo projectInfo;		// 项目id 父类
 	private String statusOrigin;		// 项目进度-更新前
-	private String statusOriginName;		// 项目进度-更新前名称
 	private String statusCurrent;		// 项目进度-更新后
-	private String statusCurrentName;		// 项目进度-更新后名称
 	private String filepath;		// 附件路径
 	
 	public ProjectInfoProgress() {
@@ -52,15 +50,6 @@ public class ProjectInfoProgress extends DataEntity<ProjectInfoProgress> {
 		this.statusOrigin = statusOrigin;
 	}
 	
-	@Length(min=0, max=100, message="项目进度-更新前名称长度必须介于 0 和 100 之间")
-	public String getStatusOriginName() {
-		return statusOriginName;
-	}
-
-	public void setStatusOriginName(String statusOriginName) {
-		this.statusOriginName = statusOriginName;
-	}
-	
 	@Length(min=0, max=2, message="项目进度-更新后长度必须介于 0 和 2 之间")
 	public String getStatusCurrent() {
 		return statusCurrent;
@@ -68,15 +57,6 @@ public class ProjectInfoProgress extends DataEntity<ProjectInfoProgress> {
 
 	public void setStatusCurrent(String statusCurrent) {
 		this.statusCurrent = statusCurrent;
-	}
-	
-	@Length(min=0, max=100, message="项目进度-更新后名称长度必须介于 0 和 100 之间")
-	public String getStatusCurrentName() {
-		return statusCurrentName;
-	}
-
-	public void setStatusCurrentName(String statusCurrentName) {
-		this.statusCurrentName = statusCurrentName;
 	}
 	
 	@Length(min=0, max=200, message="附件路径长度必须介于 0 和 200 之间")
