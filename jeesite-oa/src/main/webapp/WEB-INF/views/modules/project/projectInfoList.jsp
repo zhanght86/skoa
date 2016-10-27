@@ -19,12 +19,24 @@
             $("#projectInfoId").val(id);
             $("#progressBoxProgress").select2().val(progress).trigger("change");
 		}
+		function toValid(){
+			var projectInfoId=$("#projectInfoId").val();
+			var currentProjectProgress=$("#href_"+projectInfoId).attr("current-progress");
+			var changeProjectProgress=$("#progressBoxProgress").val();
+			if(changeProjectProgress==currentProjectProgress){
+				alertx("项目进度无变更!");
+				return false;
+			}
+			return true;
+		}
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/project/projectInfo/">项目列表</a></li>
-		<shiro:hasPermission name="project:projectInfo:edit"><li><a href="${ctx}/project/projectInfo/form">项目添加</a></li></shiro:hasPermission>
+		<%--<shiro:hasPermission name="project:projectInfo:edit">--%>
+			<li><a href="${ctx}/project/projectInfo/form">项目添加</a></li>
+		<%--</shiro:hasPermission>--%>
 	</ul>
 	<form:form id="searchForm" modelAttribute="projectInfo" action="${ctx}/project/projectInfo/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -92,7 +104,9 @@
 				<th>项目状态</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
-				<shiro:hasPermission name="project:projectInfo:edit"><th>操作</th></shiro:hasPermission>
+				<%--<shiro:hasPermission name="project:projectInfo:edit">--%>
+					<th>操作</th>
+				<%--</shiro:hasPermission>--%>
 			</tr>
 		</thead>
 		<tbody>
@@ -115,7 +129,7 @@
 				<td>
 					<c:choose>
 						<c:when test="${fns:isProjectInfoPrimaryPerson(projectInfo)}">
-							<a href="javascript:updateProgress('${projectInfo.id}', '${projectInfo.projectProgress}')" title="设置进度">
+							<a href="javascript:updateProgress('${projectInfo.id}', '${projectInfo.projectProgress}')" title="设置进度" current-progress="${projectInfo.projectProgress}" id="href_${projectInfo.id}">
 								${fns:getDictLabel(projectInfo.projectProgress, 'projectProgress', '暂无进度')}
 							</a>
 						</c:when>
@@ -152,9 +166,9 @@
 		</tbody>
 	</table>
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
         <div class="modal-dialog">
-            <form id="progressForm" action="${ctx}/project/projectInfo/updateProgress" method="post" enctype="multipart/form-data" class="form-search form-horizontal">
+            <form id="progressForm" action="${ctx}/project/projectInfo/updateProgress" method="post" enctype="multipart/form-data" class="form-search form-horizontal" onsubmit="return toValid();">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>

@@ -8,6 +8,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.project.entity.ProjectInfo;
+import com.thinkgem.jeesite.modules.project.entity.ProjectInfoProgress;
 import com.thinkgem.jeesite.modules.project.service.ProjectInfoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ProjectInfoController extends BaseController {
 
 	@Autowired
 	private ProjectInfoService projectInfoService;
-	
+
 	@ModelAttribute
 	public ProjectInfo get(@RequestParam(required=false) String id) {
 		ProjectInfo entity = null;
@@ -81,13 +82,35 @@ public class ProjectInfoController extends BaseController {
 
 	@RequestMapping(value = "updateProgress")
 	public String updateProgress(String projectInfoId,String projectProgress,String filepath,String remarks, RedirectAttributes redirectAttributes) {
-		//projectInfoService.delete(projectInfo);
-		//addMessage(redirectAttributes, "删除项目成功");
-		System.out.println(projectInfoId);
-		System.out.println(projectProgress);
-		System.out.println(filepath);
-		System.out.println(remarks);
-		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
+		if (StringUtils.isAnyBlank(projectInfoId, projectProgress)) {
+			addMessage(redirectAttributes, "参数有误,项目进度更新失败!");
+			return "redirect:" + Global.getAdminPath() + "/project/projectInfo/?repage";
+		}
+		ProjectInfo projectInfo = projectInfoService.get(projectInfoId);
+
+		if(null==projectInfo){
+			addMessage(redirectAttributes, "参数有误,项目进度更新失败!");
+			return "redirect:" + Global.getAdminPath() + "/project/projectInfo/?repage";
+		}
+		if(projectProgress.equals(projectInfo.getProjectProgress())){
+			addMessage(redirectAttributes, "项目进度无变更,更新失败!");
+			return "redirect:" + Global.getAdminPath() + "/project/projectInfo/?repage";
+		}
+
+		ProjectInfoProgress projectInfoProgress=new ProjectInfoProgress();
+		projectInfoProgress.setId("");
+		projectInfoProgress.setFilepath(filepath);
+		projectInfoProgress.setRemarks(remarks);
+		projectInfoProgress.setStatusOrigin(projectInfo.getProjectProgress());
+		projectInfoProgress.setStatusCurrent(projectProgress);
+		projectInfo.setProjectProgress(projectProgress);
+
+		projectInfo.getProjectInfoProgressList().add(projectInfoProgress);
+
+		projectInfoService.save(projectInfo);
+		addMessage(redirectAttributes, "项目进度更新成功!");
+		return "redirect:" + Global.getAdminPath() + "/project/projectInfo/?repage";
+
 	}
 
 }
