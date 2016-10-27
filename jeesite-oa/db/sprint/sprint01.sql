@@ -67,15 +67,28 @@ INSERT INTO jeesite.sys_menu (id, parent_id, parent_ids, name, sort, href, targe
 ('bf267b11cd124363b33b5ab5128be3b2', 'e22d3ad2e03b415fa1ceb212cd76ed5a', '0,1,5c503ff8bdef4172a68233b2dfd8b048,e22d3ad2e03b415fa1ceb212cd76ed5a,', '项目列表', 30, '/project/projectInfo', '', '', '1', 'project:projectInfo:view', '1', '2016-09-22 17:16:49', '1', '2016-09-22 17:18:56', '', '0'),
 ('e22d3ad2e03b415fa1ceb212cd76ed5a', '5c503ff8bdef4172a68233b2dfd8b048', '0,1,5c503ff8bdef4172a68233b2dfd8b048,', '项目管理', 30, '', '', '', '1', '', '1', '2016-09-22 17:13:44', '1', '2016-09-22 17:16:07', '', '0');
 
-/* 项目有关的字典数据 */
-INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('1277ee67ceae466d89ae050175ffdba6', '3', '项目完成', 'projectStatus', '项目负责人设置项目完成状态', 40, '0', '1', '2016-09-23 09:55:47', '1', '2016-09-23 09:55:47', '项目负责人设置项目完成状态', '0'),
-('1d8569f1e4964186b4c0441c04ba4d00', '0', '推介人编辑', 'projectStatus', '推介人编辑', 10, '0', '1', '2016-09-23 09:52:18', '1', '2016-09-23 09:52:18', '推介人编辑状态，项目的基础资料录入', '0'),
-('2c9591ec55584b91a904d07635eee438', '2', '项目暂停', 'projectStatus', '项目负责人设置项目暂停状态', 30, '0', '1', '2016-09-23 09:55:26', '1', '2016-09-23 09:55:26', '项目负责人设置项目暂停状态', '0'),
-('3bda1ee6467d41f788068efbc39a89b6', '1', 'A轮', 'projectType', 'A轮', 10, '0', '1', '2016-09-23 09:45:47', '1', '2016-09-23 09:45:47', '', '0'),
-('4335f6bc4d7a4823b5b26f4d98139f0d', '2', '项目暂停', 'projectStatus', '项目负责人设置项目暂停状态', 30, '0', '1', '2016-09-23 09:54:10', '1', '2016-09-23 09:54:10', '项目负责人设置项目暂停状态', '1'),
-('4d7e982b28ac47249943b310a0e2476a', '0', '先进制造', 'industryDomain', '行业领域', 10, '0', '1', '2016-09-22 17:23:36', '1', '2016-09-22 17:23:36', '', '0'),
-('c5c0266161c74f3bb7dd4f29c2af31da', 'A1', 'A1', 'projectGrade', '项目级别', 10, '0', '1', '2016-09-22 17:22:23', '1', '2016-09-22 17:22:23', '', '0'),
-('fdf311be46774255beb71b0da142df1a', '1', '负责人管理', 'projectStatus', '项目负责人管理状态', 20, '0', '1', '2016-09-23 09:53:25', '1', '2016-09-23 09:53:25', '项目负责人对项目进行管理维护', '0');
+/* 更新项目 行业领域 字典数据 */
+DELETE from jeesite.sys_dict WHERE type='industryDomain';
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('4d7e982b28ac47249943b310a0e2476a', '0', '先进制造', 'industryDomain', '行业领域', 10, '0', '1', '2016-09-22 17:23:36', '1', '2016-09-22 17:23:36', '', '0');
+
+/* 更新项目状态字典数据 */
+DELETE from jeesite.sys_dict WHERE type='projectStatus';
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('1277ee67ceae466d89ae050175ffdba6', '3', '项目完成', 'projectStatus', '项目负责人设置项目完成状态', 40, '0', '1', '2016-09-23 09:55:47', '1', '2016-09-23 09:55:47', '项目负责人设置项目完成状态', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('1d8569f1e4964186b4c0441c04ba4d00', '0', '推介人编辑', 'projectStatus', '推介人编辑', 10, '0', '1', '2016-09-23 09:52:18', '1', '2016-09-23 09:52:18', '推介人编辑状态，项目的基础资料录入', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('2c9591ec55584b91a904d07635eee438', '2', '项目暂停', 'projectStatus', '项目负责人设置项目暂停状态', 30, '0', '1', '2016-09-23 09:55:26', '1', '2016-09-23 09:55:26', '项目负责人设置项目暂停状态', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('fdf311be46774255beb71b0da142df1a', '1', '负责人管理', 'projectStatus', '项目负责人管理状态', 20, '0', '1', '2016-09-23 09:53:25', '1', '2016-09-23 09:53:25', '项目负责人对项目进行管理维护', '0');
+
+/* 更新项目类型字典数据 */
+DELETE from jeesite.sys_dict WHERE type='projectType';
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('3bda1ee6467d41f788068efbc39a89b6', '1', 'A轮', 'projectType', 'A轮', 10, '0', '1', '2016-09-23 09:45:47', '1', '2016-09-23 09:45:47', '', '0');
+
+/* 更新项目级别字典数据 */
+DELETE from jeesite.sys_dict WHERE type='projectGrade';
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('402360a329df443bbbdccba4adb2bc7e', 'A3', 'A3', 'projectGrade', '研究阶段，经过至少一个投资部门预研认为具有投资价值，但未接触到企业或现有开发渠道不畅的项目', 30, '0', '1', '2016-10-27 15:55:22', '1', '2016-10-27 15:56:47', '研究阶段，经过至少一个投资部门预研认为具有投资价值，但未接触到企业或现有开发渠道不畅的项目', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('430c441cf97343719c48d47518e37dc2', 'A2', 'A2', 'projectGrade', '开发推进阶段，经过预研有明确投资价值、渠道明确、项目方决策人员与我方投资部门人员或大区负责人进行过交', 20, '0', '1', '2016-10-27 15:53:57', '1', '2016-10-27 15:56:55', '开发推进阶段，经过预研有明确投资价值、渠道明确、项目方决策人员与我方投资部门人员或大区负责人进行过交流，但尚未进场的项目', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('a15308e2158f4cd8aad47bf780b8e669', 'B', 'B', 'projectGrade', '储备阶段，投资价值不明确，仅为开发体系或其渠道推荐的项目', 40, '0', '1', '2016-10-27 15:55:43', '1', '2016-10-27 15:56:40', '储备阶段，投资价值不明确，仅为开发体系或其渠道推荐的项目', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('af01a6222f8346da97890890d6890cf5', 'C', 'C', 'projectGrade', '放弃项目，可明确判断当前阶段不具有可投资性的项目', 50, '0', '1', '2016-10-27 15:56:02', '1', '2016-10-27 15:56:33', '放弃项目，可明确判断当前阶段不具有可投资性的项目', '0');
+INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('c5c0266161c74f3bb7dd4f29c2af31da', 'A1', 'A1', 'projectGrade', '实施阶段，已经进场尽调但尚未最终完成投资的项目', 10, '0', '1', '2016-09-22 17:22:23', '1', '2016-10-27 15:57:01', '实施阶段，已经进场尽调但尚未最终完成投资的项目', '0');
 
 /* 更新项目进度字典数据 */
 DELETE from jeesite.sys_dict WHERE type='projectProgress';
@@ -95,6 +108,7 @@ INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_
 
 
 /* 插入 字典表: sys_station_type 角色类型 */
+DELETE from jeesite.sys_dict WHERE type='sys_station_type';
 INSERT INTO jeesite.sys_dict (id, value, label, type, description, sort, parent_id, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('4d30063c6bc64be6a5020904d52cb977', '3', '基层', 'sys_station_type', '岗位类型', 30, '0', '1', '2016-09-30 16:46:52', '1', '2016-09-30 16:46:52', '', '0'),
 ('9de2afd5e8314f3981417e8b31036a7d', '2', '中层', 'sys_station_type', '岗位类型', 20, '0', '1', '2016-09-30 16:46:41', '1', '2016-09-30 16:46:41', '', '0'),
 ('e04859219e8b423e8bb02e6fd8f8f6b4', '1', '高层', 'sys_station_type', '岗位类型', 10, '0', '1', '2016-09-30 16:46:24', '1', '2016-09-30 16:46:24', '', '0');
