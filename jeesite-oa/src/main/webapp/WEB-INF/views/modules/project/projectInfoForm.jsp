@@ -23,37 +23,6 @@
 				}
 			});
 		});
-		function addRow(list, idx, tpl, row){
-			$(list).append(Mustache.render(tpl, {
-				idx: idx, delBtn: true, row: row
-			}));
-			$(list+idx).find("select").each(function(){
-				$(this).val($(this).attr("data-value"));
-			});
-			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-				var ss = $(this).attr("data-value").split(',');
-				for (var i=0; i<ss.length; i++){
-					if($(this).val() == ss[i]){
-						$(this).attr("checked","checked");
-					}
-				}
-			});
-		}
-		function delRow(obj, prefix){
-			var id = $(prefix+"_id");
-			var delFlag = $(prefix+"_delFlag");
-			if (id.val() == ""){
-				$(obj).parent().parent().remove();
-			}else if(delFlag.val() == "0"){
-				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
-				$(obj).parent().parent().addClass("error");
-			}else if(delFlag.val() == "1"){
-				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
-				$(obj).parent().parent().removeClass("error");
-			}
-		}
 	</script>
 </head>
 <body>

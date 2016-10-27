@@ -17,7 +17,7 @@
 		function updateProgress(id, progress){
             $('#myModal').modal();
             $("#projectInfoId").val(id);
-            $("#progressBoxProgress").select2().val(progress).trigger("change");
+            $("#progressBoxProgress").val(progress).trigger("change");
 		}
 		function toValid(){
 			var projectInfoId=$("#projectInfoId").val();
