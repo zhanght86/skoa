@@ -95,6 +95,7 @@
         </td>
         <shiro:hasPermission name="sys:station:edit">
             <td>
+                <a href="${ctx}/sys/station/assign?id={{row.id}}">分配</a>
                 <a href="${ctx}/sys/station/form?id={{row.id}}">修改</a>
                 <a href="${ctx}/sys/station/delete?id={{row.id}}"
                    onclick="return confirmx('确认要删除该岗位及所有子岗位吗？', this.href)">删除</a>

@@ -338,6 +338,37 @@ public class SystemService extends BaseService implements InitializingBean {
 		return user;
 	}
 
+
+	@Transactional(readOnly = false)
+	public Boolean outUserInStation(Station station, User user) {
+		if (user == null) {
+			return null;
+		}
+		List<Station> stations = user.getStationList();
+		for (Station e : stations) {
+			if (e.getId().equals(station.getId())) {
+				stations.remove(e);
+				saveUser(user);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Transactional(readOnly = false)
+	public User assignUserToStation(Station station, User user) {
+		if (user == null) {
+			return null;
+		}
+		List<String> stationIds = user.getStationIdList();
+		if (stationIds.contains(station.getId())) {
+			return null;
+		}
+		user.getStationList().add(station);
+		saveUser(user);
+		return user;
+	}
+
 	//-- Menu Service --//
 	
 	public Menu getMenu(String id) {

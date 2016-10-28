@@ -52,7 +52,8 @@ public class User extends DataEntity<User> {
 	private Date oldLoginDate;	// 上次登陆日期
 	
 	private Role role;	// 根据角色查询用户条件
-	
+	private Station station;	// 根据岗位查询用户条件(目前只根据Station的ID查询)
+
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
 	private List<Station> stationList = Lists.newArrayList(); // 拥有岗位列表
 
@@ -73,6 +74,11 @@ public class User extends DataEntity<User> {
 	public User(Role role){
 		super();
 		this.role = role;
+	}
+
+	public User(Station station) {
+		super();
+		this.station = station;
 	}
 	
 	public String getPhoto() {
@@ -274,6 +280,14 @@ public class User extends DataEntity<User> {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public Station getStation() {
+		return station;
+	}
+
+	public void setStation(Station station) {
+		this.station = station;
 	}
 
 	@JsonIgnore

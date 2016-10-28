@@ -154,6 +154,9 @@
 		<if test="role != null and role.id != null and role.id != ''">
 			JOIN sys_user_role ur ON ur.user_id = a.id AND ur.role_id = #{role.id}
 		</if>
+		<if test="station != null and station.id != null and station.id != ''">
+			JOIN sys_user_station us ON us.user_id = a.id AND us.station_id = #{station.id}
+		</if>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		<if test="company != null and company.id != null and company.id != ''">
 			AND (c.id = #{company.id} OR c.parent_ids LIKE 

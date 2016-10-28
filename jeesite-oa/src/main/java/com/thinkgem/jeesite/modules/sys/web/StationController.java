@@ -9,6 +9,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.Collections3;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +45,12 @@ public class StationController extends BaseController {
 
 	@Autowired
 	private StationService stationService;
+
+	@Autowired
+	private SystemService systemService;
+
+	@Autowired
+	private OfficeService officeService;
 	
 	@ModelAttribute
 	public Station get(@RequestParam(required=false) String id) {
@@ -151,6 +164,122 @@ public class StationController extends BaseController {
 			}
 		}
 		return mapList;
+	}
+
+
+	/**
+	 * 岗位分配页面
+	 * @param station
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("sys:station:edit")
+	@RequestMapping(value = "assign")
+	public String assign(Station station, Model model) {
+		List<User> userList = systemService.findUser(new User(new Station(station.getId())));
+		model.addAttribute("userList", userList);
+		return "modules/sys/stationAssign";
+	}
+
+	/**
+	 * 岗位分配 -- 打开岗位分配对话框
+	 * @param station
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("sys:station:view")
+	@RequestMapping(value = "usertostation")
+	public String selectUserToStation(Station station, Model model) {
+		List<User> userList = systemService.findUser(new User(new Station(station.getId())));
+		model.addAttribute("station", station);
+		model.addAttribute("userList", userList);
+		model.addAttribute("selectIds", Collections3.extractToString(userList, "name", ","));
+		model.addAttribute("officeList", officeService.findAll());
+		return "modules/sys/selectUserToStation";
+	}
+
+	/**
+	 * 岗位分配 -- 根据部门编号获取用户列表
+	 * @param officeId
+	 * @param response
+	 * @return
+	 */
+	@RequiresPermissions("sys:station:view")
+	@ResponseBody
+	@RequestMapping(value = "users")
+	public List<Map<String, Object>> users(String officeId, HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		User user = new User();
+		user.setOffice(new Office(officeId));
+		Page<User> page = systemService.findUser(new Page<User>(1, -1), user);
+		for (User e : page.getList()) {
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("id", e.getId());
+			map.put("pId", 0);
+			map.put("name", e.getName());
+			mapList.add(map);
+		}
+		return mapList;
+	}
+
+	/**
+	 * 岗位分配 -- 从岗位中移除用户
+	 * @param userId
+	 * @param stationId
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("sys:station:edit")
+	@RequestMapping(value = "outstation")
+	public String outstation(String userId, String stationId, RedirectAttributes redirectAttributes) {
+		if(Global.isDemoMode()){
+			addMessage(redirectAttributes, "演示模式，不允许操作！");
+			return "redirect:" + adminPath + "/sys/station/assign?id="+stationId;
+		}
+		Station station = stationService.get(stationId);
+		User user = systemService.getUser(userId);
+		if (UserUtils.getUser().getId().equals(userId)) {
+			addMessage(redirectAttributes, "无法从岗位【" + station.getName() + "】中移除用户【" + user.getName() + "】自己！");
+		}else {
+//			if (user.getStationList().size() <= 1){
+//				addMessage(redirectAttributes, "用户【" + user.getName() + "】从岗位【" + station.getName() + "】中移除失败！这已经是该用户的唯一岗位，不能移除。");
+//			}else{
+				Boolean flag = systemService.outUserInStation(station, user);
+				if (!flag) {
+					addMessage(redirectAttributes, "用户【" + user.getName() + "】从岗位【" + station.getName() + "】中移除失败！");
+				}else {
+					addMessage(redirectAttributes, "用户【" + user.getName() + "】从岗位【" + station.getName() + "】中移除成功！");
+				}
+//			}
+		}
+		return "redirect:" + adminPath + "/sys/station/assign?id="+station.getId();
+	}
+
+	/**
+	 * 岗位分配
+	 * @param station
+	 * @param idsArr
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("sys:station:edit")
+	@RequestMapping(value = "assignstation")
+	public String assignStation(Station station, String[] idsArr, RedirectAttributes redirectAttributes) {
+		if(Global.isDemoMode()){
+			addMessage(redirectAttributes, "演示模式，不允许操作！");
+			return "redirect:" + adminPath + "/sys/station/assign?id="+station.getId();
+		}
+		StringBuilder msg = new StringBuilder();
+		int newNum = 0;
+		for (int i = 0; i < idsArr.length; i++) {
+			User user = systemService.assignUserToStation(station, systemService.getUser(idsArr[i]));
+			if (null != user) {
+				msg.append("<br/>新增用户【" + user.getName() + "】到岗位【" + station.getName() + "】！");
+				newNum++;
+			}
+		}
+		addMessage(redirectAttributes, "已成功分配 "+newNum+" 个用户"+msg);
+		return "redirect:" + adminPath + "/sys/station/assign?id="+station.getId();
 	}
 	
 }
