@@ -22,6 +22,8 @@ cd ../jeesite-oa
 mvn clean install -DskipTests -Denv=qa
 
 cp -rf target/jeesite-oa/* /data/tomcat/webapps/skoa
+#log4j 配置了相对路径（./logs/jeesite/jeesite.log），它是相对于当前的目录，因此，需要切换到tomcat应用目录下
+cd /data/tomcat/
 /data/tomcat/bin/shutdown.sh
 /data/tomcat/bin/startup.sh
 
