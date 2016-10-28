@@ -71,7 +71,13 @@ public class ProjectInfoController extends BaseController {
 		addMessage(redirectAttributes, "保存项目成功");
 		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
 	}
-	
+
+	@RequestMapping(value = "view")
+	public String view(ProjectInfo projectInfo, Model model) {
+		model.addAttribute("projectInfo", projectInfo);
+		return "modules/project/projectInfoView";
+	}
+
 	//@RequiresPermissions("project:projectInfo:edit")
 	@RequestMapping(value = "delete")
 	public String delete(ProjectInfo projectInfo, RedirectAttributes redirectAttributes) {

@@ -2,46 +2,23 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>项目管理</title>
+	<title>项目浏览</title>
 	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
-				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
-					}
-				}
-			});
-		});
-	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/project/projectInfo/">项目列表</a></li>
 		<li class="active">
-			<a href="${ctx}/project/projectInfo/form?id=${projectInfo.id}">
-				项目${not empty projectInfo.id?'修改':'添加'}
+			<a href="${ctx}/project/projectInfo/view?id=${projectInfo.id}">
+				项目浏览
 			</a>
 		</li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="projectInfo" action="${ctx}/project/projectInfo/save" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
+	<form:form id="inputForm" modelAttribute="projectInfo" class="form-horizontal">
 		<div class="control-group">
 			<label class="control-label">归属部门：</label>
 			<div class="controls">
-				<sys:treeselect id="office" name="office.id" value="${projectInfo.office.id}" labelName="office.name" labelValue="${projectInfo.office.name}"
-					title="部门" url="/sys/office/treeData?type=2" cssClass="" allowClear="true" notAllowSelectParent="true"/>
+				${projectInfo.office.name}
 			</div>
 		</div>
 		<div class="control-group">
@@ -114,7 +91,7 @@
 				<form:input path="annualNetProfit" htmlEscape="false" maxlength="100" class="input-xlarge "/>
 			</div>
 		</div>
-		<%--<div class="control-group">
+		<div class="control-group">
 			<label class="control-label">项目进度：</label>
 			<div class="controls">
 				<form:select path="projectProgress" class="input-xlarge ">
@@ -122,7 +99,7 @@
 					<form:options items="${fns:getDictList('projectProgress')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
-		</div>--%>
+		</div>
 		<div class="control-group">
 			<label class="control-label">项目的开始时间：</label>
 			<div class="controls">

@@ -27,6 +27,10 @@
 				alertx("项目进度无变更!");
 				return false;
 			}
+			if(currentProjectProgress!=""&&currentProjectProgress>changeProjectProgress){
+				alertx("项目进度不能后撤");
+				return false;
+			}
 			return true;
 		}
 	</script>
@@ -116,7 +120,7 @@
 					${projectInfo.office.name}
 				</td>
 				<td>
-					<a href="${ctx}/project/projectInfo/form?id=${projectInfo.id}">
+					<a href="${ctx}/project/projectInfo/view?id=${projectInfo.id}">
 					${projectInfo.projectName}
 					</a>
 				</td>
