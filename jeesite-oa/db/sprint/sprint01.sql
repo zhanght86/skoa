@@ -156,3 +156,10 @@ CREATE TABLE `sys_user_station` (
   PRIMARY KEY (`user_id`,`station_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户-岗位';
 
+/* 角色与项目进度关系表 */
+DROP TABLE IF EXISTS sys_role_projectprogress;
+CREATE TABLE `sys_role_projectprogress` (
+  `role_id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '角色编号',
+  `dict_id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '字典编号',
+  PRIMARY KEY (`role_id`,`dict_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='角色与项目进度关系表';

@@ -3,12 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.sys.entity;
 
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-
+import com.thinkgem.jeesite.common.persistence.DataEntity;
 import org.hibernate.validator.constraints.Length;
 
-import com.thinkgem.jeesite.common.persistence.DataEntity;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  * 字典Entity
@@ -98,5 +97,23 @@ public class Dict extends DataEntity<Dict> {
 	@Override
 	public String toString() {
 		return label;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (null == obj) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (!getClass().equals(obj.getClass())) {
+			return false;
+		}
+		Dict that = (Dict) obj;
+		if(null==this.getType()||null==this.getValue()){
+			return false;
+		}
+		return this.getType().equals(that.getType())&&this.getValue().equals(that.getValue());
 	}
 }

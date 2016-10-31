@@ -3,11 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.sys.dao;
 
-import java.util.List;
-
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
+
+import java.util.List;
 
 /**
  * 字典DAO接口
@@ -18,5 +18,6 @@ import com.thinkgem.jeesite.modules.sys.entity.Dict;
 public interface DictDao extends CrudDao<Dict> {
 
 	public List<String> findTypeList(Dict dict);
-	
+	public List<Dict> findListByProjectProgress();
+
 }

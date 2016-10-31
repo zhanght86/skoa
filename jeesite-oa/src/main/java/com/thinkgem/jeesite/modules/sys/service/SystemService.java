@@ -34,6 +34,8 @@ import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
+import static org.apache.shiro.web.filter.mgt.DefaultFilter.user;
+
 /**
  * 系统管理，安全相关实体的管理类,包括用户、角色、菜单.
  * @author ThinkGem
@@ -296,8 +298,18 @@ public class SystemService extends BaseService implements InitializingBean {
 		saveActivitiGroup(role);
 		// 清除用户角色缓存
 		UserUtils.removeCache(UserUtils.CACHE_ROLE_LIST);
+
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();
+
+		// 更新角色与项目进度的关联
+		roleDao.deleteRoleProjectProgress(role);
+		if (role.getDictList() != null && role.getDictList().size() > 0){
+			roleDao.insertRoleProjectProgress(role);
+		}
+		//else{
+		//	throw new ServiceException(role.getName() + "没有设置项目进度！");
+		//}
 	}
 
 	@Transactional(readOnly = false)

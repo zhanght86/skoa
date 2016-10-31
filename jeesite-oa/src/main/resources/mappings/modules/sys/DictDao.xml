@@ -91,5 +91,11 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+	<select id="findListByProjectProgress" resultType="com.thinkgem.jeesite.modules.sys.entity.Dict">
+		SELECT
+		*
+		FROM sys_dict
+		WHERE del_flag = 0 AND type = 'projectProgress' AND value>1
+		ORDER BY type, sort
+	</select>
 </mapper>

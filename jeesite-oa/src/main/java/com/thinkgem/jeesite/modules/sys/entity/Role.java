@@ -3,14 +3,14 @@
  */
 package com.thinkgem.jeesite.modules.sys.entity;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.Length;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.Length;
+
+import java.util.List;
 
 /**
  * 角色Entity
@@ -45,7 +45,9 @@ public class Role extends DataEntity<Role> {
 	public static final String DATA_SCOPE_OFFICE = "5";
 	public static final String DATA_SCOPE_SELF = "8";
 	public static final String DATA_SCOPE_CUSTOM = "9";
-	
+
+	private List<Dict> dictList = Lists.newArrayList(); // 拥有的项目进度列表
+
 	public Role() {
 		super();
 		this.dataScope = DATA_SCOPE_SELF;
@@ -267,4 +269,28 @@ public class Role extends DataEntity<Role> {
 //		}
 //		return StringUtils.join(menuNameList, ",");
 //	}
+
+	public List<Dict> getDictList() {
+		return dictList;
+	}
+
+	public void setDictList(List<Dict> dictList) {
+		this.dictList = dictList;
+	}
+	@JsonIgnore
+	public List<String> getProjectProgressIdList() {
+		List<String> projectProgressIdList = Lists.newArrayList();
+		for (Dict dict : dictList) {
+			projectProgressIdList.add(dict.getId());
+		}
+		return projectProgressIdList;
+	}
+	public void setProjectProgressIdList(List<String> projectProgressIdList) {
+		dictList = Lists.newArrayList();
+		for (String projectProgressId : projectProgressIdList) {
+			Dict dict = new Dict();
+			dict.setId(projectProgressId);
+			dictList.add(dict);
+		}
+	}
 }

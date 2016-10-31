@@ -174,6 +174,13 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">项目进度:</label>
+			<div class="controls">
+				<form:checkboxes path="projectProgressIdList" items="${projectProgressList}" itemLabel="label" itemValue="id" htmlEscape="false"/>
+				<span class="help-inline">设置该角色所拥有的项目进度:预研和立项阶段所有人员可看,不必设置</span>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">角色授权:</label>
 			<div class="controls">
 				<div id="menuTree" class="ztree" style="margin-top:3px;float:left;"></div>
