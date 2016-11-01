@@ -4,7 +4,6 @@
 package com.thinkgem.jeesite.modules.project.service;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Sets;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
@@ -65,9 +64,9 @@ public class ProjectInfoService extends CrudService<ProjectInfoDao, ProjectInfo>
 		//4.当前用户可以看到 自己参与的(所在项目小组)项目,并且项目进度小于5
 		sb.append(" or (find_in_set('"+currentUser.getId()+"',a.team_members) and a.project_progress<5)");
 		//5.当前用户可以看到 按 自己所在角色与项目进度绑定的集合 ,进行筛选
-		Set<String> progressSet= Sets.newHashSet();//从数据库获取该用户拥有的项目进度;
+		Set<String> progressSet= UserUtils.getProjectProgressSet();//获取该用户拥有的项目进度;
 		if(CollectionUtils.isNotEmpty(progressSet)){
-			String progressIn= Joiner.on("','").skipNulls().join(progressSet);
+			String progressIn= "'"+Joiner.on("','").skipNulls().join(progressSet)+"'";
 			sb.append(" or a.project_progress in ("+progressIn+")");
 		}
 

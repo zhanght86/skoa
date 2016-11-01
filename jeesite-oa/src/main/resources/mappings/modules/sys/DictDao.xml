@@ -98,4 +98,14 @@
 		WHERE del_flag = 0 AND type = 'projectProgress' AND value>1
 		ORDER BY type, sort
 	</select>
+	<select id="findListByRoleIdList" resultType="com.thinkgem.jeesite.modules.sys.entity.Dict" parameterType="java.util.List">
+		SELECT
+		d.*
+		FROM sys_dict d JOIN sys_role_projectprogress pp ON pp.dict_id=d.id
+		WHERE d.del_flag = 0 AND pp.role_id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		ORDER BY d.type, d.sort
+	</select>
 </mapper>

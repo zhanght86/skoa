@@ -5,17 +5,23 @@ package com.thinkgem.jeesite.modules.sys.utils;
 
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
+import com.thinkgem.jeesite.common.utils.Collections3;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.modules.sys.dao.*;
 import com.thinkgem.jeesite.modules.sys.entity.*;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm.Principal;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static com.thinkgem.jeesite.common.utils.Collections3.extractToList;
 
 /**
  * 用户工具类
@@ -42,6 +48,8 @@ public class UserUtils {
 	public static final String CACHE_AREA_LIST = "areaList";
 	public static final String CACHE_OFFICE_LIST = "officeList";
 	public static final String CACHE_OFFICE_ALL_LIST = "officeAllList";
+
+	private static DictDao dictDao=SpringContextHolder.getBean(DictDao.class);
 	
 	/**
 	 * 根据ID获取用户
@@ -314,4 +322,24 @@ public class UserUtils {
 //		}
 //		return new HashMap<String, Object>();
 //	}
+
+	/**
+	 * 获取当前用户拥有的项目进度set集合
+	 * @return
+	 */
+	public static Set<String> getProjectProgressSet(){
+		User user = getUser();
+		List<Role> roleList=user.getRoleList();
+		if(CollectionUtils.isEmpty(roleList))
+			return null;
+
+		List<String> roleIdList= extractToList(roleList,"id");
+		List<Dict> dictList=dictDao.findListByRoleIdList(roleIdList);
+		if(CollectionUtils.isEmpty(dictList))
+			return null;
+
+		List<String> projectProgressList=Collections3.extractToList(dictList,"value");
+		Set<String> projectProgressSet=new HashSet<>(projectProgressList);
+		return projectProgressSet;
+	}
 }
