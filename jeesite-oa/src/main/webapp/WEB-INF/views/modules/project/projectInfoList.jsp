@@ -189,11 +189,12 @@
                         <div class="control-group">
                             <label class="control-label">项目进度：</label>
                             <div class="controls">
-                                <select id="progressBoxProgress" name="projectProgress" class="input-xlarge">
+                                <select id="progressBoxProgress" name="projectProgress" class="input-medium">
                                     <c:forEach items="${fns:getDictList('projectProgress')}" var="dict">
                                         <option value="${dict.value}">${dict.label}</option>
                                     </c:forEach>
                                 </select>
+								<span class="help-inline"><font color="red">*</font>注意:项目进度不能后撤 </span>
                             </div>
                         </div>
                         <div class="control-group">
