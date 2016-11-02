@@ -54,7 +54,7 @@
 		<div class="control-group">
 			<label class="control-label">项目名称：</label>
 			<div class="controls">
-				<form:input path="projectName" htmlEscape="false" maxlength="200" class="required input-xlarge"/>
+				<form:input path="projectName" htmlEscape="false" maxlength="200" class="required measure-input input-xlarge"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
