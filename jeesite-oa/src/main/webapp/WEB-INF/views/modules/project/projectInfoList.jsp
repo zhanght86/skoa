@@ -7,6 +7,9 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			top.$.jBox.tip.mess = null;
+
+			var timeagoInstance = new timeago();
+			timeagoInstance.render($('abbr'), 'zh_CN');
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -154,6 +157,7 @@
 				</td>
 				<td>
 					<fmt:formatDate value="${projectInfo.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					(<abbr datetime='<fmt:formatDate value="${projectInfo.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>'></abbr>)
 				</td>
 				<td>
 					${projectInfo.remarks}
