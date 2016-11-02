@@ -67,6 +67,10 @@
 				<sys:treeselect id="primaryPerson" name="primaryPerson.id" value="${projectInfo.primaryPerson.id}" labelName="primaryPerson.name" labelValue="${projectInfo.primaryPerson.name}"
 					title="用户" url="/sys/office/treeData?type=3" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/>
 			</li>
+			<li><label>项目发起人：</label>
+				<sys:treeselect id="createBy" name="createBy.id" value="${projectInfo.createBy.id}" labelName="createBy.name" labelValue="${projectInfo.createBy.name}"
+								title="用户" url="/sys/office/treeData?type=3" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/>
+			</li>
 			<li><label>行业领域：</label>
 				<form:select path="industryDomain" class="input-medium">
 					<form:option value="" label=""/>

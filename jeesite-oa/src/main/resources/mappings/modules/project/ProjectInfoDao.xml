@@ -73,6 +73,9 @@
 			<if test="primaryPerson != null and primaryPerson.id != null and primaryPerson.id != ''">
 				AND a.primary_person = #{primaryPerson.id}
 			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
 			<if test="industryDomain != null and industryDomain != ''">
 				AND a.industry_domain = #{industryDomain}
 			</if>
