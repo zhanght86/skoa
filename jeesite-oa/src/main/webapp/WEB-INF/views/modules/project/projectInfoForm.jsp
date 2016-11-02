@@ -54,7 +54,8 @@
 		<div class="control-group">
 			<label class="control-label">项目名称：</label>
 			<div class="controls">
-				<form:input path="projectName" htmlEscape="false" maxlength="200" class="input-xlarge"/>
+				<form:input path="projectName" htmlEscape="false" maxlength="200" class="required input-xlarge"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -70,7 +71,8 @@
 			<label class="control-label">项目负责人：</label>
 			<div class="controls">
 				<sys:treeselect id="primaryPerson" name="primaryPerson.id" value="${projectInfo.primaryPerson.id}" labelName="primaryPerson.name" labelValue="${projectInfo.primaryPerson.name}"
-					title="用户" url="/sys/office/treeData?type=3" cssClass="" allowClear="true" notAllowSelectParent="true"/>
+					title="用户" url="/sys/office/treeData?type=3" cssClass="required" allowClear="true" notAllowSelectParent="true"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -93,6 +95,7 @@
 			<label class="control-label">主营业务：</label>
 			<div class="controls">
 				<form:input path="mainBusiness" htmlEscape="false" maxlength="100" class="input-xlarge "/>
+				<span class="help-inline">可输入文本信息 </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -106,12 +109,14 @@
 			<label class="control-label">年收入：</label>
 			<div class="controls">
 				<form:input path="annualIncome" htmlEscape="false" maxlength="100" class="input-xlarge "/>
+				<span class="help-inline">可输入文本信息 </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">年净利润：</label>
 			<div class="controls">
 				<form:input path="annualNetProfit" htmlEscape="false" maxlength="100" class="input-xlarge "/>
+				<span class="help-inline">可输入文本信息 </span>
 			</div>
 		</div>
 		<%--<div class="control-group">
@@ -135,6 +140,7 @@
 			<label class="control-label">项目推荐人：</label>
 			<div class="controls">
 				<form:input path="recommendedMan" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+				<span class="help-inline">可输入文本信息 </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -157,7 +163,8 @@
 		<div class="control-group">
 			<label class="control-label">拟投金额：</label>
 			<div class="controls">
-				<form:input path="intendedMoney" htmlEscape="false" class="input-xlarge "/>
+				<form:input path="intendedMoney" htmlEscape="false" class="input-xlarge number"/>
+				<span class="help-inline">只能为数值类型 </span>
 			</div>
 		</div>
 		<div class="control-group">
