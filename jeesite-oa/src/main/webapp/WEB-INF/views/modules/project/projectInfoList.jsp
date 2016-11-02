@@ -128,8 +128,8 @@
 					${projectInfo.office.name}
 				</td>
 				<td>
-					<a href="${ctx}/project/projectInfo/view?id=${projectInfo.id}">
-					${projectInfo.projectName}
+					<a href="${ctx}/project/projectInfo/view?id=${projectInfo.id}" title="${projectInfo.projectName}">
+						${fns:abbr(projectInfo.projectName,40)}
 					</a>
 				</td>
 				<td>
