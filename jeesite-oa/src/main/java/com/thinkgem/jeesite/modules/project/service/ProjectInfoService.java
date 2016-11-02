@@ -14,6 +14,7 @@ import com.thinkgem.jeesite.modules.project.entity.ProjectInfoProgress;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,6 +82,9 @@ public class ProjectInfoService extends CrudService<ProjectInfoDao, ProjectInfo>
 	
 	@Transactional(readOnly = false)
 	public void save(ProjectInfo projectInfo) {
+		if (projectInfo.getContent()!=null){
+			projectInfo.setContent(StringEscapeUtils.unescapeHtml4(projectInfo.getContent()));
+		}
 		super.save(projectInfo);
 		for (ProjectInfoProgress projectInfoProgress : projectInfo.getProjectInfoProgressList()){
 			if (projectInfoProgress.getId() == null){

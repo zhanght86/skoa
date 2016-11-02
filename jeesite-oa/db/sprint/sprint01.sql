@@ -17,6 +17,7 @@ CREATE TABLE project_info
 	team_member_names varchar(2000) COMMENT '项目小组成员',
   industry_domain char(2) COMMENT '行业领域',
   main_business VARCHAR(255) COMMENT '主营业务',
+	content text COMMENT '项目介绍',
   filepath varchar(2000) COMMENT '附件路径',
   annual_income VARCHAR(100) COMMENT '年收入',
   annual_net_profit VARCHAR(100) COMMENT '年净利润',

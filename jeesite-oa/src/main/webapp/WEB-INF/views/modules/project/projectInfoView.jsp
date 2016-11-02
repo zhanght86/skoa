@@ -67,6 +67,12 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">项目介绍：</label>
+			<div class="controls">
+				${projectInfo.content}
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">附件路径：</label>
 			<div class="controls">
 				<input type="hidden" id="filepath" value="${projectInfo.filepath}" />

@@ -9,8 +9,13 @@
 			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
+					if (CKEDITOR.instances.content.getData()==""){
+						top.$.jBox.tip('请填写项目介绍','warning');
+						CKEDITOR.instances.content.focus();
+					}else{
+						loading('正在提交，请稍等...');
+						form.submit();
+					}
 				},
 				errorContainer: "#messageBox",
 				errorPlacement: function(error, element) {
@@ -94,8 +99,15 @@
 		<div class="control-group">
 			<label class="control-label">主营业务：</label>
 			<div class="controls">
-				<form:input path="mainBusiness" htmlEscape="false" maxlength="100" class="input-xlarge "/>
+				<form:input path="mainBusiness" htmlEscape="false" maxlength="100" class="input-xxlarge "/>
 				<span class="help-inline">可输入文本信息 </span>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">项目介绍：</label>
+			<div class="controls">
+				<form:textarea id="content" htmlEscape="true" path="content" rows="4" maxlength="200" class="input-xlarge"/>
+				<sys:ckeditor replace="content" />
 			</div>
 		</div>
 		<div class="control-group">

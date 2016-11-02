@@ -10,6 +10,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Area;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -32,6 +33,7 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 	private String teamMemberNames;		// 项目小组成员
 	private String industryDomain;		// 行业领域
 	private String mainBusiness;		// 主营业务
+	private String content;		// 项目介绍
 	private String filepath;		// 附件路径
 	private String annualIncome;		// 年收入
 	private String annualNetProfit;		// 年净利润
@@ -128,6 +130,15 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 
 	public void setMainBusiness(String mainBusiness) {
 		this.mainBusiness = mainBusiness;
+	}
+
+	@NotBlank
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 	
 	@Length(min=0, max=200, message="附件路径长度必须介于 0 和 200 之间")
