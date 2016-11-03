@@ -18,6 +18,7 @@ import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -103,10 +104,13 @@ public class RoleController extends BaseController {
 			return form(role, model);
 		}
 		List<Dict> dictList = Lists.newArrayList();
+		// 项目进度数据有效性验证，过滤不存在的进度数据
 		List<String> projectProgressIdList = role.getProjectProgressIdList();
-		for (Dict dict : DictUtils.getDictList("projectProgress")){
-			if (projectProgressIdList.contains(dict.getId())){
-				dictList.add(dict);
+		if(CollectionUtils.isNotEmpty(projectProgressIdList)){
+			for (Dict dict : DictUtils.getDictList("projectProgress")){
+				if (projectProgressIdList.contains(dict.getId())){
+					dictList.add(dict);
+				}
 			}
 		}
 		role.setDictList(dictList);

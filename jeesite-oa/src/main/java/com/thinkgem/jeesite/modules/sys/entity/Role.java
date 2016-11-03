@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.Collections3;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -287,6 +288,8 @@ public class Role extends DataEntity<Role> {
 	}
 	public void setProjectProgressIdList(List<String> projectProgressIdList) {
 		dictList = Lists.newArrayList();
+		if(Collections3.isEmpty(projectProgressIdList))
+			return;
 		for (String projectProgressId : projectProgressIdList) {
 			Dict dict = new Dict();
 			dict.setId(projectProgressId);
