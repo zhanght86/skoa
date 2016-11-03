@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.modules.project.entity.ProjectInfo;
 import com.thinkgem.jeesite.modules.project.entity.ProjectInfoProgress;
 import com.thinkgem.jeesite.modules.project.service.ProjectInfoService;
 import com.thinkgem.jeesite.modules.sys.utils.ProjectInfoUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * 项目管理Controller
@@ -36,7 +38,7 @@ public class ProjectInfoController extends BaseController {
 	private ProjectInfoService projectInfoService;
 
 	@ModelAttribute
-	public ProjectInfo get(@RequestParam(required=false) String id) {
+	public ProjectInfo get(@RequestParam(required=false) String id,Model model) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 		ProjectInfo entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = projectInfoService.get(id);
@@ -44,6 +46,9 @@ public class ProjectInfoController extends BaseController {
 		if (entity == null){
 			entity = new ProjectInfo();
 		}
+		//保存从数据库获取的原始值对象
+		ProjectInfo orignProjectInfo= (ProjectInfo) BeanUtils.cloneBean(entity);
+		model.addAttribute("orignProjectInfo",orignProjectInfo);
 		return entity;
 	}
 	
@@ -59,7 +64,7 @@ public class ProjectInfoController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(ProjectInfo projectInfo, Model model,RedirectAttributes redirectAttributes) {
 		//校验当前用户是否拥有该项目的编辑权限
-		if(ProjectInfoUtils.editableProject(projectInfo)) {
+		if(projectInfo.getId()==null||ProjectInfoUtils.editableProject(projectInfo)) {
 			model.addAttribute("projectInfo", projectInfo);
 			return "modules/project/projectInfoForm";
 		}
@@ -70,8 +75,10 @@ public class ProjectInfoController extends BaseController {
 	@RequiresPermissions("project:projectInfo:view")
 	@RequestMapping(value = "save")
 	public String save(ProjectInfo projectInfo, Model model, RedirectAttributes redirectAttributes) {
-		//校验当前用户是否拥有该项目的编辑权限
-		if(ProjectInfoUtils.editableProject(projectInfo)) {
+		//获取未修改前的值对象
+		ProjectInfo orignProjectInfo= (ProjectInfo) model.asMap().get("orignProjectInfo");
+		//校验当前用户是否拥有该项目的编辑权限或者新增项目
+		if("".equals(projectInfo.getId())||ProjectInfoUtils.editableProject(orignProjectInfo)) {
 			if (!beanValidator(model, projectInfo)) {
 				return form(projectInfo, model, redirectAttributes);
 			}

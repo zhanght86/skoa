@@ -63,7 +63,7 @@
 			</li>
 			<li><label>项目级别：</label>
 				<form:select path="projectGrade" class="input-medium">
-					<form:option value="" label=""/>
+					<form:option value="" label="请选择"/>
 					<form:options items="${fns:getDictList('projectGrade')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
@@ -77,25 +77,25 @@
 			</li>
 			<li><label>行业领域：</label>
 				<form:select path="industryDomain" class="input-medium">
-					<form:option value="" label=""/>
+					<form:option value="" label="请选择"/>
 					<form:options items="${fns:getDictList('industryDomain')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
 			<li><label>项目进度：</label>
 				<form:select path="projectProgress" class="input-medium">
-					<form:option value="" label=""/>
+					<form:option value="" label="请选择"/>
 					<form:options items="${fns:getDictList('projectProgress')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
 			<li><label>项目类型：</label>
 				<form:select path="projectType" class="input-medium">
-					<form:option value="" label=""/>
+					<form:option value="" label="请选择"/>
 					<form:options items="${fns:getDictList('projectType')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
 			<li><label>项目状态：</label>
 				<form:select path="projectStatus" class="input-medium">
-					<form:option value="" label=""/>
+					<form:option value="" label="请选择"/>
 					<form:options items="${fns:getDictList('projectStatus')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
@@ -115,6 +115,7 @@
 				<th>项目类型</th>
 				<th>项目状态</th>
 				<th class="sort-column a.update_date">更新时间</th>
+				<th>更新者</th>
 				<th>备注信息</th>
 				<%--<shiro:hasPermission name="project:projectInfo:edit">--%>
 					<th>操作</th>
@@ -159,6 +160,9 @@
 				<td>
 					<fmt:formatDate value="${projectInfo.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 					(<abbr datetime='<fmt:formatDate value="${projectInfo.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>'></abbr>)
+				</td>
+				<td>
+					${projectInfo.updateBy.name}
 				</td>
 				<td>
 					${projectInfo.remarks}

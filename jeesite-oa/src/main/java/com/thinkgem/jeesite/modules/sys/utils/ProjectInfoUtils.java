@@ -38,8 +38,9 @@ public class ProjectInfoUtils {
 	 * @return
 	 */
 	public static Boolean editableProject(ProjectInfo projectInfo) {
-		//1.如果当前用户是项目的创建者,并且该项目的状态为推介人编辑时,则可以编辑该项目
-		if(ProjectInfoUtils.isProjectInfoCreator(projectInfo)&&"0".equals(projectInfo.getProjectStatus()))
+		//1.如果当前用户是项目的创建者,且项目进度为null,并且该项目的状态为推介人编辑时,则可以编辑该项目
+		//if(ProjectInfoUtils.isProjectInfoCreator(projectInfo)&&"0".equals(projectInfo.getProjectStatus()))
+		if(ProjectInfoUtils.isProjectInfoCreator(projectInfo)&& StringUtils.isBlank(projectInfo.getProjectProgress())&&"0".equals(projectInfo.getProjectStatus()))
 			return true;
 
 		//2.如果当前用户是项目的负责人,则可以编辑该项目
