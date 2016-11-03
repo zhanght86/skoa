@@ -107,7 +107,7 @@
 			<label class="control-label">项目介绍：</label>
 			<div class="controls">
 				<form:textarea id="content" htmlEscape="true" path="content" rows="4" maxlength="200" class="input-xlarge"/>
-				<sys:ckeditor replace="content" />
+				<sys:ckeditor replace="content" uploadPath="/project/projectInfo/content" />
 			</div>
 		</div>
 		<div class="control-group">

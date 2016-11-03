@@ -57,19 +57,29 @@ public class ProjectInfoController extends BaseController {
 
 	@RequiresPermissions("project:projectInfo:view")
 	@RequestMapping(value = "form")
-	public String form(ProjectInfo projectInfo, Model model) {
-		model.addAttribute("projectInfo", projectInfo);
-		return "modules/project/projectInfoForm";
+	public String form(ProjectInfo projectInfo, Model model,RedirectAttributes redirectAttributes) {
+		//校验当前用户是否拥有该项目的编辑权限
+		if(ProjectInfoUtils.editableProject(projectInfo)) {
+			model.addAttribute("projectInfo", projectInfo);
+			return "modules/project/projectInfoForm";
+		}
+		addMessage(redirectAttributes, "没有权限,编辑项目失败");
+		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
 	}
 
 	@RequiresPermissions("project:projectInfo:view")
 	@RequestMapping(value = "save")
 	public String save(ProjectInfo projectInfo, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, projectInfo)){
-			return form(projectInfo, model);
+		//校验当前用户是否拥有该项目的编辑权限
+		if(ProjectInfoUtils.editableProject(projectInfo)) {
+			if (!beanValidator(model, projectInfo)) {
+				return form(projectInfo, model, redirectAttributes);
+			}
+			projectInfoService.save(projectInfo);
+			addMessage(redirectAttributes, "保存项目成功");
+			return "redirect:" + Global.getAdminPath() + "/project/projectInfo/?repage";
 		}
-		projectInfoService.save(projectInfo);
-		addMessage(redirectAttributes, "保存项目成功");
+		addMessage(redirectAttributes, "没有权限,编辑项目失败");
 		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
 	}
 
@@ -88,8 +98,13 @@ public class ProjectInfoController extends BaseController {
 	@RequiresPermissions("project:projectInfo:view")
 	@RequestMapping(value = "delete")
 	public String delete(ProjectInfo projectInfo, RedirectAttributes redirectAttributes) {
-		projectInfoService.delete(projectInfo);
-		addMessage(redirectAttributes, "删除项目成功");
+		//校验当前用户是否拥有该项目的编辑权限
+		if(ProjectInfoUtils.editableProject(projectInfo)) {
+			projectInfoService.delete(projectInfo);
+			addMessage(redirectAttributes, "删除项目成功");
+			return "redirect:" + Global.getAdminPath() + "/project/projectInfo/?repage";
+		}
+		addMessage(redirectAttributes, "没有权限,删除项目失败");
 		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
 	}
 
