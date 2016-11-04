@@ -32,13 +32,15 @@
 		a.del_flag AS "delFlag",
 		o2.name AS "office.name",
 		a3.name AS "area.name",
-		u6.name AS "primaryPerson.name"
+		u6.name AS "primaryPerson.name",
+		uu.name AS "updateBy.name"
 	</sql>
 	
 	<sql id="projectInfoJoins">
 		LEFT JOIN sys_office o2 ON o2.id = a.office_id
 		LEFT JOIN sys_area a3 ON a3.id = a.area_id
 		LEFT JOIN sys_user u6 ON u6.id = a.primary_person
+		LEFT JOIN sys_user uu ON uu.id = a.update_by
 	</sql>
     
 	<select id="get" resultType="ProjectInfo">
