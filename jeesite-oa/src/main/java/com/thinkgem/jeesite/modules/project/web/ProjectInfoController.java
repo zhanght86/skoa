@@ -98,7 +98,7 @@ public class ProjectInfoController extends BaseController {
 			model.addAttribute("projectInfo", projectInfo);
 			return "modules/project/projectInfoView";
 		}
-		addMessage(redirectAttributes, "没有权限,浏览项目失败");
+		addMessage(redirectAttributes, "没有此项目查看权限,浏览项目失败");
 		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
 	}
 
