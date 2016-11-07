@@ -8,9 +8,11 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.thinkgem.jeesite.common.utils.Collections3;
 import com.thinkgem.jeesite.modules.sys.entity.*;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -298,6 +300,14 @@ public class SystemService extends BaseService implements InitializingBean {
 		saveActivitiGroup(role);
 		// 清除用户角色缓存
 		UserUtils.removeCache(UserUtils.CACHE_ROLE_LIST);
+
+		// 清除该角色下所有的用户缓存
+		List<User> userList=userDao.findUserByRoleId(role.getId());
+		if(CollectionUtils.isNotEmpty(userList)){
+			for(User user:userList){
+				UserUtils.clearCache(user);
+			}
+		}
 
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();

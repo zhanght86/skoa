@@ -8,6 +8,7 @@ import java.util.List;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户DAO接口
@@ -30,6 +31,13 @@ public interface UserDao extends CrudDao<User> {
 	 * @return
 	 */
 	public List<User> findUserByOfficeId(User user);
+
+	/**
+	 * 通过roleId获取用户列表,仅返回用户id和name
+	 * @param roleId
+	 * @return
+	 */
+	public List<User> findUserByRoleId(@Param("roleId") String roleId);
 	
 	/**
 	 * 查询全部用户数目
