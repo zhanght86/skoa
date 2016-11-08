@@ -85,6 +85,10 @@ public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements Sessio
 			if (Servlets.isStaticFile(uri)){
 		        return null;
 			}
+			//当为restful api调用时,不创建session
+			if(StringUtils.startsWith(uri,"/api/")){
+				return null;
+			}
 		}
 		super.doCreate(session);
 		logger.debug("doCreate {} {}", session, request != null ? request.getRequestURI() : "");
