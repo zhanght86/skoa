@@ -1,0 +1,21 @@
+stateless restful api 使用文档
+在使用无状态api调用时,客户端需要申请appId和appKey;
+在http调用方法时,http header中需要传递当前api的版本号信息(api-version=v1),
+除了传递方法本身需要的参数外,还需要传递appId标识的参数,以及传递信息摘要参数digest(该参数值是使用appKey对方法参数及appid参数值进行HmacSHA256摘要算法信息);
+另,加入调用方法时的时间戳timestamp,并使用appKey对方法参数,appid参数,timestamp参数的集合值进行HmacSHA256摘要算法信息,以digest参数传递该摘要,
+防止重放攻击,该步骤为了调试方便,暂时注释掉.
+
+演示api调用方法:
+1.api路径 http://localhost:8080/api/hello;方法 hello(String[] param1, String param2)有两个参数
+
+  http header传递:api-version=v1;
+
+  form data:
+        appId:873c4db8-9a83-4cbe-b9bd-86f8bfa24c91
+        param1:param11
+        param1:param12
+        param2:param2
+        timestamp:1478596516 (本参数暂时注释掉了,方便调试)
+        digest:e466cc3c7a37c8338907a0c2b218816d2c6ebada847c180cf88c563e38988e2f (为appId,param1,param2,timestamp集合值的拼装字符串,再进行HmacSHA256摘要得来的)
+
+ 

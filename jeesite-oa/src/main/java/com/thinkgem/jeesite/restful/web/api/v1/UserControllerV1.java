@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserControllerV1 extends BaseController {
 
     @RequestMapping("/hello")
-    public JsonResultModel hello1(String[] param1, String param2) {
+    public JsonResultModel hello(String[] param1, String param2) {
         try {
             Preconditions.checkNotNull(param1,"参数param1不能为空");
             Preconditions.checkNotNull(param2,"参数param2不能为空");
