@@ -3,16 +3,10 @@
  */
 package com.thinkgem.jeesite.common.web;
 
-import java.beans.PropertyEditorSupport;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
-import javax.validation.Validator;
-
+import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
+import com.thinkgem.jeesite.common.json.ResponseJsonUtil;
+import com.thinkgem.jeesite.common.mapper.JsonMapper;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
@@ -26,9 +20,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
-import com.thinkgem.jeesite.common.mapper.JsonMapper;
-import com.thinkgem.jeesite.common.utils.DateUtils;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
+import java.beans.PropertyEditorSupport;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 控制器支持类
@@ -111,10 +109,11 @@ public abstract class BaseController {
 	protected void beanValidator(Object object, Class<?>... groups) {
 		BeanValidators.validateWithException(validator, object, groups);
 	}
-	
+
 	/**
 	 * 添加Model消息
-	 * @param message
+	 * @param model
+	 * @param messages
 	 */
 	protected void addMessage(Model model, String... messages) {
 		StringBuilder sb = new StringBuilder();
@@ -123,10 +122,11 @@ public abstract class BaseController {
 		}
 		model.addAttribute("message", sb.toString());
 	}
-	
+
 	/**
 	 * 添加Flash消息
-	 * @param message
+	 * @param redirectAttributes
+	 * @param messages
 	 */
 	protected void addMessage(RedirectAttributes redirectAttributes, String... messages) {
 		StringBuilder sb = new StringBuilder();
@@ -143,7 +143,7 @@ public abstract class BaseController {
 	 * @return
 	 */
 	protected String renderString(HttpServletResponse response, Object object) {
-		return renderString(response, JsonMapper.toJsonString(object), "application/json");
+		return ResponseJsonUtil.renderString(response, JsonMapper.toJsonString(object), "application/json");
 	}
 	
 	/**
@@ -153,15 +153,7 @@ public abstract class BaseController {
 	 * @return
 	 */
 	protected String renderString(HttpServletResponse response, String string, String type) {
-		try {
-			response.reset();
-	        response.setContentType(type);
-	        response.setCharacterEncoding("utf-8");
-			response.getWriter().print(string);
-			return null;
-		} catch (IOException e) {
-			return null;
-		}
+		return ResponseJsonUtil.renderString(response,string,type);
 	}
 
 	/**

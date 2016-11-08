@@ -164,3 +164,29 @@ CREATE TABLE `sys_role_projectprogress` (
   `dict_id` varchar(64) COLLATE utf8_bin NOT NULL COMMENT '字典编号',
   PRIMARY KEY (`role_id`,`dict_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='角色与项目进度关系表';
+
+
+/*
+提供stateless restful api
+HMAC（Hash-based Message Authentication Code）：基于散列的消息认证码，使用一个密钥和一个消息作为输入，生成它们的消息摘要。注意该密钥只有客户端和服务端知道，其他第三方是不知道的。访问时使用该消息摘要进行传播，服务端然后对该消息摘要进行验证
+*/
+drop table if exists hmac_client;
+create table hmac_client (
+    id varchar(64) NOT NULL COMMENT '编号',
+    client_name varchar(200),
+    client_id varchar(200),
+    client_secret varchar(200),
+    create_by varchar(64) NOT NULL COMMENT '创建者',
+    create_date datetime NOT NULL COMMENT '创建时间',
+    update_by varchar(64) NOT NULL COMMENT '更新者',
+    update_date datetime NOT NULL COMMENT '更新时间',
+    remarks varchar(255) COMMENT '备注信息',
+    del_flag char(1) DEFAULT '0' NOT NULL COMMENT '删除标记',
+    primary key(id)
+) COMMENT = '客户端表' charset=utf8 ENGINE=InnoDB;
+create index idx_hmac_client_client_id on hmac_client(client_id);
+
+/* 增加关于HmacClient功能的菜单 */
+INSERT INTO jeesite.sys_menu (id, parent_id, parent_ids, name, sort, href, target, icon, is_show, permission, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('79db32fda9834d0985983403de405755', 'e4b50fba63f841beae33450a8f968578', '0,1,2,3,e4b50fba63f841beae33450a8f968578,', '修改', 60, '', '', '', '0', 'client:hmacClient:edit', '1', '2016-11-08 10:41:30', '1', '2016-11-08 10:42:16', '', '0');
+INSERT INTO jeesite.sys_menu (id, parent_id, parent_ids, name, sort, href, target, icon, is_show, permission, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('d81357f805224a57af6bfcc7be22702c', 'e4b50fba63f841beae33450a8f968578', '0,1,2,3,e4b50fba63f841beae33450a8f968578,', '查看', 30, '', '', '', '0', 'client:hmacClient:view', '1', '2016-11-08 10:41:16', '1', '2016-11-08 10:41:16', '', '0');
+INSERT INTO jeesite.sys_menu (id, parent_id, parent_ids, name, sort, href, target, icon, is_show, permission, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('e4b50fba63f841beae33450a8f968578', '3', '0,1,2,3,', 'HmacClient', 90, '/client/hmacClient', '', '', '1', '', '1', '2016-11-08 09:26:16', '1', '2016-11-08 09:47:50', '', '0');

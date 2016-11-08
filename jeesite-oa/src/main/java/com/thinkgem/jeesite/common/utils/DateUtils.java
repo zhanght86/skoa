@@ -3,10 +3,10 @@
  */
 package com.thinkgem.jeesite.common.utils;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import java.text.ParseException;
 import java.util.Date;
-
-import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * 日期工具类, 继承org.apache.commons.lang.time.DateUtils类
@@ -26,7 +26,19 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	public static String getDate() {
 		return getDate("yyyy-MM-dd");
 	}
-	
+
+	public static Date getCurrentDateTime() {
+		return new Date();
+	}
+
+	/**
+	 * 获取当前时间戳
+	 * @return
+	 */
+	public static Long getTimeStamps() {
+		return System.currentTimeMillis();
+	}
+
 	/**
 	 * 得到当前日期字符串 格式（yyyy-MM-dd） pattern可以为："yyyy-MM-dd" "HH:mm:ss" "E"
 	 */

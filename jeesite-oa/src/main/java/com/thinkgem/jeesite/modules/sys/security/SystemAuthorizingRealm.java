@@ -3,12 +3,18 @@
  */
 package com.thinkgem.jeesite.modules.sys.security;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
+import com.thinkgem.jeesite.common.utils.Encodes;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.common.web.Servlets;
+import com.thinkgem.jeesite.modules.sys.entity.Menu;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.sys.web.LoginController;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -26,18 +32,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.thinkgem.jeesite.common.config.Global;
-import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
-import com.thinkgem.jeesite.common.utils.Encodes;
-import com.thinkgem.jeesite.common.utils.SpringContextHolder;
-import com.thinkgem.jeesite.common.web.Servlets;
-import com.thinkgem.jeesite.modules.sys.entity.Menu;
-import com.thinkgem.jeesite.modules.sys.entity.Role;
-import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.service.SystemService;
-import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.sys.web.LoginController;
+import javax.annotation.PostConstruct;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 系统安全认证实现类
@@ -52,6 +50,15 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 	
 	private SystemService systemService;
 
+	@Override
+	public String getName() {
+		return "systemAuthorizingRealm";
+	}
+
+	@Override
+	public boolean supports(AuthenticationToken token) {
+		return token instanceof UsernamePasswordToken;
+	}
 	/**
 	 * 认证回调函数, 登录时调用
 	 */
