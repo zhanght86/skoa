@@ -30,12 +30,15 @@ public class StatelessAuthcFilter extends AccessControlFilter {
         String username = request.getParameter(Constants.PARAM_APPID);
         //3. 客户端传入的时间戳;为了调试方便,暂时注释
         //String strTimeStamp=request.getParameter(Constants.PARAM_TIMESTAMP);
+        //3.1 使用时间戳前提是必须保证客户端与服务器时间同步;使用nonce增加难度
+        String nonce = request.getParameter(Constants.PARAM_NONCE);
 
         try {
             Preconditions.checkArgument(!StringUtils.isBlank(clientDigest), "参数"+Constants.PARAM_DIGEST+"为空或者null");
             Preconditions.checkArgument(!StringUtils.isBlank(username), "参数"+Constants.PARAM_APPID+"为空或者null");
             //为了调试方便,暂时注释
-            //Preconditions.checkArgument(!StringUtils.isBlank(strTimeStamp), "参数"+Constants.PARAM_TIMESTAMP+"为null");
+            //Preconditions.checkArgument(!StringUtils.isBlank(strTimeStamp), "参数"+Constants.PARAM_TIMESTAMP+"为空或者null");
+            Preconditions.checkArgument(!StringUtils.isBlank(nonce), "参数"+Constants.PARAM_NONCE+"为空或者null");
 
             //4、客户端请求的参数列表
             Map<String, String[]> params = new HashMap<String, String[]>(request.getParameterMap());

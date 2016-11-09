@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.restful.modules.client.service;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.restful.modules.client.dao.HmacClientDao;
 import com.thinkgem.jeesite.restful.modules.client.entity.HmacClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,11 @@ public class HmacClientService extends CrudService<HmacClientDao, HmacClient> {
 	
 	@Transactional(readOnly = false)
 	public void save(HmacClient hmacClient) {
-		hmacClient.setClientId(UUID.randomUUID().toString());
-		hmacClient.setClientSecret(UUID.randomUUID().toString());
-
+		//新增或者重新生成标示为true ;则重新生成appId及appKey
+		if(StringUtils.isBlank(hmacClient.getId())||hmacClient.getRegernate()) {
+			hmacClient.setClientId(UUID.randomUUID().toString());
+			hmacClient.setClientSecret(UUID.randomUUID().toString());
+		}
 		super.save(hmacClient);
 	}
 	

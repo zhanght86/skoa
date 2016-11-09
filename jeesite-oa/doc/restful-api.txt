@@ -4,19 +4,28 @@ stateless restful api 使用文档(CacheSessionDAO.java中禁用/api/调用时�
 除了传递方法本身需要的参数外,还需要传递appId标识的参数,以及传递信息摘要参数digest(该参数值是使用appKey对方法参数及appid参数值进行HmacSHA256摘要算法信息);
 另,加入调用方法时的时间戳timestamp,并使用appKey对方法参数,appid参数,timestamp参数的集合值进行HmacSHA256摘要算法信息,以digest参数传递该摘要,
 防止重放攻击,该步骤为了调试方便,暂时注释掉.
+因此,牵涉到timestamp参数请忽略该参数.
 
 演示api调用方法:
 1.api路径 http://localhost:8080/api/hello;方法 hello(ProjectInfo projectInfo, String[] param1, String param2)有三个参数
 
+  客户端调用api时需要传递以下参数:
   http header传递:api-version=v1;
-
   form data:
 
         appId:873c4db8-9a83-4cbe-b9bd-86f8bfa24c91
         param1:param11
-        param1:param12
-        //digest值为appId,param1,param2,timestamp,projectName,content集合值的拼装字符串,再进行HmacSHA256摘要得来的
-        digest:90b69dbdd992148d0bf675cc8d94123b4b85ce27d9deb9731f5e7d6856af8e2d
+        param1:1param12
+        digest:ab2ef9cfcfb4cfc7bd1055ea685747c798da0a567997ab080cad677be252dc4a
         param2:param2
         projectName:项目标题
         content:内容是什么
+        nonce:1111
+
+-----------------------------------------------------------------------------------------
+  注意:digest值的算法过程为:
+        a).把方法param1,param2,projectName,content(projectName,content可以传递为ProjectInfo对象值),连同appId,timestamp,nonce这些参数的组成的map集合
+        b).map集合根据先按key升序排序,按(key:value形式)进行拼接字符串,其中同一个key下的value值为数组或者list时,再按照value升序,进行的拼装字符串.形如:
+        appId:873c4db8-9a83-4cbe-b9bd-86f8bfa24c91content:内容是什么nonce:1111param1:1param12param11param2:param2projectName:项目标题
+        c).客户端的根据自己的appKey,对(b步骤)产生的字符串进行HmacSHA256摘要,以获得参数digest的值
+        d).nonce客户端自行生成(例如uuid算法或者随机数),但调用时必须传入此参数

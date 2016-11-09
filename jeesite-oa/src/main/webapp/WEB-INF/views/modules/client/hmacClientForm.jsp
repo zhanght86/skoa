@@ -32,8 +32,6 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="hmacClient" action="${ctx}/client/hmacClient/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<form:hidden path="clientId"/>
-		<form:hidden path="clientSecret"/>
 		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">客户端名称：</label>

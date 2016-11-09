@@ -18,7 +18,8 @@ public class HmacClient extends DataEntity<HmacClient> {
 	private String clientName;		// 客户端名称
 	private String clientId;		// client_id
 	private String clientSecret;		// client_secret
-	
+	private Boolean regernate=false;  //是否重新生成appId,appKey
+
 	public HmacClient() {
 		super();
 	}
@@ -53,5 +54,12 @@ public class HmacClient extends DataEntity<HmacClient> {
 	public void setClientSecret(String clientSecret) {
 		this.clientSecret = clientSecret;
 	}
-	
+
+	public Boolean getRegernate() {
+		return regernate;
+	}
+
+	public void setRegernate(Boolean regernate) {
+		this.regernate = regernate;
+	}
 }

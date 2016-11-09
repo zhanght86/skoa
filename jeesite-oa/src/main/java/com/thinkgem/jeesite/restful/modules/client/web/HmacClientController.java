@@ -3,9 +3,12 @@
  */
 package com.thinkgem.jeesite.restful.modules.client.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.restful.modules.client.entity.HmacClient;
+import com.thinkgem.jeesite.restful.modules.client.service.HmacClientService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.thinkgem.jeesite.common.config.Global;
-import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.restful.modules.client.entity.HmacClient;
-import com.thinkgem.jeesite.restful.modules.client.service.HmacClientService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * restfulController
@@ -59,6 +58,15 @@ public class HmacClientController extends BaseController {
 	public String form(HmacClient hmacClient, Model model) {
 		model.addAttribute("hmacClient", hmacClient);
 		return "modules/client/hmacClientForm";
+	}
+
+	@RequiresPermissions("client:hmacClient:edit")
+	@RequestMapping(value = "regernate")
+	public String regernate(HmacClient hmacClient, Model model,RedirectAttributes redirectAttributes) {
+		hmacClient.setRegernate(true);
+		hmacClientService.save(hmacClient);
+		addMessage(redirectAttributes, "重新生成该客户端appId,appKey成功");
+		return "redirect:"+Global.getAdminPath()+"/client/hmacClient/?repage";
 	}
 
 	@RequiresPermissions("client:hmacClient:edit")

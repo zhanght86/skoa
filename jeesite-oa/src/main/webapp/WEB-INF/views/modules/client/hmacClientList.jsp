@@ -28,10 +28,10 @@
 			<li><label>客户端名称：</label>
 				<form:input path="clientName" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
-			<li><label>client_id：</label>
+			<li><label>appId：</label>
 				<form:input path="clientId" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
-			<li><label>client_secret：</label>
+			<li><label>appKey：</label>
 				<form:input path="clientSecret" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
@@ -43,8 +43,8 @@
 		<thead>
 			<tr>
 				<th>客户端名称</th>
-				<th>client_id</th>
-				<th>client_secret</th>
+				<th>appId</th>
+				<th>appKey</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
 				<shiro:hasPermission name="client:hmacClient:edit"><th>操作</th></shiro:hasPermission>
@@ -70,6 +70,7 @@
 				</td>
 				<shiro:hasPermission name="client:hmacClient:edit"><td>
     				<a href="${ctx}/client/hmacClient/form?id=${hmacClient.id}">修改</a>
+					<a href="${ctx}/client/hmacClient/regernate?id=${hmacClient.id}" onclick="return confirmx('确定要重新生成该客户端appId,appKey值吗?',this.href)">重新生成</a>
 					<a href="${ctx}/client/hmacClient/delete?id=${hmacClient.id}" onclick="return confirmx('确认要删除该客户端吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
