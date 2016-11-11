@@ -77,7 +77,7 @@ public class HmacSHA256Utils {
             }
 
         }
-        System.out.println(s.toString());
+        //System.out.println(s.toString());
         return digest(key, s.toString());
     }
 
