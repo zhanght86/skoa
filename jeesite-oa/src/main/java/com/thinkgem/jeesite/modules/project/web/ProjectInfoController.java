@@ -64,7 +64,7 @@ public class ProjectInfoController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(ProjectInfo projectInfo, Model model,RedirectAttributes redirectAttributes) {
 		//校验当前用户是否拥有该项目的编辑权限
-		if(projectInfo.getId()==null||ProjectInfoUtils.editableProject(projectInfo)) {
+		if(StringUtils.isBlank(projectInfo.getId())||ProjectInfoUtils.editableProject(projectInfo)) {
 			model.addAttribute("projectInfo", projectInfo);
 			return "modules/project/projectInfoForm";
 		}

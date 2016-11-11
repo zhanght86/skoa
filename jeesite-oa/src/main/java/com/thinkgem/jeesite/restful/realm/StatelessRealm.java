@@ -1,5 +1,6 @@
 package com.thinkgem.jeesite.restful.realm;
 
+import com.thinkgem.jeesite.restful.Constants;
 import com.thinkgem.jeesite.restful.codec.HmacSHA256Utils;
 import com.thinkgem.jeesite.restful.modules.client.entity.HmacClient;
 import com.thinkgem.jeesite.restful.modules.client.service.HmacClientService;
@@ -12,6 +13,7 @@ import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
+import java.util.Map;
 
 import static com.thinkgem.jeesite.common.persistence.BaseEntity.DEL_FLAG_NORMAL;
 
@@ -58,8 +60,13 @@ public class StatelessRealm extends AuthorizingRealm {
             throw new DisabledAccountException(); //帐号被删除禁用
 
         String appKey = hmacClient.getClientSecret();//该密钥只有客户端与服务器端知道,其他第三方是不知道的.
+
+        Map<String, ?> params = statelessToken.getParams();
+        String timestamp= ((String[]) params.get(Constants.PARAM_TIMESTAMP))[0];
+        String nonce= ((String[]) params.get(Constants.PARAM_NONCE))[0];
+
         //在服务器端生成客户端参数消息摘要
-        String serverDigest = HmacSHA256Utils.digest(appKey, statelessToken.getParams());
+        String serverDigest = HmacSHA256Utils.digest(nonce+appKey+timestamp, statelessToken.getParams());
 
         //然后进行客户端消息摘要和服务器端消息摘要的匹配
         return new SimpleAuthenticationInfo(
