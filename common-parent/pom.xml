@@ -83,6 +83,7 @@
 		<freemarker.version>2.3.20</freemarker.version>
 		<dozer.version>5.5.1</dozer.version>
 		<xstream.version>1.4.7</xstream.version>
+		<springfox-swagger2.version>2.5.0</springfox-swagger2.version>
 		<guava.version>17.0</guava.version>
 		<activiti.version>5.21.0</activiti.version>
 		<shiro.version>1.2.3</shiro.version>
@@ -217,6 +218,25 @@
 				<artifactId>xstream</artifactId>
 				<version>${xstream.version}</version>
 			</dependency>
+
+			<!--springfox-->
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${springfox-swagger2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${springfox-swagger2.version}</version>
+			</dependency>
+			<!--petStore是官方提供的一个代码参考, 可用于后期写文档时进行参考, 可不加-->
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-petstore</artifactId>
+				<version>${springfox-swagger2.version}</version>
+			</dependency>
+
 
 			<!-- google java lib -->
 			<dependency>

@@ -46,17 +46,16 @@ public class OracleDialect implements Dialect {
         StringBuilder pagingSelect = new StringBuilder(sql.length() + 100);
 
         if (offset > 0) {
-			pagingSelect.append("select * from ( select row_.*, rownum rownum_ from ( ");
-		} else {
-			pagingSelect.append("select * from ( ");
-		}
-		pagingSelect.append(sql);
-		if (offset > 0) {
-			String endString = offsetPlaceholder + "+" + limitPlaceholder;
-			pagingSelect.append(" ) row_ where rownum <= "+endString+") where rownum_ > ").append(offsetPlaceholder);
-		} else {
-			pagingSelect.append(" ) where rownum <= "+limitPlaceholder);
-		}
+            pagingSelect.append("select * from ( select row_.*, rownum rownum_ from ( ");
+        } else {
+            pagingSelect.append("select * from ( ");
+        }
+        pagingSelect.append(sql);
+        if (offset > 0) {
+            pagingSelect.append(" ) row_ where rownum <= "+limitPlaceholder+" ) where rownum_ > ").append(offsetPlaceholder);
+        } else {
+            pagingSelect.append(" ) where rownum <= "+limitPlaceholder);
+        }
 
         if (isForUpdate) {
             pagingSelect.append(" for update");
