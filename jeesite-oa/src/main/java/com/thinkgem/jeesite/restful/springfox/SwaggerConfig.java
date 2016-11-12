@@ -20,13 +20,15 @@ public class SwaggerConfig {
 	@Bean
 	public Docket statelessRestfullApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
-				.groupName("ios")
+				.groupName("all")
 				.genericModelSubstitutes(DeferredResult.class)
 				//.genericModelSubstitutes(ResponseEntity.class)
 				.useDefaultResponseMessages(false)
 				.forCodeGeneration(true)
-				.pathMapping("/api")//api测试请求地址
+				//.pathMapping("/api")//api测试请求地址
+				.pathMapping("/")//api测试请求地址
 				.select()
+				//.paths(PathSelectors.any())//过滤的接口
 				.paths(PathSelectors.regex("/api/.*"))//过滤的接口
 				.build()
 				.apiInfo(statelessRestfullApiInfo());
@@ -34,10 +36,15 @@ public class SwaggerConfig {
 
 	private ApiInfo statelessRestfullApiInfo() {
 		Contact contact = new Contact("evan", "https://swmwlm.github.io", "81367070@qq.com");
+		StringBuilder sb=new StringBuilder();
+		sb.append("1.客户端需要申请appId和appKey").append("<br />");
+		sb.append("2.算法步骤a):按nonce+appKey+timestamp字符串拼装,使用该字符串对参数map集合产生的待加密字符串进行HmacSHA256信息摘要,防止数据被篡改,并防止重放攻击.").append("<br />");
+		sb.append("3.算法步骤b):参数map集合由appId,timestamp,nonce固定参数以及待调用api方法中的参数组成,待加密的字符串是通过遍历map集合key,以及value拼装得到.").append("<br />");
+		sb.append("   待加密字符串形如:appId:appIdStrcontent:内容是什么nonce:1111param1:1param12param11param2:param2projectName:项目标题timestamp:1478825956").append("<br />");
 		ApiInfo apiInfo = new ApiInfo("首科OA平台restful api",//大标题
-				"stateless restful api",//小标题
+				sb.toString(),
 				"v1",//版本
-				"https://shoukeplus.com",
+				"https://oa.shoukeplus.com",
 				contact,//作者
 				"Apache Licence 2.0",//licenses链接显示文字
 				"http://www.apache.org/licenses/"//licenses链接
