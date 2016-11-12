@@ -36,6 +36,21 @@
 			<name>Jeesite Repository</name>
 			<url>http://maven.jeesite.com/nexus/content/groups/public</url>
 		</repository>
+
+		<!--springfox swagger依赖的中央库-->
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>jcenter-releases</id>
+			<name>jcenter</name>
+			<url>http://jcenter.bintray.com</url>
+		</repository>
+		<repository>
+			<id>jcenter-snapshots</id>
+			<name>jcenter</name>
+			<url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+		</repository>
 		
 	</repositories>
 	
@@ -47,8 +62,23 @@
 			<name>Jeesite Repository</name>
 			<url>http://maven.jeesite.com/nexus/content/groups/public</url>
 		</pluginRepository>
+
+		<!--springfox swagger依赖的中央库-->
+		<pluginRepository>
+			<id>jcenter-snapshots</id>
+			<name>jcenter</name>
+			<url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+		</pluginRepository>
+		<pluginRepository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>jcenter-releases</id>
+			<name>jcenter</name>
+			<url>http://jcenter.bintray.com</url>
+		</pluginRepository>
 		
-	</pluginRepositories> 
+	</pluginRepositories>
 	
 	<!-- 依赖项定义 -->
 	<dependencies>
@@ -260,6 +290,14 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-petstore</artifactId>
 		</dependency>
+		<!--<dependency>
+			<groupId>io.github.swagger2markup</groupId>
+			<artifactId>swagger2markup</artifactId>
+		</dependency>-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-staticdocs</artifactId>
+		</dependency>
 
 		<!-- google java lib -->
 		<dependency>
@@ -385,6 +423,7 @@
 
 	<build>
 		<outputDirectory>${project.basedir}/src/main/webapp/WEB-INF/classes/</outputDirectory>
+		<finalName>${project.name}</finalName>
 		<plugins>
 			<!-- Compiler 插件, 设定JDK版本 -->
 			<plugin>
@@ -652,6 +691,21 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.10</version>
 			</plugin>
+
+			<!--swagger2markup可以将文档导出md文件，不过目前导出时会报错-->
+			<!--<plugin>
+				<groupId>io.github.swagger2markup</groupId>
+				<artifactId>swagger2markup-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<configuration>
+					//<swaggerInput>http://localhost:8080/api/v2/api-docs?group=all</swaggerInput>
+					<swaggerInput>localhost:8080/swagger-ui.html</swaggerInput>
+					<outputDir>${project.build.directory}/asciidoc</outputDir>
+					<config>
+						<swagger2markup.markupLanguage>MARKDOWN</swagger2markup.markupLanguage>
+					</config>
+				</configuration>
+			</plugin>-->
 		</plugins>
 	</build>
 	

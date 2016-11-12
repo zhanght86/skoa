@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/**
+ * API 文档地址访问路径： http://localhost:8080/swagger-ui.html
+ * 文档写法可参照springfox-petstore.jar包中的controller
+ */
 @RestController
 @RequestMapping(value = "/api",headers="api-version=v1")
 @Api(value = "User控制器")
@@ -18,9 +22,9 @@ public class UserControllerApi extends BaseController {
     // @ApiIgnore //使用这个注解忽略这个接口
     @ApiOperation(value = "根据ProjectInfo projectInfo, String[] param1, String param2进行hello方法调用", httpMethod = "POST", produces = "application/json",consumes = "application/x-www-form-urlencoded")
     @ApiResponse(code = 200, message = "success", response = JsonResultModel.class)
-    @ApiImplicitParam(name = "projectInfo", value = "项目实体projectInfo", required = true, dataType = "ProjectInfo",paramType="query")
+    //@ApiImplicitParam(name = "projectInfo", value = "项目实体projectInfo", required = true, dataType = "ProjectInfo",paramType="query")
     @RequestMapping(value = "/hello",method = RequestMethod.POST)
-    public JsonResultModel hello(ProjectInfo projectInfo, @ApiParam(name = "param1", value = "字符数组", required = true) String[] param1, @ApiParam(name = "param2", value = "字符串", required = true) String param2) {
+    public JsonResultModel hello(@ApiParam(name = "projectInfo", value = "项目实体类", required = true) ProjectInfo projectInfo, @ApiParam(name = "param1", value = "字符数组", required = true) String[] param1, @ApiParam(name = "param2", value = "字符串", required = true) String param2) {
         try {
             Preconditions.checkNotNull(param1,"参数param1不能为空");
             Preconditions.checkNotNull(param2,"参数param2不能为空");
@@ -63,12 +67,16 @@ public class UserControllerApi extends BaseController {
     }
 
     @ApiOperation(value="更新用户详细信息", notes="根据url的id来指定更新对象，并根据传过来的user信息来更新用户详细信息")
-    @ApiImplicitParams({
+    /*@ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "String"),
             @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
-    })
+    })*/
     @RequestMapping(value="/users/{id}", method=RequestMethod.PUT)
-    public String putUser(@PathVariable String id, @RequestBody User user) {
+    public String putUser(@PathVariable String id,
+                          @ApiParam(
+                                  value = "Updated user object",
+                                  required = true
+                          ) @RequestBody User user) {
         User u = users.get(id);
         u.setName(user.getName());
         u.setEmail(user.getEmail());

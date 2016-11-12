@@ -80,6 +80,10 @@
 	<!--nginx下需要对druid的静态资源放行-->
 	<mvc:resources mapping="/druid/**" location="/druid/"  cache-period="31536000"/>
 
+	<!-- Enables swgger ui-->
+	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+
 	<!-- 定义无Controller的path<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:${web.view.index}"/>
 	
