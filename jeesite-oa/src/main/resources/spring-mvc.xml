@@ -77,11 +77,12 @@
 	
 	<!-- 静态资源映射 并设置过期时间一年 -->
     <mvc:resources mapping="/static/**" location="/static/" cache-period="31536000"/>
-	<!--nginx下需要对druid的静态资源放行; 并设置过期时间一年-->
-	<!--<mvc:resources mapping="/druid/**" location="/druid/"  cache-period="31536000"/>-->
+	<!--nginx下需要对druid的静态资源放行; 并设置过期时间一年 ;
+		注:Servlet3规范,包含在JAR文件/META-INF/resources/路径下的资源可以直接访问了,下面的代码不加也可以;-->
 	<mvc:resources mapping="/druid/**" location="classpath:/support/http/resources"  cache-period="31536000"/>
 
-	<!-- nginx下需要对swagger-ui的静态资源放行; Enables swgger ui-->
+	<!-- nginx下需要对swagger-ui的静态资源放行;并设置过期时间一年 Enables swgger ui
+		注:Servlet3规范,包含在JAR文件/META-INF/resources/路径下的资源可以直接访问了,下面的代码不加也可以;-->
 	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" cache-period="31536000"/>
 	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" cache-period="31536000"/>
 
