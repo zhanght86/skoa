@@ -75,14 +75,15 @@
 	<!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
 	<mvc:default-servlet-handler />
 	
-	<!-- 静态资源映射 -->
+	<!-- 静态资源映射 并设置过期时间一年 -->
     <mvc:resources mapping="/static/**" location="/static/" cache-period="31536000"/>
-	<!--nginx下需要对druid的静态资源放行-->
-	<mvc:resources mapping="/druid/**" location="/druid/"  cache-period="31536000"/>
+	<!--nginx下需要对druid的静态资源放行; 并设置过期时间一年-->
+	<!--<mvc:resources mapping="/druid/**" location="/druid/"  cache-period="31536000"/>-->
+	<mvc:resources mapping="/druid/**" location="classpath:/support/http/resources"  cache-period="31536000"/>
 
-	<!-- Enables swgger ui-->
-	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
-	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+	<!-- nginx下需要对swagger-ui的静态资源放行; Enables swgger ui-->
+	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" cache-period="31536000"/>
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" cache-period="31536000"/>
 
 	<!-- 定义无Controller的path<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:${web.view.index}"/>
