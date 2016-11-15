@@ -16,7 +16,10 @@ import java.util.*;
  */
 @RestController
 @RequestMapping(value = "/api",headers="api-version=v1")
-@Api(value = "User控制器")
+@Api(
+        value = "/user",
+        description = "Operations about user"
+)
 public class UserControllerApi extends BaseController {
 
     // @ApiIgnore //使用这个注解忽略这个接口

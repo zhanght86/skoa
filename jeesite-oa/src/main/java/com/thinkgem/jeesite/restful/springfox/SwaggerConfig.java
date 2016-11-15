@@ -35,7 +35,7 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo statelessRestfullApiInfo() {
-		Contact contact = new Contact("evan", "https://swmwlm.github.io", "81367070@qq.com");
+		Contact contact = new Contact("evan", "https://oa.shoukeplus.com", "admin@shoukechou.com");
 		StringBuilder sb=new StringBuilder();
 		sb.append("1.客户端需要申请appId和appKey").append("<br />");
 		sb.append("2.算法步骤a):按nonce+appKey+timestamp字符串拼装,使用该字符串对参数map集合产生的待加密字符串进行HmacSHA256信息摘要,防止数据被篡改,并防止重放攻击.").append("<br />");
