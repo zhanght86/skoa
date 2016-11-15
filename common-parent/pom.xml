@@ -83,7 +83,7 @@
 		<freemarker.version>2.3.20</freemarker.version>
 		<dozer.version>5.5.1</dozer.version>
 		<xstream.version>1.4.7</xstream.version>
-		<springfox-swagger2.version>2.6.1</springfox-swagger2.version>
+		<springfox-swagger2.version>2.5.0</springfox-swagger2.version>
 		<!--<guava.version>17.0</guava.version>-->
 		<guava.version>19.0</guava.version>
 		<activiti.version>5.21.0</activiti.version>
