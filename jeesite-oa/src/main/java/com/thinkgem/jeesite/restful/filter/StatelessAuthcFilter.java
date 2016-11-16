@@ -7,7 +7,9 @@ import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.restful.Constants;
 import com.thinkgem.jeesite.restful.realm.StatelessToken;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.springframework.http.MediaType;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -25,38 +27,29 @@ public class StatelessAuthcFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        //1、客户端生成的消息摘要
-        String clientDigest = request.getParameter(Constants.PARAM_DIGEST);
-        //2、客户端传入的用户身份
-        String username = request.getParameter(Constants.PARAM_APPID);
-        //3. 客户端传入的时间戳;使用时间戳前提是必须保证客户端与服务器时间同步;
-        String strTimeStamp=request.getParameter(Constants.PARAM_TIMESTAMP);
-        //3.1 使用nonce增加难度
-        String nonce = request.getParameter(Constants.PARAM_NONCE);
+        MyHttpServletRequestWrapper myRequest= (MyHttpServletRequestWrapper) request;
+
+        //1.获取appId
+        String appId=myRequest.getHeader(Constants.PARAM_APPID);
+        //2.获取时间戳
+        String strTimestamp=myRequest.getHeader(Constants.PARAM_TIMESTAMP);
+        //3.获取nonce
+        String nonce=myRequest.getHeader(Constants.PARAM_NONCE);
+        //4.获取客户端生成的摘要信息
+        String clientDigest=myRequest.getHeader(Constants.PARAM_DIGEST);
 
         try {
-            Preconditions.checkArgument(!StringUtils.isBlank(clientDigest), "参数"+Constants.PARAM_DIGEST+"为空或者null");
-            Preconditions.checkArgument(!StringUtils.isBlank(username), "参数"+Constants.PARAM_APPID+"为空或者null");
-            Preconditions.checkArgument(!StringUtils.isBlank(strTimeStamp), "参数"+Constants.PARAM_TIMESTAMP+"为空或者null");
-            Preconditions.checkArgument(!StringUtils.isBlank(nonce), "参数"+Constants.PARAM_NONCE+"为空或者null");
-
-            //4、客户端请求的参数列表
-            Map<String, String[]> params = new HashMap<String, String[]>(request.getParameterMap());
-            params.remove(Constants.PARAM_DIGEST);
+            Preconditions.checkArgument(!StringUtils.isBlank(appId), "参数" + Constants.PARAM_APPID + "为空或者null");
+            Preconditions.checkArgument(!StringUtils.isBlank(strTimestamp), "参数" + Constants.PARAM_TIMESTAMP + "为空或者null");
+            Preconditions.checkArgument(!StringUtils.isBlank(nonce), "参数" + Constants.PARAM_NONCE + "为空或者null");
+            Preconditions.checkArgument(!StringUtils.isBlank(clientDigest), "参数" + Constants.PARAM_DIGEST + "为空或者null");
 
             //5.判断客户端传递的时间与当前时间差,大于1天不允许调用;
-            Long timestamp= Long.parseLong(strTimeStamp);
+            Long timestamp= Long.parseLong(strTimestamp);
             if(Math.abs(DateUtils.getTimeStamps()/1000-timestamp)>Constants.PARAM_INTERVALTIME){
                 onResponseFail(response,"method invoke attempted replay attack!");
                 return false;
             }
-
-            //6、生成无状态Token
-            StatelessToken token = new StatelessToken(username, params, clientDigest);
-
-            //7、委托给Realm进行登录
-            getSubject(request, response).login(token);
-
         } catch (NumberFormatException e){
             e.printStackTrace();
             onResponseFail(response,"参数"+Constants.PARAM_TIMESTAMP+"为时间戳");
@@ -65,7 +58,26 @@ public class StatelessAuthcFilter extends AccessControlFilter {
             e.printStackTrace();
             onResponseFail(response,e.getMessage());
             return false;
-        } /*catch (UnknownAccountException e){
+        }
+
+        try{
+
+            String contentType=request.getContentType();
+
+            StatelessToken token;
+            //判断请求类型是否为json请求
+            if(contentType!=null&&contentType.contains(MediaType.APPLICATION_JSON_VALUE)){
+                String bodyJson=myRequest.getBody();
+                token= new StatelessToken(appId,strTimestamp,nonce, null, clientDigest,bodyJson);
+            }else{
+                Map<String, String[]> params = new HashMap<String, String[]>(request.getParameterMap());
+                token= new StatelessToken(appId,strTimestamp,nonce, params, clientDigest,null);
+            }
+
+            //7、委托给Realm进行登录
+            getSubject(request, response).login(token);
+
+        }  /*catch (UnknownAccountException e){
             e.printStackTrace();
             onResponseFail(response,e.getMessage());
             return false;
@@ -73,11 +85,11 @@ public class StatelessAuthcFilter extends AccessControlFilter {
             e.printStackTrace();
             onResponseFail(response,e.getMessage());
             return false;
-        } catch (AuthenticationException e){
+        } */catch (AuthenticationException e){
             e.printStackTrace();
             onResponseFail(response,"login error");
             return false;
-        } */catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             onResponseFail(response,"login error");//6、登录失败
             return false;
@@ -95,6 +107,5 @@ public class StatelessAuthcFilter extends AccessControlFilter {
 
         ResponseJsonUtil.renderString(httpResponse,jsonResultModel);
     }
-
 
 }

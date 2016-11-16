@@ -11,7 +11,8 @@
 	<context:property-placeholder ignore-unresolvable="true" location="classpath:jeesite.properties" />
 
 	<bean id="statelessAuthcFilter" class="com.thinkgem.jeesite.restful.filter.StatelessAuthcFilter"/>
-	
+	<bean id="myHttpServletWrapperFilter" class="com.thinkgem.jeesite.restful.filter.MyHttpServletWrapperFilter"/>
+
 	<!-- Shiro权限过滤过滤器定义 -->
 	<bean name="shiroFilterChainDefinitions" class="java.lang.String">
 		<constructor-arg>
@@ -24,7 +25,7 @@
 				${adminPath}/** = user
 				/act/editor/** = user
 				/ReportServer/** = user
-				/api/** = statelessAuthc
+				/api/** = myHttpServletWrapper,statelessAuthc
 			</value>
 		</constructor-arg>
 	</bean>
@@ -39,6 +40,7 @@
             <map>
                 <entry key="cas" value-ref="casFilter"/>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
+                <entry key="myHttpServletWrapper" value-ref="myHttpServletWrapperFilter"/>
 				<entry key="statelessAuthc" value-ref="statelessAuthcFilter"/>
             </map>
         </property>

@@ -18,7 +18,10 @@
 	
 	<!-- 内容管理模块缓存 -->
 	<cache name="cmsCache" maxEntriesLocalHeap="1000" eternal="true" overflowToDisk="true" statistics="true"/>
-    
+
+	<!-- hmacclient模块缓存 -->
+	<cache name="hmacClientCache" maxEntriesLocalHeap="1000" eternal="true" overflowToDisk="true" statistics="true"/>
+
 	<!-- 工作流模块缓存 -->
 	<cache name="actCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true" statistics="true"/>
 	

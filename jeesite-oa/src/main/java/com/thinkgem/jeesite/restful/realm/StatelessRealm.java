@@ -1,25 +1,19 @@
 package com.thinkgem.jeesite.restful.realm;
 
-import com.thinkgem.jeesite.restful.Constants;
-import com.thinkgem.jeesite.restful.codec.HmacSHA256Utils;
 import com.thinkgem.jeesite.restful.modules.client.entity.HmacClient;
-import com.thinkgem.jeesite.restful.modules.client.service.HmacClientService;
+import com.thinkgem.jeesite.restful.modules.client.utils.HmacClientUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
-import java.util.Map;
 
 import static com.thinkgem.jeesite.common.persistence.BaseEntity.DEL_FLAG_NORMAL;
 
 public class StatelessRealm extends AuthorizingRealm {
-    @Autowired
-    private HmacClientService hmacClientService;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -52,7 +46,7 @@ public class StatelessRealm extends AuthorizingRealm {
         StatelessToken statelessToken = (StatelessToken) token;
         String appId = statelessToken.getUsername();
 
-        HmacClient hmacClient=hmacClientService.getByAppId(appId);
+        HmacClient hmacClient= HmacClientUtils.getByAppId(appId);
         if(null==hmacClient)
             throw new UnknownAccountException();//没有找到账号
 
@@ -61,12 +55,8 @@ public class StatelessRealm extends AuthorizingRealm {
 
         String appKey = hmacClient.getClientSecret();//该密钥只有客户端与服务器端知道,其他第三方是不知道的.
 
-        Map<String, ?> params = statelessToken.getParams();
-        String timestamp= ((String[]) params.get(Constants.PARAM_TIMESTAMP))[0];
-        String nonce= ((String[]) params.get(Constants.PARAM_NONCE))[0];
-
         //在服务器端生成客户端参数消息摘要
-        String serverDigest = HmacSHA256Utils.digest(nonce+appKey+timestamp, statelessToken.getParams());
+        String serverDigest = statelessToken.gernerateServerDigest(appKey);
 
         //然后进行客户端消息摘要和服务器端消息摘要的匹配
         return new SimpleAuthenticationInfo(

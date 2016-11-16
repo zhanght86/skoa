@@ -38,9 +38,10 @@ public class SwaggerConfig {
 		Contact contact = new Contact("evan", "https://oa.shoukeplus.com", "admin@shoukechou.com");
 		StringBuilder sb=new StringBuilder();
 		sb.append("1.客户端需要申请appId和appKey").append("<br />");
-		sb.append("2.算法步骤a):按nonce+appKey+timestamp字符串拼装,使用该字符串对参数map集合产生的待加密字符串进行HmacSHA256信息摘要,防止数据被篡改,并防止重放攻击.").append("<br />");
-		sb.append("3.算法步骤b):参数map集合由appId,timestamp,nonce固定参数以及待调用api方法中的参数组成,待加密的字符串是通过遍历map集合key,以及value拼装得到.");
-		sb.append("待加密字符串形如:appId:appIdStrcontent:内容是什么nonce:1111param1:1param12param11param2:param2projectName:项目标题timestamp:1478825956").append("<br />");
+		sb.append("2.客户端需要在request headers中传递appId,timestamp,nonce,digest头信息.").append("<br />");
+		sb.append("3.1 客户端按nonce+appKey+timestamp字符串拼装,产生秘钥").append("<br />");
+		sb.append("3.2 客户端封装待调用api的参数进map集合,该map集合按照key:value形式进行字符串拼装(待加密字符串),形如:.,使用该字符串对参数map集合产生的待加密字符串进行HmacSHA256信息摘要(摘要时使用的秘钥为3.1步骤),防止数据被篡改,并防止重放攻击.").append("<br />");
+		sb.append("4 客户端也可以把json序列化字符串至http请求体中,请求头digest的算法为3.1产生的秘钥对json序列化后的字符串进行摘要算法,此时的请求头中还需指定Content-Type:application/json,").append("<br />");
 		ApiInfo apiInfo = new ApiInfo("首科OA平台restful api",//大标题
 				sb.toString(),
 				"v1",//版本
