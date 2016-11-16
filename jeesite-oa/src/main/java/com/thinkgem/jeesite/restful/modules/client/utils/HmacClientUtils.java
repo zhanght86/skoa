@@ -26,8 +26,8 @@ public class HmacClientUtils {
 	public static HmacClient getByAppId(String appId){
 		HmacClient hmacClient = (HmacClient)CacheUtils.get(HMACCLIENT_CACHE, appId);
 		if (hmacClient == null){
-			HmacClient newHmacClient=hmacClientService.getByAppId(appId);
-			CacheUtils.put(HMACCLIENT_CACHE, appId, newHmacClient);
+			hmacClient=hmacClientService.getByAppId(appId);
+			CacheUtils.put(HMACCLIENT_CACHE, appId, hmacClient);
 		}
 		return hmacClient;
 	}
