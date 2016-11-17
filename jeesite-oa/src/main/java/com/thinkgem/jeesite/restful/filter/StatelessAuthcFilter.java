@@ -39,10 +39,10 @@ public class StatelessAuthcFilter extends AccessControlFilter {
         String clientDigest=myRequest.getHeader(Constants.PARAM_DIGEST);
 
         try {
-            Preconditions.checkArgument(!StringUtils.isBlank(appId), "参数" + Constants.PARAM_APPID + "为空或者null");
-            Preconditions.checkArgument(!StringUtils.isBlank(strTimestamp), "参数" + Constants.PARAM_TIMESTAMP + "为空或者null");
-            Preconditions.checkArgument(!StringUtils.isBlank(nonce), "参数" + Constants.PARAM_NONCE + "为空或者null");
-            Preconditions.checkArgument(!StringUtils.isBlank(clientDigest), "参数" + Constants.PARAM_DIGEST + "为空或者null");
+            Preconditions.checkArgument(!StringUtils.isBlank(appId), "请求头参数" + Constants.PARAM_APPID + "不能为空");
+            Preconditions.checkArgument(!StringUtils.isBlank(strTimestamp), "请求头参数" + Constants.PARAM_TIMESTAMP + "不能为空");
+            Preconditions.checkArgument(!StringUtils.isBlank(nonce), "请求头参数" + Constants.PARAM_NONCE + "不能为空");
+            Preconditions.checkArgument(!StringUtils.isBlank(clientDigest), "请求头参数" + Constants.PARAM_DIGEST + "不能为空");
 
             //5.判断客户端传递的时间与当前时间差,大于1天不允许调用;
             Long timestamp= Long.parseLong(strTimestamp);
@@ -52,7 +52,7 @@ public class StatelessAuthcFilter extends AccessControlFilter {
             }
         } catch (NumberFormatException e){
             e.printStackTrace();
-            onResponseFail(response,"参数"+Constants.PARAM_TIMESTAMP+"为时间戳");
+            onResponseFail(response,"请求头参数"+Constants.PARAM_TIMESTAMP+"为时间戳格式");
             return false;
         } catch (IllegalArgumentException e){
             e.printStackTrace();
