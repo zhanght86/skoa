@@ -2,7 +2,7 @@ skoa部署测试服务器步骤
 1.克隆一个本地版本库：git clone ssh://git@139.196.43.234:22123/skoa
 
 2.创建脚本文件 deploy_skoa.sh;复制以下命令保存,此时不要执行./deploy_skoa.sh命令。
-#!/bin/bash
+!/bin/bash
 branch="develop";
 if [ -n "$1" ]; then
 branch="feature/"$1
@@ -25,7 +25,22 @@ cp -rf target/jeesite-oa/* /data/tomcat/webapps/skoa
 #log4j 配置了相对路径（./logs/jeesite/jeesite.log），它是相对于当前的目录，因此，需要切换到tomcat应用目录下
 cd /data/tomcat/
 /data/tomcat/bin/shutdown.sh
+sleep 5s
+#如果没有关闭掉 ；kill tomcat pid
+pidlist=`ps -ef|grep /data/tomcat|grep -v "grep"|awk '{print $2}'`
+if [ "$pidlist" = "" ]
+        then
+                echo "no tomcat pid alive"
+else
+        echo "tomcat pid is:$pidlist"
+        kill -9 $pidlist
+        sleep 5s
+        echo "KILL $pidlist:"
+        echo "service stop success"
+fi
+echo "start tomcat"
 /data/tomcat/bin/startup.sh
+
 
 3.下载jar文件到本地仓库
 	3.1 cd skoa/jeesite-oa 进入jeesite-oa目录，安装jflow-core工作流所需要的jta的jar文件

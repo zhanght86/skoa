@@ -20,7 +20,22 @@ cp -rf target/jeesite-oa/* /data/tomcat_skoa/webapps/ROOT/
 #log4j 配置了相对路径（./logs/jeesite/jeesite.log），它是相对于当前的目录，因此，需要切换到tomcat应用目录下
 cd /data/tomcat_skoa/
 /data/tomcat_skoa/bin/shutdown.sh
+sleep 5s
+#如果没有关闭掉 ；kill tomcat pid
+pidlist=`ps -ef|grep /data/tomcat_skoa|grep -v "grep"|awk '{print $2}'`
+if [ "$pidlist" = "" ]
+        then
+                echo "no tomcat pid alive"
+else
+        echo "tomcat pid is:$pidlist"
+        kill -9 $pidlist
+        sleep 5s
+        echo "KILL $pidlist:"
+        echo "service stop success"
+fi
+echo "start tomcat_skoa"
 /data/tomcat_skoa/bin/startup.sh
+
 
 另外,需要部署tomcat_skoa容器,配置略;
 3.下载jar文件到本地仓库
