@@ -63,15 +63,16 @@ public class StatelessAuthcFilter extends AccessControlFilter {
         try{
 
             String contentType=request.getContentType();
+            String uri=myRequest.getRequestURI();
 
             StatelessToken token;
             //判断请求类型是否为json请求
             if(contentType!=null&&contentType.contains(MediaType.APPLICATION_JSON_VALUE)){
                 String bodyJson=myRequest.getBody();
-                token= new StatelessToken(appId,strTimestamp,nonce, null, clientDigest,bodyJson);
+                token= new StatelessToken(appId,strTimestamp,nonce, null, clientDigest,bodyJson,uri);
             }else{
                 Map<String, String[]> params = new HashMap<String, String[]>(request.getParameterMap());
-                token= new StatelessToken(appId,strTimestamp,nonce, params, clientDigest,null);
+                token= new StatelessToken(appId,strTimestamp,nonce, params, clientDigest,null,uri);
             }
 
             //7、委托给Realm进行登录

@@ -27,7 +27,7 @@ nonce为客户端随机值,timestamp为客户端调用api的当前时间戳,dige
   -----------------------------------------------------------------------------------------
   注意:digest值的算法过程为:
         a).把方法中param1,param2,projectName,content(projectName,content可以传递为ProjectInfo对象值),封装这些参数组成map集合
-        b).map集合根据先按key升序排序,按(key:value形式)进行拼接字符串,其中同一个key下的value值为数组或者list时,再按照value升序,进行的拼装字符串.形如括号里内容:(content:内容是什么param1:1param12param11param2:param2projectName:项目标题)
+        b).map集合根据先按key升序排序,按(key:value形式)进行拼接字符串,其中同一个key下的value值为数组或者list时,再按照value升序,进行的拼装字符串.形如括号里内容:(content:内容是什么param1:1param12param11param2:param2projectName:项目标题),再加上当前调用的url路径/api/userDemo/hello;
         c).客户端的根据自己的nonce+appKey+timestamp字符串组合,对(b步骤)产生的字符串进行HmacSHA256摘要,以获得参数digest的值,传递digest到请求头;
         d).nonce客户端自行生成(例如uuid算法或者随机数),但调用时必须在请求头中传入此参数
 
@@ -49,6 +49,6 @@ nonce为客户端随机值,timestamp为客户端调用api的当前时间戳,dige
 {"id":1,"name":"swmwlm"}
   -----------------------------------------------------------------------------------------
     注意:digest值的算法过程为:
-          a).把Request Payload中的内容进行字符串序列化
+          a).把Request Payload中的内容进行字符串序列化,再加上当前调用的url路径/api/userDemo/;
           b).客户端的根据自己的nonce+appKey+timestamp字符串组合,对(a步骤)产生的字符串进行HmacSHA256摘要,以获得参数digest的值,传递digest到请求头;
           c).nonce客户端自行生成(例如uuid算法或者随机数),但调用时必须在请求头中传入此参数

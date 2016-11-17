@@ -14,6 +14,7 @@ public class StatelessToken implements AuthenticationToken {
     private Map<String, ?> params;
     private String clientDigest;
     private String requestBody;
+    private String uri;
 
     /*public StatelessToken(String username, Map<String, ?> params, String clientDigest) {
         this.username = username;
@@ -24,13 +25,14 @@ public class StatelessToken implements AuthenticationToken {
     public StatelessToken() {
     }
 
-    public StatelessToken(String username, String timestamp, String nonce, Map<String, ?> params, String clientDigest, String requestBody) {
+    public StatelessToken(String username, String timestamp, String nonce, Map<String, ?> params, String clientDigest, String requestBody, String uri) {
         this.username = username;
         this.timestamp = timestamp;
         this.nonce = nonce;
         this.params = params;
         this.clientDigest = clientDigest;
         this.requestBody = requestBody;
+        this.uri = uri;
     }
 
     public String getUsername() {
@@ -81,6 +83,14 @@ public class StatelessToken implements AuthenticationToken {
         this.requestBody = requestBody;
     }
 
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
     @Override
     public Object getPrincipal() {
        return username;
@@ -97,6 +107,6 @@ public class StatelessToken implements AuthenticationToken {
      */
     public String gernerateServerDigest(String appKey){
         String key=this.nonce+appKey+this.timestamp;
-        return StringUtils.isBlank(this.requestBody) ? HmacSHA256Utils.digest(key, this.params):HmacSHA256Utils.digest(key, this.requestBody);
+        return StringUtils.isBlank(this.requestBody) ? HmacSHA256Utils.digest(key, this.params,this.uri):HmacSHA256Utils.digest(key, this.requestBody+this.uri);
     }
 }
