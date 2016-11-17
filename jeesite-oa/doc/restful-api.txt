@@ -1,29 +1,54 @@
 stateless restful api 使用文档(CacheSessionDAO.java中禁用/api/调用时创建及更新session)
 在使用无状态api调用时,客户端需要申请appId和appKey;
-客户端需要传递固定的参数appId,nonce,timestamp,并动态的加入方法中的参数;nonce为客户端随机值,timestamp为客户端调用api的当前时间戳;
+客户端需要在请求头中,传递固定的参数appId,nonce,timestamp,digest,另外请求头需要加上api-version=v1;
+nonce为客户端随机值,timestamp为客户端调用api的当前时间戳,digest为信息摘要后的字符串;
 若客户端调用的时间戳与服务器当前时间比对过长,则认定为重放攻击,丢弃该请求;
 
 演示api调用方法:
-1.api路径 http://localhost:8080/api/hello;方法 hello(ProjectInfo projectInfo, String[] param1, String param2)有三个参数
+1.api路径 http://localhost:8080/api/userDemo/hello;方法 hello(ProjectInfo projectInfo, String[] param1, String param2)有三个参数
 
   客户端调用api时需要传递以下参数:
-  http header传递:api-version=v1;
-  form data:
+  Request Headers:
+        api-version:v1
+        appId:73256a89-e116-4aae-b13a-f7eca388a6ba
+        Content-Type:application/x-www-form-urlencoded (可以以form提交方式或者application/json方式提交)
+        digest:0b89370254f700221dcaf59c694b713e453119fa51a759926db0fbcdc3654b51
+        nonce:1111
+        timestamp:1479353070
 
-        appId:4a037039-40fa-4ff5-8352-993628358301
+  Form Data:(application/x-www-form-urlencoded方式)
+
         param1:param11
         param1:1param12
-        digest:8d2ef7c3be82d3bebbbf22ed02a92266f7562842dffafbad2191cf8f757a19a9
-        param2:param2
         projectName:项目标题
         content:内容是什么
-        nonce:1111
-        timestamp:1478825956
+        param2:param2
 
------------------------------------------------------------------------------------------
+  -----------------------------------------------------------------------------------------
   注意:digest值的算法过程为:
-        a).把方法param1,param2,projectName,content(projectName,content可以传递为ProjectInfo对象值),连同appId,timestamp,nonce这些参数的组成的map集合
-        b).map集合根据先按key升序排序,按(key:value形式)进行拼接字符串,其中同一个key下的value值为数组或者list时,再按照value升序,进行的拼装字符串.形如:
-        appId:4a037039-40fa-4ff5-8352-993628358301content:内容是什么nonce:1111param1:1param12param11param2:param2projectName:项目标题timestamp:1478825956
-        c).客户端的根据自己的nonce+appKey+timestamp字符串组合,对(b步骤)产生的字符串进行HmacSHA256摘要,以获得参数digest的值
-        d).nonce客户端自行生成(例如uuid算法或者随机数),但调用时必须传入此参数
+        a).把方法中param1,param2,projectName,content(projectName,content可以传递为ProjectInfo对象值),封装这些参数组成map集合
+        b).map集合根据先按key升序排序,按(key:value形式)进行拼接字符串,其中同一个key下的value值为数组或者list时,再按照value升序,进行的拼装字符串.形如括号里内容:(content:内容是什么param1:1param12param11param2:param2projectName:项目标题)
+        c).客户端的根据自己的nonce+appKey+timestamp字符串组合,对(b步骤)产生的字符串进行HmacSHA256摘要,以获得参数digest的值,传递digest到请求头;
+        d).nonce客户端自行生成(例如uuid算法或者随机数),但调用时必须在请求头中传入此参数
+
+
+2.api路径http://localhost:8080/api/userDemo/ ;方法 public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder)
+
+  客户端调用api时需要传递以下参数:
+  Request Headers:
+        api-version:v1
+        appId:73256a89-e116-4aae-b13a-f7eca388a6ba
+        Content-Type:application/json (以application/json方式提交)
+        digest:8c38423b995ae5f9c1141ad35558def24a835a8e6d7bac90b66d2d81326b6d76
+        nonce:1111
+        timestamp:1479353070
+
+  Request Payload:(application/json方式)
+        {"id":1,"name":"swmwlm"}
+
+{"id":1,"name":"swmwlm"}
+  -----------------------------------------------------------------------------------------
+    注意:digest值的算法过程为:
+          a).把Request Payload中的内容进行字符串序列化
+          b).客户端的根据自己的nonce+appKey+timestamp字符串组合,对(a步骤)产生的字符串进行HmacSHA256摘要,以获得参数digest的值,传递digest到请求头;
+          c).nonce客户端自行生成(例如uuid算法或者随机数),但调用时必须在请求头中传入此参数

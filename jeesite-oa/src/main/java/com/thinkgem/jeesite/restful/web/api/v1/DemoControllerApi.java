@@ -44,6 +44,7 @@ public class DemoControllerApi extends BaseController {
 		try {
 			Preconditions.checkNotNull(param1, "参数param1不能为空");
 			Preconditions.checkNotNull(param2, "参数param2不能为空");
+			jsonResultModel=new JsonResultModel();
 			jsonResultModel.setStateSuccess();
 			jsonResultModel.setData(new User("1", "evan"));
 			System.out.println(projectInfo);
