@@ -46,9 +46,9 @@ nonce为客户端随机值,timestamp为客户端调用api的当前时间戳,dige
   Request Payload:(application/json方式)
         {"id":1,"name":"swmwlm"}
 
-{"id":1,"name":"swmwlm"}
+
   -----------------------------------------------------------------------------------------
     注意:digest值的算法过程为:
           a).把Request Payload中的内容进行字符串序列化,再加上当前调用的url路径/api/userDemo/;
-          b).客户端的根据自己的nonce+appKey+timestamp字符串组合,对(a步骤)产生的字符串进行HmacSHA256摘要,以获得参数digest的值,传递digest到请求头;
+          b).客户端的根据自己的nonce+appKey+timestamp字符串组合,对(a步骤)产生的字符串(例如:{"id":1,"name":"swmwlm"}/api/userDemo/)进行HmacSHA256摘要,以获得参数digest的值,传递digest到请求头;
           c).nonce客户端自行生成(例如uuid算法或者随机数),但调用时必须在请求头中传入此参数
