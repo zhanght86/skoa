@@ -9,10 +9,16 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.project.entity.ProjectInfo;
 import com.thinkgem.jeesite.modules.project.entity.ProjectInfoProgress;
+import com.thinkgem.jeesite.modules.project.entity.ProjectNote;
 import com.thinkgem.jeesite.modules.project.service.ProjectInfoService;
+import com.thinkgem.jeesite.modules.project.service.ProjectNoteService;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.ProjectInfoUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * 项目管理Controller
@@ -36,6 +43,12 @@ public class ProjectInfoController extends BaseController {
 
 	@Autowired
 	private ProjectInfoService projectInfoService;
+
+	@Autowired
+	private SystemService systemService;
+
+	@Autowired
+	private ProjectNoteService projectNoteService;
 
 	@ModelAttribute
 	public ProjectInfo get(@RequestParam(required=false) String id,Model model) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -96,6 +109,25 @@ public class ProjectInfoController extends BaseController {
 		//校验当前用户是否有该项目的浏览权限
 		if(ProjectInfoUtils.viewableProject(projectInfo)) {
 			model.addAttribute("projectInfo", projectInfo);
+
+			//获取用户列表，用于@用户
+			List<User> userList = systemService.findUser(new User());
+			JSONArray json = new JSONArray();
+			for (User user : userList) {
+				JSONObject jo = new JSONObject();
+				jo.put("id", user.getLoginName());
+				jo.put("name", user.getName());
+				json.add(jo);
+			}
+//			System.out.println(json.toString());
+			model.addAttribute("userList", json.toString());
+
+			ProjectNote projectNote = new ProjectNote();
+			projectNote.setProjectId(projectInfo.getId());
+			List<ProjectNote> projectNoteList = projectNoteService.findList(projectNote);
+			model.addAttribute("projectNoteList", projectNoteList);
+
+
 			return "modules/project/projectInfoView";
 		}
 		addMessage(redirectAttributes, "没有此项目查看权限,浏览项目失败");

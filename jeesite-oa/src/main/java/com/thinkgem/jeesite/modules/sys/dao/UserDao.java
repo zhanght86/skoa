@@ -38,7 +38,14 @@ public interface UserDao extends CrudDao<User> {
 	 * @return
 	 */
 	public List<User> findUserByRoleId(@Param("roleId") String roleId);
-	
+
+	/**
+	 * 通过登录名字符串（例如 "ad","tom" ）获取用户列表,仅返回用户id和name，目前用于项目动态
+	 * @param loginNames
+	 * @return
+	 */
+	public List<User> findUserByLoginNames(String[] loginNames);
+
 	/**
 	 * 查询全部用户数目
 	 * @return

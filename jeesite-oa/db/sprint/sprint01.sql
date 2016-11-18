@@ -190,3 +190,25 @@ create index idx_hmac_client_client_id on hmac_client(client_id);
 INSERT INTO jeesite.sys_menu (id, parent_id, parent_ids, name, sort, href, target, icon, is_show, permission, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('79db32fda9834d0985983403de405755', 'e4b50fba63f841beae33450a8f968578', '0,1,2,3,e4b50fba63f841beae33450a8f968578,', '修改', 60, '', '', '', '0', 'client:hmacClient:edit', '1', '2016-11-08 10:41:30', '1', '2016-11-08 10:42:16', '', '0');
 INSERT INTO jeesite.sys_menu (id, parent_id, parent_ids, name, sort, href, target, icon, is_show, permission, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('d81357f805224a57af6bfcc7be22702c', 'e4b50fba63f841beae33450a8f968578', '0,1,2,3,e4b50fba63f841beae33450a8f968578,', '查看', 30, '', '', '', '0', 'client:hmacClient:view', '1', '2016-11-08 10:41:16', '1', '2016-11-08 10:41:16', '', '0');
 INSERT INTO jeesite.sys_menu (id, parent_id, parent_ids, name, sort, href, target, icon, is_show, permission, create_by, create_date, update_by, update_date, remarks, del_flag) VALUES ('e4b50fba63f841beae33450a8f968578', '3', '0,1,2,3,', 'HmacClient', 90, '/client/hmacClient', '', '', '1', '', '1', '2016-11-08 09:26:16', '1', '2016-11-08 09:47:50', '', '0');
+
+
+/* 项目动态表 */
+drop table if exists project_note;
+CREATE TABLE project_note
+(
+	id varchar(64) NOT NULL COMMENT '编号',
+	project_id varchar(64) COMMENT '项目编号',
+	at_userids varchar(2000) COMMENT '通知人员id(多个人员id使用逗号分隔)',
+	content text COMMENT '内容',
+
+	create_by varchar(64) NOT NULL COMMENT '创建者',
+	create_date datetime NOT NULL COMMENT '创建时间',
+	update_by varchar(64) NOT NULL COMMENT '更新者',
+	update_date datetime NOT NULL COMMENT '更新时间',
+	remarks varchar(255) COMMENT '备注信息',
+	del_flag char(1) DEFAULT '0' NOT NULL COMMENT '删除标记',
+	PRIMARY KEY (id)
+) COMMENT = '项目动态表';
+
+/* 新增 项目动态 的通告类型 */
+insert into `jeesite`.`sys_dict` ( `id`, `description`, `create_date`, `label`, `update_date`, `create_by`, `parent_id`, `update_by`, `type`, `value`, `del_flag`, `sort`, `remarks`) values ( '06274b22621243f2b2af78d3ec8107db', '通知通告类型', '2016-11-09 15:27:51', '项目动态', '2016-11-09 15:27:51', '1', '0', '1', 'oa_notify_type', '4', '0', '40', '');

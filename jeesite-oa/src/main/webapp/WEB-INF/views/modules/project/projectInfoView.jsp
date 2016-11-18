@@ -1,10 +1,99 @@
+<!DOCTYPE HTML>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
 	<title>项目浏览</title>
 	<meta name="decorator" content="default"/>
+
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/atjs/dist/css/jquery.atwho.css"/>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="https://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/atjs/dist/js/jquery.atwho.js"></script>
+
+	<script type="text/javascript">
+		$(function () {
+			$.fn.atwho.debug = true
+
+			$('#editable').atwho({
+				at: "@",
+				data: ${userList},
+				headerTpl: '<div class="atwho-header">选择用户</div>',
+				insertTpl: "@$" + "{name}(<span class='atwho-loginName'>$"+"{id}</span>)",
+				displayTpl: "<li>$" + "{name}($"+"{id})</li>",
+				limit: 10
+			});
+
+		});
+
+		function saveProjectNote() {
+			if ($('#editable').text() == "") {
+				alertx("请输入要发布的内容！");
+				return;
+			}
+			confirmx("确定发布吗？", doSaveProjectNote);
+		}
+
+		function doSaveProjectNote() {
+			$('#content').val($('#editable').text());
+			var atUserids = "";
+			$.each($('.atwho-loginName'), function (n, value) {
+				atUserids = atUserids + "," + $(value).text();
+			});
+			$("#atUserids").val(atUserids);
+			$.ajax({
+				url: "${ctx}/project/projectNote/saveProjectNote",
+				type: "POST",
+				data: $('#projectNoteForm').serialize(),
+				success: function (data, textStatus, jqXHR) {
+					$('#editable').text("");
+					$('#content').val("");
+					$("#atUserids").val("");
+
+					var ahtml = [];
+					ahtml.push('<div>');
+					ahtml.push('<hr/>');
+					ahtml.push('<div style="float: left;width: 10%;">');
+					ahtml.push(data.data.name);
+					ahtml.push('：</div>');
+					ahtml.push('<div style="float: left;width: 68%;">');
+					ahtml.push(data.data.content);
+					ahtml.push('</div>');
+					ahtml.push('<div style="float: right;width: 18%;">');
+					ahtml.push(data.data.createDate);
+					ahtml.push('</div>');
+					ahtml.push('<div style="clear:both;"></div>');
+					ahtml.push('</div>');
+					$("#divProjectNote").html(ahtml.join("") + $("#divProjectNote").html());
+
+					showTip("发布成功!",'',1000,0);
+				},
+				error: function (jqXHR, textStatus, errorMsg) {
+					showTip("发布失败!",'',1000,0);
+				}
+			});
+		}
+
+	</script>
+	<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+
+	<style type="text/css">
+		.inputor {
+			height: 60px;
+			width: 90%;
+			border: 1px solid #dadada;
+			border-radius: 4px;
+			padding: 5px 8px;
+			outline: 0 none;
+			margin: 10px 0;
+			background: white;
+			font-size: inherit;
+			overflow-y: scroll;
+		}
+	</style>
+
 </head>
+
 <body>
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/project/projectInfo/">项目列表</a></li>
@@ -176,6 +265,38 @@
 				</table>
 			</div>
 		</c:if>
+
+
+		<div class="control-group">
+			<label class="control-label">项目动态：</label>
+			<div class="controls">
+				<form id="projectNoteForm">
+					<input type="hidden" id="projectId" name="projectId" value="${projectInfo.id}"/>
+					<input type="hidden" id="atUserids" name="atUserids" value=""/>
+					<input type="hidden" id="content" name="content" value=""/>
+					<div id="editable" class="inputor" contentEditable="true"></div>
+					<input type="button" id="btnSend" class="btn btn-primary" onclick="javascript:saveProjectNote();"
+						   value="发 布"/>
+				</form>
+			</div>
+
+			<label class="control-label">&nbsp;&nbsp;</label>
+			<div class="controls" id="divProjectNote">
+				<c:forEach var="projectNote" items="${projectNoteList}">
+					<div>
+						<hr/>
+						<div style="float: left;width: 10%;">${projectNote.createBy.name}：</div>
+						<div style="float: left;width: 68%;">${projectNote.content}</div>
+						<div style="float: right;width: 18%;"><fmt:formatDate value="${projectNote.createDate}"
+																			  pattern="yyyy-MM-dd HH:mm:ss"/></div>
+						<div style="clear:both;"></div>
+					</div>
+				</c:forEach>
+			</div>
+
+		</div>
+
+
 		<div class="form-actions">
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
