@@ -63,7 +63,7 @@ public class StatelessAuthcFilter extends AccessControlFilter {
         try{
 
             String contentType=request.getContentType();
-            String uri=myRequest.getRequestURI();
+            String uri=myRequest.getServletPath();
 
             StatelessToken token;
             //判断请求类型是否为json请求
