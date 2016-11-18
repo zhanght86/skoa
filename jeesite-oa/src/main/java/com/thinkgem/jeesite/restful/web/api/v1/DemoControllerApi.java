@@ -20,12 +20,13 @@ import java.util.List;
 /**
  * API 文档地址访问路径： http://localhost:8080/swagger-ui.html
  * 文档写法可参照springfox-petstore.jar包中的controller
+ * restful 规范 参照http://www.tuicool.com/articles/ruqqaiE
  */
 @RestController
-@RequestMapping(value = "/api/userDemo", headers = "api-version=v1")
+@RequestMapping(value = "/api/userDemos", headers = "api-version=v1")
 //@RequestMapping(value = "/api1/userDemo")
 @Api(
-		value = "/api/userDemo",
+		value = "/api/userDemos",
 		description = "Demo Operations about user"
 )
 public class DemoControllerApi extends BaseController {
