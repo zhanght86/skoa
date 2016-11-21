@@ -227,11 +227,11 @@
 				<artifactId>springfox-swagger2</artifactId>
 				<version>${springfox-swagger2.version}</version>
 			</dependency>
-			<dependency>
+			<!--<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger-ui</artifactId>
 				<version>${springfox-swagger2.version}</version>
-			</dependency>
+			</dependency>-->
 			<!--petStore是官方提供的一个代码参考, 可用于后期写文档时进行参考, 可不加-->
 			<dependency>
 				<groupId>io.springfox</groupId>
