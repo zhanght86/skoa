@@ -83,8 +83,12 @@
 
 	<!-- nginx下需要对swagger-ui的静态资源放行;并设置过期时间一年 Enables swgger ui
 		注:Servlet3规范,包含在JAR文件/META-INF/resources/路径下的资源可以直接访问了,下面的代码不加也可以;-->
-	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" cache-period="31536000"/>
-	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" cache-period="31536000"/>
+	<!--<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" cache-period="31536000"/>
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" cache-period="31536000"/>-->
+
+	<!--springfox-swagger-ui.jar包引入pom.xml导致程序出错,解决方法:将jar资源直接拷贝至/WEB-INF/springfox-ui 下-->
+	<mvc:resources mapping="swagger-ui.html" location="/WEB-INF/springfox-ui/" cache-period="31536000"/>
+	<mvc:resources mapping="/webjars/**" location="/WEB-INF/springfox-ui/webjars/" cache-period="31536000"/>
 
 	<!-- 定义无Controller的path<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:${web.view.index}"/>
