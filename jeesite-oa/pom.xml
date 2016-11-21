@@ -752,8 +752,9 @@
 								
 								<!-- oracle
 								<property name="dbunit.datatype" value="org.dbunit.ext.oracle.Oracle10DataTypeFactory" /> -->
-								
-								<property file="src/main/resources/jeesite.properties" />
+
+								<!--为了执行安装数据库，复制一份jeesite.properties，在此只为读取对应的属性-->
+								<property file="src/main/resources/executeDB.properties" />
 								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}" 
 									onerror="continue" encoding="${project.build.sourceEncoding}">
 									<classpath refid="maven.test.classpath" />
