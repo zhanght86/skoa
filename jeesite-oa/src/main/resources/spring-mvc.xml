@@ -87,8 +87,8 @@
 	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" cache-period="31536000"/>-->
 
 	<!--springfox-swagger-ui.jar包引入pom.xml导致程序出错,解决方法:将jar资源直接拷贝至/WEB-INF/springfox-ui 下-->
-	<mvc:resources mapping="swagger-ui.html" location="/WEB-INF/springfox-ui/" cache-period="31536000"/>
-	<mvc:resources mapping="/webjars/**" location="/WEB-INF/springfox-ui/webjars/" cache-period="31536000"/>
+	<mvc:resources mapping="swagger-ui.html" location="/WEB-INF/springfox-ui2.5.0/" cache-period="31536000"/>
+	<mvc:resources mapping="/webjars/**" location="/WEB-INF/springfox-ui2.5.0/webjars/" cache-period="31536000"/>
 
 	<!-- 定义无Controller的path<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:${web.view.index}"/>
