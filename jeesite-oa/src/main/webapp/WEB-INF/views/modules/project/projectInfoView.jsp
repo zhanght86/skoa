@@ -15,12 +15,13 @@
 		$(function () {
 			$.fn.atwho.debug = true
 
-			$('#editable').atwho({
+            $('#editable').atwho({
 				at: "@",
 				data: ${userList},
 				headerTpl: '<div class="atwho-header">选择用户</div>',
 				insertTpl: "@$" + "{name}(<span class='atwho-loginName'>$"+"{id}</span>)",
 				displayTpl: "<li>$" + "{name}($"+"{id})</li>",
+				searchKey: "searchKey",
 				limit: 10
 			});
 

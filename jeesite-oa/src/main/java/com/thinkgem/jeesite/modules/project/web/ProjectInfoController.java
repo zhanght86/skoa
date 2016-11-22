@@ -117,6 +117,7 @@ public class ProjectInfoController extends BaseController {
 				JSONObject jo = new JSONObject();
 				jo.put("id", user.getLoginName());
 				jo.put("name", user.getName());
+				jo.put("searchKey", user.getLoginName());
 				json.add(jo);
 			}
 //			System.out.println(json.toString());
