@@ -18,7 +18,7 @@
             $('#editable').atwho({
 				at: "@",
 				data: ${userList},
-				headerTpl: '<div class="atwho-header">选择用户</div>',
+				headerTpl: '<div class="atwho-header">选择用户(根据姓名简拼搜索)</div>',
 				insertTpl: "@$" + "{name}(<span class='atwho-loginName'>$"+"{id}</span>)",
 				displayTpl: "<li>$" + "{name}($"+"{id})</li>",
 				searchKey: "searchKey",
