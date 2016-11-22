@@ -7,6 +7,8 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//$("#name").focus();
+			//不显示项目动态下拉框
+			$("#type option[value='4']").remove();
 			$("#inputForm").validate({
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');

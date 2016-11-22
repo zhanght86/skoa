@@ -3,21 +3,20 @@
  */
 package com.thinkgem.jeesite.modules.project.service;
 
-import java.util.List;
-
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.oa.entity.OaNotify;
 import com.thinkgem.jeesite.modules.oa.service.OaNotifyService;
 import com.thinkgem.jeesite.modules.project.dao.ProjectInfoDao;
+import com.thinkgem.jeesite.modules.project.dao.ProjectNoteDao;
 import com.thinkgem.jeesite.modules.project.entity.ProjectInfo;
+import com.thinkgem.jeesite.modules.project.entity.ProjectNote;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.project.entity.ProjectNote;
-import com.thinkgem.jeesite.modules.project.dao.ProjectNoteDao;
+import java.util.List;
 
 /**
  * 项目动态表管理Service
@@ -67,7 +66,7 @@ public class ProjectNoteService extends CrudService<ProjectNoteDao, ProjectNote>
 			//添加到我的通告
 			OaNotify oaNotify = new OaNotify();
 			oaNotify.setType("4");
-			oaNotify.setTitle("项目动态-"+projectInfo.getProjectName());
+			oaNotify.setTitle(projectInfo.getProjectName());
 			oaNotify.setContent(projectNote.getContent());
 			oaNotify.setStatus("1");
 			oaNotify.setOaNotifyRecordIds(atUserids);
