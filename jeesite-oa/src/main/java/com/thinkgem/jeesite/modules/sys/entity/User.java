@@ -57,6 +57,9 @@ public class User extends DataEntity<User> {
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
 	private List<Station> stationList = Lists.newArrayList(); // 拥有岗位列表
 
+	private String quanpin;
+	private String jianpin;
+
 	public User() {
 		super();
 		this.loginFlag = Global.YES;
@@ -249,6 +252,22 @@ public class User extends DataEntity<User> {
 
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
+	}
+
+	public String getQuanpin() {
+		return quanpin;
+	}
+
+	public void setQuanpin(String quanpin) {
+		this.quanpin = quanpin;
+	}
+
+	public String getJianpin() {
+		return jianpin;
+	}
+
+	public void setJianpin(String jianpin) {
+		this.jianpin = jianpin;
 	}
 
 	public String getOldLoginIp() {

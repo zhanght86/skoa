@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import com.thinkgem.jeesite.common.utils.Collections3;
+import com.thinkgem.jeesite.common.utils.*;
 import com.thinkgem.jeesite.modules.sys.entity.*;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
@@ -25,9 +25,6 @@ import com.thinkgem.jeesite.common.security.Digests;
 import com.thinkgem.jeesite.common.security.shiro.session.SessionDAO;
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.service.ServiceException;
-import com.thinkgem.jeesite.common.utils.CacheUtils;
-import com.thinkgem.jeesite.common.utils.Encodes;
-import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.Servlets;
 import com.thinkgem.jeesite.modules.sys.dao.MenuDao;
 import com.thinkgem.jeesite.modules.sys.dao.RoleDao;
@@ -113,7 +110,7 @@ public class SystemService extends BaseService implements InitializingBean {
 
 	/**
 	 * 通过部门ID获取用户列表，仅返回用户id和name（树查询用户时用）
-	 * @param user
+	 * @param officeId
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -130,6 +127,8 @@ public class SystemService extends BaseService implements InitializingBean {
 	
 	@Transactional(readOnly = false)
 	public void saveUser(User user) {
+		user.setQuanpin(Pinyin4jUtil.getPinyinToLowerCase(user.getName()));
+		user.setJianpin(Pinyin4jUtil.getPinyinJianPin(user.getName()).toLowerCase());
 		if (StringUtils.isBlank(user.getId())){
 			user.preInsert();
 			userDao.insert(user);

@@ -85,7 +85,7 @@
 		}
 
 	</script>
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+	<%--<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>--%>
 
 	<style type="text/css">
 		.inputor {
