@@ -3,15 +3,14 @@
  */
 package com.thinkgem.jeesite.common.security;
 
+import com.thinkgem.jeesite.common.utils.Exceptions;
+import org.apache.commons.lang3.Validate;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-
-import org.apache.commons.lang3.Validate;
-
-import com.thinkgem.jeesite.common.utils.Exceptions;
 
 /**
  * 支持SHA-1/MD5消息摘要的工具类.
@@ -55,7 +54,7 @@ public class Digests {
 	/**
 	 * 对字符串进行散列, 支持md5与sha1算法.
 	 */
-	private static byte[] digest(byte[] input, String algorithm, byte[] salt, int iterations) {
+	public static byte[] digest(byte[] input, String algorithm, byte[] salt, int iterations) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance(algorithm);
 
@@ -102,7 +101,7 @@ public class Digests {
 		return digest(input, SHA1);
 	}
 
-	private static byte[] digest(InputStream input, String algorithm) throws IOException {
+	public static byte[] digest(InputStream input, String algorithm) throws IOException {
 		try {
 			MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
 			int bufferLength = 8 * 1024;

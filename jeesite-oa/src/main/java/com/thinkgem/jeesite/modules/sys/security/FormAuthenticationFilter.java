@@ -92,7 +92,7 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 			AuthenticationException e, ServletRequest request, ServletResponse response) {
 		String className = e.getClass().getName(), message = "";
 		if (IncorrectCredentialsException.class.getName().equals(className)
-				|| UnknownAccountException.class.getName().equals(className)){
+				|| UnknownAccountException.class.getName().equals(className)||AuthenticationException.class.getName().equals(className)){
 			message = "用户或密码错误, 请重试.";
 		}
 		else if (e.getMessage() != null && StringUtils.startsWith(e.getMessage(), "msg:")){
