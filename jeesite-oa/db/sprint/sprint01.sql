@@ -212,3 +212,6 @@ CREATE TABLE project_note
 
 /* 新增 项目动态 的通告类型 */
 insert into `jeesite`.`sys_dict` ( `id`, `description`, `create_date`, `label`, `update_date`, `create_by`, `parent_id`, `update_by`, `type`, `value`, `del_flag`, `sort`, `remarks`) values ( '06274b22621243f2b2af78d3ec8107db', '通知通告类型', '2016-11-09 15:27:51', '项目动态', '2016-11-09 15:27:51', '1', '0', '1', 'oa_notify_type', '4', '0', '40', '');
+
+/* 升级用户密码的加密算法由sha1改为sha256;初始用户密码为123456 */
+UPDATE sys_user SET `password`='fa3befd31f3e25439ede877aa89a1799e92e0556ffe6592aaa1eb3443ad73c8d8d44b4f212adf303';
