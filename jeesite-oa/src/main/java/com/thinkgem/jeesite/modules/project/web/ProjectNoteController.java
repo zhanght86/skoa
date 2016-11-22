@@ -3,11 +3,16 @@
  */
 package com.thinkgem.jeesite.modules.project.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.base.Splitter;
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.json.JsonResultModel;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.Collections3;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.project.entity.ProjectNote;
+import com.thinkgem.jeesite.modules.project.service.ProjectNoteService;
 import com.thinkgem.jeesite.modules.sys.dao.UserDao;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,13 +22,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.thinkgem.jeesite.common.config.Global;
-import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.project.entity.ProjectNote;
-import com.thinkgem.jeesite.modules.project.service.ProjectNoteService;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,21 +100,10 @@ public class ProjectNoteController extends BaseController {
 			//处理atUserids;传递过来的是loginName，我们需要转化为用户id
 			String atUserids = projectNote.getAtUserids();
 			if (StringUtils.isNotBlank(atUserids)) {
-				if (atUserids.contains(",") && atUserids.length() > 1) {
-					if (atUserids.startsWith(",")) {
-						atUserids = atUserids.substring(1, atUserids.length());
-					}
-					if (atUserids.endsWith(",")) {
-						atUserids = atUserids.substring(0, atUserids.length() - 1);
-					}
-				}
+				List<String> usesrids=Splitter.on(',').trimResults().omitEmptyStrings().splitToList(atUserids);
 				//查询出用户,获取ID
-				List<User> userList = userDao.findUserByLoginNames(atUserids.split(","));
-				atUserids = "";
-				for (User user : userList) {
-					atUserids = atUserids + "," + user.getId();
-				}
-				projectNote.setAtUserids(atUserids);
+				List<User> userList = userDao.findUserByLoginNames(usesrids);
+				projectNote.setAtUserids(Collections3.extractToString(userList,"id",","));
 			}
 
 			projectNoteService.save(projectNote);

@@ -44,7 +44,7 @@ public interface UserDao extends CrudDao<User> {
 	 * @param loginNames
 	 * @return
 	 */
-	public List<User> findUserByLoginNames(String[] loginNames);
+	public List<User> findUserByLoginNames(List<String> loginNames);
 
 	/**
 	 * 查询全部用户数目

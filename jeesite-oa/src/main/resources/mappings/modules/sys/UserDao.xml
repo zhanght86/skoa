@@ -225,7 +225,7 @@
 		FROM sys_user a
 		WHERE a.del_flag = 0
 		AND a.login_name in
-		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
 			#{item}
 		</foreach>
 		ORDER BY a.name

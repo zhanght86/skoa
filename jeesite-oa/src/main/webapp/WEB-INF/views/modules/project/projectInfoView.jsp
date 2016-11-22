@@ -5,24 +5,33 @@
 <head>
 	<title>项目浏览</title>
 	<meta name="decorator" content="default"/>
-
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/atjs/dist/css/jquery.atwho.css"/>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-	<script type="text/javascript" src="https://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/static/atjs/dist/js/jquery.atwho.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/atjs/1.5.0/css/jquery.atwho.min.css"/>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/atjs/jquery.caret.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/atjs/1.5.0/js/jquery.atwho.min.js"></script>
 
 	<script type="text/javascript">
 		$(function () {
-			$.fn.atwho.debug = true
-
+//			$.fn.atwho.debug = true
             $('#editable').atwho({
 				at: "@",
 				data: ${userList},
-				headerTpl: '<div class="atwho-header">选择用户(根据姓名简拼搜索)</div>',
-				insertTpl: "@$" + "{name}(<span class='atwho-loginName'>$"+"{id}</span>)",
-				displayTpl: "<li>$" + "{name}($"+"{id})</li>",
+				headerTpl: '<div class="atwho-header">选择用户(根据姓名首字母搜索)</div>',
+				insertTpl: "@<span class='atwho-loginName'>$"+"{id}</span>($"+"{name})",
+				displayTpl: "<li>$" + "{id}($"+"{name})</li>",
 				searchKey: "searchKey",
-				limit: 10
+				limit: 10,
+				callbacks:{
+					beforeReposition:function (offset) {
+						var value=$("#openClose",self.parent.document).length;
+						if(value>0){
+							var $left=$("#left",self.parent.document);
+							var leftWidth = $left.width() < 0 ? 0 : -$left.width();
+							offset.left+=leftWidth;
+							var $header = $("#header",self.parent.document);
+							offset.top+=(-$header.height());
+						}
+					}
+				}
 			});
 
 		});
