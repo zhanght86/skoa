@@ -56,9 +56,20 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="oaNotify">
 			<tr>
-				<td><a href="${ctx}/oa/oaNotify/${requestScope.oaNotify.self?'view':'form'}?id=${oaNotify.id}">
-					${fns:abbr(oaNotify.title,50)}
-				</a></td>
+				<td>
+					<c:choose>
+						<c:when test="${oaNotify.type==4 && not empty oaNotify.remarks}">
+							<a href="${ctx}/project/projectInfo/view?id=${oaNotify.remarks}">
+									${fns:abbr(oaNotify.title,50)}
+							</a>
+						</c:when>
+						<c:otherwise>
+							<a href="${ctx}/oa/oaNotify/${requestScope.oaNotify.self?'view':'form'}?id=${oaNotify.id}">
+									${fns:abbr(oaNotify.title,50)}
+							</a>
+						</c:otherwise>
+					</c:choose>
+				</td>
 				<td>
 					${fns:getDictLabel(oaNotify.type, 'oa_notify_type', '')}
 				</td>

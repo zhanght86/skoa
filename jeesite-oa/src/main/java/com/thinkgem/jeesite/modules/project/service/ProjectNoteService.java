@@ -70,6 +70,7 @@ public class ProjectNoteService extends CrudService<ProjectNoteDao, ProjectNote>
 			oaNotify.setContent(projectNote.getContent());
 			oaNotify.setStatus("1");
 			oaNotify.setOaNotifyRecordIds(atUserids);
+			oaNotify.setRemarks(projectInfo.getId());
 			oaNotifyService.save(oaNotify);
 
 		}
