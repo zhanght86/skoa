@@ -123,7 +123,7 @@ public class OaNotifyController extends BaseController {
 			oaNotifyService.updateReadFlag(oaNotify);
 			oaNotify = oaNotifyService.getRecordList(oaNotify);
 			model.addAttribute("oaNotify", oaNotify);
-			return "modules/oa/oaNotifyForm";
+			return "modules/oa/oaNotifyView";
 		}
 		return "redirect:" + adminPath + "/oa/oaNotify/self?repage";
 	}
