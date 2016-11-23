@@ -205,7 +205,7 @@
                             <label class="control-label">附件：</label>
                             <div class="controls">
                                 <input type="hidden" id="filepath" name="filepath"/>
-                                <sys:ckfinder input="filepath" type="files" uploadPath="/project/projectInfo" selectMultiple="true"/>
+                                <sys:ckfinder input="filepath" type="files" uploadPath="/project/projectInfoProgress" selectMultiple="true"/>
                             </div>
                         </div>
                         <div class="control-group">

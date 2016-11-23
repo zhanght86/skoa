@@ -100,10 +100,10 @@
 			font-size: inherit;
 			overflow-y: scroll;
 		}
-		[contentEditable=true]:empty:not(:focus):before{
+		/*[contentEditable=true]:empty:not(:focus):before{
 			content:attr(data-text);
 			color:#aaa;
-		}
+		}*/
 	</style>
 
 </head>
@@ -265,7 +265,7 @@
 								</td>
 								<td>
 									<input id="filepathProgress_${pp.id}" type="hidden" value="${pp.filepath}"/>
-									<sys:ckfinder input="filepathProgress_${pp.id}" type="files" uploadPath="/project/projectInfo" selectMultiple="true" readonly="true"/>
+									<sys:ckfinder input="filepathProgress_${pp.id}" type="files" uploadPath="/project/projectInfoProgress" selectMultiple="true" readonly="true"/>
 								</td>
 								<td>${pp.remarks}</td>
 								<td>${pp.createBy.name}</td>
@@ -288,9 +288,10 @@
 					<input type="hidden" id="projectId" name="projectId" value="${projectInfo.id}"/>
 					<input type="hidden" id="atUserids" name="atUserids" value=""/>
 					<input type="hidden" id="content" name="content" value=""/>
-					<div id="editable" class="inputor" contentEditable="true" data-text="@关键字,他就能在[我的通告]收到;可使用员工中文姓名,全拼,简拼及登录名."></div>
+					<%--<div id="editable" class="inputor" contentEditable="true" data-text="@关键字,他就能在[我的通告]收到;可使用员工中文姓名,全拼,简拼及登录名."></div>--%>
+					<div id="editable" class="inputor" contentEditable="true"></div>
 					<input type="button" id="btnSend" class="btn btn-primary" onclick="javascript:saveProjectNote();"
-						   value="发 布"/>
+						   value="发 布"/><span class="help-inline">友情提醒:@关键字,他就能在[我的通告]收到;可使用员工中文姓名,全拼,简拼及登录名.</span>
 				</form>
 			</div>
 
