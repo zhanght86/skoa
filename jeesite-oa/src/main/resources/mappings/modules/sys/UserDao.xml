@@ -80,6 +80,8 @@
 		a.update_by AS "updateBy.id",
 		a.update_date,
 		a.del_flag,
+		a.quanpin,
+		a.jianpin,
     	c.name AS "company.name",
     	c.parent_id AS "company.parent.id",
     	c.parent_ids AS "company.parentIds",
@@ -221,7 +223,7 @@
 	<!-- 通过roleId获取用户列表,仅返回用户id和name -->
 	<select id="findUserByLoginNames" resultType="User">
 		SELECT
-		a.id, a.name, a.login_name
+		a.id, a.name, a.login_name,a.quanpin,a.jianpin
 		FROM sys_user a
 		WHERE a.del_flag = 0
 		AND a.login_name in
@@ -270,7 +272,9 @@
 			remarks, 
 			login_flag, 
 			photo, 
-			del_flag
+			del_flag,
+			quanpin,
+			jianpin
 		) VALUES (
 			#{id}, 
 			#{company.id}, 
@@ -290,7 +294,9 @@
 			#{remarks}, 
 			#{loginFlag}, 
 			#{photo}, 
-			#{delFlag}
+			#{delFlag},
+			#{quanpin},
+			#{jianpin}
 		)
 	</insert>
 	
@@ -311,7 +317,9 @@
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
 			login_flag = #{loginFlag},
-			photo = #{photo}
+			photo = #{photo},
+			quanpin = #{quanpin},
+			jianpin = #{jianpin}
 		WHERE id = #{id}
 	</update>
 	
