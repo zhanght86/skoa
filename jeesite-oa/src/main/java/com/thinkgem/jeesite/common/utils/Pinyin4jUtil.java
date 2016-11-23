@@ -1,14 +1,14 @@
 package com.thinkgem.jeesite.common.utils;
 
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
 import java.util.HashSet;
-import java.util.Set;  
-  
-import net.sourceforge.pinyin4j.PinyinHelper;  
-import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;  
-import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;  
-import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;  
-import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;  
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;  
+import java.util.Set;
   
 /******************************************************************************* 
  * pinyin4j is a plug-in, you can kind of Chinese characters into phonetic.Multi-tone character,Tone 
@@ -92,8 +92,7 @@ public class Pinyin4jUtil {
     }  
   
     /*************************************************************************** 
-     * 字符集转换 
-     *  
+     * 将字符串中的中文转化为拼音,其他字符不变
      * @Name: Pinyin4jUtil.java 
      * @Description: TODO 
      * @author: wang_chian@foxmail.com 
@@ -111,7 +110,7 @@ public class Pinyin4jUtil {
                 char c = srcChar[i];  
   
                 // 是中文或者a-z或者A-Z转换拼音  
-                if (String.valueOf(c).matches("[\\u4E00-\\u9FA5]+")) {  
+                if (String.valueOf(c).matches("[\\u4E00-\\u9FA5]+")) {
   
                     try {  
                         temp[i] = PinyinHelper.toHanyuPinyinStringArray(  
@@ -120,12 +119,16 @@ public class Pinyin4jUtil {
                     } catch (BadHanyuPinyinOutputFormatCombination e) {  
                         e.printStackTrace();  
                     }  
-                } else if (((int) c >= 65 && (int) c <= 90)  
+                } else {
+                    temp[i] = new String[] { String.valueOf(srcChar[i]) };
+                }
+                /*else if (((int) c >= 65 && (int) c <= 90)
                         || ((int) c >= 97 && (int) c <= 122)) {  
                     temp[i] = new String[] { String.valueOf(srcChar[i]) };  
                 } else {  
                     temp[i] = new String[] { "" };  
-                }  
+                }
+                }*/
             }  
             String[] pingyinArray = Exchange(temp);  
             Set<String> zhongWenPinYin = new HashSet<String>();  
@@ -270,7 +273,7 @@ public class Pinyin4jUtil {
             }  
             strChar += ",";  
         }  
-        return strChar;  
+        return strChar.substring(0,strChar.length()-1);
     }  
   
     /*************************************************************************** 
@@ -283,7 +286,7 @@ public class Pinyin4jUtil {
      * @param args 
      */  
     public static void main(String[] args) {
-        String str = "仇老师长沙市长吕";
+        String str = "仇老师长沙市长吕——11_-s";
         System.out.println("小写输出：" + getPinyinToLowerCase(str));
         System.out.println("大写输出：" + getPinyinToUpperCase(str));
         System.out.println("首字母大写输出：" + getPinyinFirstToUpperCase(str));

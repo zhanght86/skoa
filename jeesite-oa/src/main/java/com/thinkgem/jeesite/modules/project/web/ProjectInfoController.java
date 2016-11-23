@@ -31,8 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import static org.activiti.engine.impl.util.json.XMLTokener.entity;
-
 /**
  * 项目管理Controller
  * @author evan
@@ -118,10 +116,9 @@ public class ProjectInfoController extends BaseController {
 				JSONObject jo = new JSONObject();
 				jo.put("id", user.getLoginName());
 				jo.put("name", user.getName());
-				jo.put("searchKey", user.getLoginName());
+				jo.put("searchKey", user.getLoginName()+","+user.getName()+","+user.getQuanpin()+","+user.getJianpin());
 				json.add(jo);
 			}
-//			System.out.println(json.toString());
 			model.addAttribute("userList", json.toString());
 
 			ProjectNote projectNote = new ProjectNote();

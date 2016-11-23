@@ -15,7 +15,7 @@
             $('#editable').atwho({
 				at: "@",
 				data: ${userList},
-				headerTpl: '<div class="atwho-header">选择用户(根据姓名首字母搜索)</div>',
+				headerTpl: '<div class="atwho-header">选择用户</div>',
 				insertTpl: "@<span class='atwho-loginName'>$"+"{id}</span>($"+"{name})",
 				displayTpl: "<li>$" + "{id}($"+"{name})</li>",
 				searchKey: "searchKey",
@@ -99,6 +99,10 @@
 			background: white;
 			font-size: inherit;
 			overflow-y: scroll;
+		}
+		[contentEditable=true]:empty:not(:focus):before{
+			content:attr(data-text);
+			color:#aaa;
 		}
 	</style>
 
@@ -284,7 +288,7 @@
 					<input type="hidden" id="projectId" name="projectId" value="${projectInfo.id}"/>
 					<input type="hidden" id="atUserids" name="atUserids" value=""/>
 					<input type="hidden" id="content" name="content" value=""/>
-					<div id="editable" class="inputor" contentEditable="true"></div>
+					<div id="editable" class="inputor" contentEditable="true" data-text="@关键字,他就能在[我的通告]收到;可使用员工中文姓名,全拼,简拼及登录名."></div>
 					<input type="button" id="btnSend" class="btn btn-primary" onclick="javascript:saveProjectNote();"
 						   value="发 布"/>
 				</form>
