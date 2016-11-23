@@ -96,7 +96,7 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 		this.primaryPerson = primaryPerson;
 	}
 	
-	@Length(min=0, max=64, message="项目小组成员长度必须介于 0 和 64 之间")
+	@Length(min=0, max=2000, message="项目小组成员长度必须介于 0 和 2000 之间")
 	public String getTeamMembers() {
 		return teamMembers;
 	}
@@ -105,7 +105,7 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 		this.teamMembers = teamMembers;
 	}
 	
-	@Length(min=0, max=64, message="项目小组成员长度必须介于 0 和 64 之间")
+	@Length(min=0, max=2000, message="项目小组成员长度必须介于 0 和 2000 之间")
 	public String getTeamMemberNames() {
 		return teamMemberNames;
 	}
@@ -141,7 +141,7 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 		this.content = content;
 	}
 	
-	@Length(min=0, max=200, message="附件路径长度必须介于 0 和 200 之间")
+	@Length(min=0, max=2000, message="附件路径长度必须介于 0 和 2000 之间")
 	public String getFilepath() {
 		return filepath;
 	}

@@ -59,7 +59,7 @@ public class ProjectInfoProgress extends DataEntity<ProjectInfoProgress> {
 		this.statusCurrent = statusCurrent;
 	}
 	
-	@Length(min=0, max=200, message="附件路径长度必须介于 0 和 200 之间")
+	@Length(min=0, max=2000, message="附件路径长度必须介于 0 和 2000 之间")
 	public String getFilepath() {
 		return filepath;
 	}

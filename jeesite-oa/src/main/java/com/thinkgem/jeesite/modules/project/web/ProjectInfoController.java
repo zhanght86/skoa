@@ -15,7 +15,6 @@ import com.thinkgem.jeesite.modules.project.service.ProjectNoteService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.ProjectInfoUtils;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -31,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+import static org.activiti.engine.impl.util.json.XMLTokener.entity;
 
 /**
  * 项目管理Controller
@@ -59,9 +60,6 @@ public class ProjectInfoController extends BaseController {
 		if (entity == null){
 			entity = new ProjectInfo();
 		}
-		//保存从数据库获取的原始值对象
-		ProjectInfo orignProjectInfo= (ProjectInfo) BeanUtils.cloneBean(entity);
-		model.addAttribute("orignProjectInfo",orignProjectInfo);
 		return entity;
 	}
 	
@@ -89,9 +87,12 @@ public class ProjectInfoController extends BaseController {
 	@RequestMapping(value = "save")
 	public String save(ProjectInfo projectInfo, Model model, RedirectAttributes redirectAttributes) {
 		//获取未修改前的值对象
-		ProjectInfo orignProjectInfo= (ProjectInfo) model.asMap().get("orignProjectInfo");
+		ProjectInfo orignProjectInfo= null;
+		if (StringUtils.isNotBlank(projectInfo.getId())){
+			orignProjectInfo = projectInfoService.get(projectInfo.getId());
+		}
 		//校验当前用户是否拥有该项目的编辑权限或者新增项目
-		if("".equals(projectInfo.getId())||ProjectInfoUtils.editableProject(orignProjectInfo)) {
+		if(StringUtils.isBlank(projectInfo.getId())||ProjectInfoUtils.editableProject(orignProjectInfo)) {
 			if (!beanValidator(model, projectInfo)) {
 				return form(projectInfo, model, redirectAttributes);
 			}
