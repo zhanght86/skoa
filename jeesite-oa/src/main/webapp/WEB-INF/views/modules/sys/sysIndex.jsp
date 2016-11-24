@@ -258,16 +258,16 @@
 		} // </c:if>
 	</script>
 	<script src="${ctxStatic}/common/wsize.min.js" type="text/javascript"></script>
-	<script src="//cdn.sockjs.org/sockjs-0.3.min.js"></script>
+	<script src="${ctxStatic}/socketjs/sockjs-1.1.1.min.js" type="text/javascript"></script>
 	<script>
 		var websocket;
-//		var location=window.location;
+		
 		if ('WebSocket' in window) {
-			websocket = new WebSocket("ws://localhost:8080/a/webSocketServer");
+			websocket = new WebSocket(getUrl("${fns:getAdminPath()}/webSocketServer"));
 		} else if ('MozWebSocket' in window) {
-			websocket = new MozWebSocket("ws://localhost:8080/a/webSocketServer");
+			websocket = new MozWebSocket(getUrl("${fns:getAdminPath()}/webSocketServer"));
 		} else {
-			websocket = new SockJS("http://localhost:8080/a/sockjs/webSocketServer");
+			websocket = new SockJS(getUrl("${fns:getAdminPath()}/sockjs/webSocketServer"));
 		}
 		websocket.onopen = function (evnt) {
 			console.log('Info: connection opened.');
@@ -287,7 +287,15 @@
 		websocket.onclose = function (evnt) {
 //			console.log('Info: connection closed.'+event);
 		}
-
+		function getUrl(urlPath){
+			var url="";
+			if(window.location.protocol=="http:"){
+				url='ws://' + window.location.host + urlPath;
+			}else{
+				url = 'wss://' + window.location.host + urlPath;
+			}
+			return url;
+		}
 	</script>
 </body>
 </html>
