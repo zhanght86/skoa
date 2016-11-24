@@ -266,11 +266,11 @@
 		var websocket;
 		
 		if ('WebSocket' in window) {
-			websocket = new WebSocket(getUrl("${websocketPath}/webSocketServer"));
+			websocket = new WebSocket("ws://${websocketPath}/webSocketServer");
 		} else if ('MozWebSocket' in window) {
-			websocket = new MozWebSocket(getUrl("${websocketPath}/webSocketServer"));
+			websocket = new MozWebSocket("ws://${websocketPath}/webSocketServer");
 		} else {
-			websocket = new SockJS(getUrl("${websocketPath}/sockjs/webSocketServer"));
+			websocket = new SockJS("ws://${websocketPath}/sockjs/webSocketServer");
 		}
 		websocket.onopen = function (event) {
 			console.log('Info: connection opened.');
