@@ -198,14 +198,14 @@
                                         <option value="${dict.value}">${dict.label}</option>
                                     </c:forEach>
                                 </select>
-								<span class="help-inline"><font color="red">*</font>注意:项目进度不能后撤 </span>
+								<span class="help-inline">提示:项目进度不能后撤 </span>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label">附件：</label>
                             <div class="controls">
                                 <input type="hidden" id="filepath" name="filepath"/>
-                                <sys:ckfinder input="filepath" type="files" uploadPath="/project/projectInfoProgress" selectMultiple="true"/>
+                                <sys:ckfinder input="filepath" type="files" uploadPath="/project/projectInfoProgress" selectMultiple="true"/><span class="help-inline">提示:附件带有访问权限 </span>
                             </div>
                         </div>
                         <div class="control-group">
