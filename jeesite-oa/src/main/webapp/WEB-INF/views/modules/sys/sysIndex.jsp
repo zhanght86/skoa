@@ -116,14 +116,14 @@
 			});
 			// 获取通知数目  <c:set var="oaNotifyRemindInterval" value="${fns:getConfig('oa.notify.remind.interval')}"/>
 			function getNotifyNum(){
-				$.get("${ctx}/oa/oaNotify/self/count?updateSession=0&t="+new Date().getTime(),function(data){
+				/*$.get("${ctx}/oa/oaNotify/self/count?updateSession=0&t="+new Date().getTime(),function(data){
 					var num = parseFloat(data);
 					if (num > 0){
 						$("#notifyNum,#notifyNum2").show().html("("+num+")");
 					}else{
 						$("#notifyNum,#notifyNum2").hide()
 					}
-				});
+				});*/
 			}
 			getNotifyNum(); //<c:if test="${oaNotifyRemindInterval ne '' && oaNotifyRemindInterval ne '0'}">
 			setInterval(getNotifyNum, ${oaNotifyRemindInterval}); //</c:if>
@@ -258,5 +258,36 @@
 		} // </c:if>
 	</script>
 	<script src="${ctxStatic}/common/wsize.min.js" type="text/javascript"></script>
+	<script src="//cdn.sockjs.org/sockjs-0.3.min.js"></script>
+	<script>
+		var websocket;
+//		var location=window.location;
+		if ('WebSocket' in window) {
+			websocket = new WebSocket("ws://localhost:8080/a/webSocketServer");
+		} else if ('MozWebSocket' in window) {
+			websocket = new MozWebSocket("ws://localhost:8080/a/webSocketServer");
+		} else {
+			websocket = new SockJS("http://localhost:8080/a/sockjs/webSocketServer");
+		}
+		websocket.onopen = function (evnt) {
+			console.log('Info: connection opened.');
+		};
+		websocket.onmessage = function (evnt) {
+//			console.log('Received: ' + event.data);
+			var num=evnt.data;
+			if (num > 0){
+				$("#notifyNum,#notifyNum2").show().html("("+num+")");
+			}else{
+				$("#notifyNum,#notifyNum2").hide()
+			}
+		};
+		websocket.onerror = function (evnt) {
+//			console.log('Info: connection error.'+event);
+		};
+		websocket.onclose = function (evnt) {
+//			console.log('Info: connection closed.'+event);
+		}
+
+	</script>
 </body>
 </html>

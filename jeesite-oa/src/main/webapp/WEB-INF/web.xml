@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	version="2.5">
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
 	<display-name>JeeSite</display-name>
 
@@ -20,6 +19,7 @@
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<async-supported>true</async-supported>
 		<init-param>
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
@@ -41,6 +41,7 @@
 		<!--<filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>-->
 		<!-- 通用 Filter-->
 		<filter-class>cn.jflow.common.context.RequestResponseFilter</filter-class>
+		<async-supported>true</async-supported>
 	</filter>
 	<filter-mapping>
 		<filter-name>requestContextFilter</filter-name>
@@ -51,6 +52,7 @@
 	<filter>
 		<filter-name>shiroFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<async-supported>true</async-supported>
 		<init-param>
 			<param-name>targetFilterLifecycle</param-name>
 			<param-value>true</param-value>
@@ -79,6 +81,7 @@
 	<filter>
 		<filter-name>sitemeshFilter</filter-name>
 		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+		<async-supported>true</async-supported>
 	</filter>
 	<filter-mapping>
 		<filter-name>sitemeshFilter</filter-name>
@@ -100,6 +103,7 @@
 			<param-value>classpath*:/spring-mvc*.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>springServlet</servlet-name>
@@ -120,6 +124,7 @@
 	<filter>
 		<filter-name>JSONPFilter</filter-name>
 		<filter-class>com.thinkgem.jeesite.modules.act.rest.servlet.JsonpCallbackFilter</filter-class>
+		<async-supported>true</async-supported>
 	</filter>
 	<filter-mapping>
 		<filter-name>JSONPFilter</filter-name>
@@ -165,6 +170,7 @@
 	<filter>
 		<filter-name>FileUploadFilter</filter-name>
 		<filter-class>com.ckfinder.connector.FileUploadFilter</filter-class>
+		<async-supported>true</async-supported>
 		<init-param>
 			<param-name>sessionCookieName</param-name>
 			<param-value>JSESSIONID</param-value>
