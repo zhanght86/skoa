@@ -151,6 +151,11 @@ public class LoginController extends BaseController{
 				return "redirect:" + adminPath + "/login";
 			}
 		}
+
+		//String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+adminPath;
+		String scheme="http".equals(request.getScheme())? "ws://":"wss://";
+		String websocketPath=scheme+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+adminPath;
+		request.setAttribute("websocketPath",websocketPath);
 		
 		// 如果是手机登录，则返回JSON字符串
 		if (principal.isMobileLogin()){

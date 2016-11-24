@@ -114,19 +114,22 @@
 					$(this).click();
 				}
 			});
-			// 获取通知数目  <c:set var="oaNotifyRemindInterval" value="${fns:getConfig('oa.notify.remind.interval')}"/>
+			// 获取通知数目 浪费资源,不再使用
+			<%--<c:set var="oaNotifyRemindInterval" value="${fns:getConfig('oa.notify.remind.interval')}"/>
 			function getNotifyNum(){
-				/*$.get("${ctx}/oa/oaNotify/self/count?updateSession=0&t="+new Date().getTime(),function(data){
+				$.get("${ctx}/oa/oaNotify/self/count?updateSession=0&t="+new Date().getTime(),function(data){
 					var num = parseFloat(data);
 					if (num > 0){
 						$("#notifyNum,#notifyNum2").show().html("("+num+")");
 					}else{
 						$("#notifyNum,#notifyNum2").hide()
 					}
-				});*/
+				});
 			}
-			getNotifyNum(); //<c:if test="${oaNotifyRemindInterval ne '' && oaNotifyRemindInterval ne '0'}">
-			setInterval(getNotifyNum, ${oaNotifyRemindInterval}); //</c:if>
+			getNotifyNum();
+			<c:if test="${oaNotifyRemindInterval ne '' && oaNotifyRemindInterval ne '0'}">
+			setInterval(getNotifyNum, ${oaNotifyRemindInterval});
+			</c:if>--%>
 		});
 		// <c:if test="${tabmode eq '1'}"> 添加一个页签
 		function addTab($this, refresh){
@@ -263,31 +266,31 @@
 		var websocket;
 		
 		if ('WebSocket' in window) {
-			websocket = new WebSocket(getUrl("${fns:getAdminPath()}/webSocketServer"));
+			websocket = new WebSocket("${websocketPath}/webSocketServer");
 		} else if ('MozWebSocket' in window) {
-			websocket = new MozWebSocket(getUrl("${fns:getAdminPath()}/webSocketServer"));
+			websocket = new MozWebSocket("${websocketPath}/webSocketServer");
 		} else {
-			websocket = new SockJS(getUrl("${fns:getAdminPath()}/sockjs/webSocketServer"));
+			websocket = new SockJS("${websocketPath}/sockjs/webSocketServer");
 		}
-		websocket.onopen = function (evnt) {
+		websocket.onopen = function (event) {
 			console.log('Info: connection opened.');
 		};
-		websocket.onmessage = function (evnt) {
-//			console.log('Received: ' + event.data);
-			var num=evnt.data;
+		websocket.onmessage = function (event) {
+			console.log('Received: ' + event.data);
+			var num=event.data;
 			if (num > 0){
 				$("#notifyNum,#notifyNum2").show().html("("+num+")");
 			}else{
 				$("#notifyNum,#notifyNum2").hide()
 			}
 		};
-		websocket.onerror = function (evnt) {
-//			console.log('Info: connection error.'+event);
+		websocket.onerror = function (event) {
+			console.log('Info: connection error.'+event);
 		};
-		websocket.onclose = function (evnt) {
-//			console.log('Info: connection closed.'+event);
+		websocket.onclose = function (event) {
+			console.log('Info: connection closed.'+event);
 		}
-		function getUrl(urlPath){
+		/*function getUrl(urlPath){
 			var url="";
 			if(window.location.protocol=="http:"){
 				url='ws://' + window.location.host + urlPath;
@@ -295,7 +298,7 @@
 				url = 'wss://' + window.location.host + urlPath;
 			}
 			return url;
-		}
+		}*/
 	</script>
 </body>
 </html>
