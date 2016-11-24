@@ -8,11 +8,10 @@
 <body>
 <ul class="nav nav-tabs">
     <li><a href="${ctx}/oa/oaNotify/self/">通知列表</a></li>
-    <li class="active"><a href="#">通知查看</a></li>
+    <li class="active"><a href="${ctx}/oa/oaNotify/view?id=${oaNotify.id}">通知查看</a></li>
 </ul>
 <br/>
-<form:form id="inputForm" modelAttribute="oaNotify" action="${ctx}/oa/oaNotify/save" method="post"
-           class="form-horizontal">
+<form:form id="inputForm" modelAttribute="oaNotify" class="form-horizontal">
     <form:hidden path="id"/>
     <sys:message content="${message}"/>
     <div class="control-group">
@@ -27,7 +26,7 @@
 
         <div class="controls">
             <c:if test="${oaNotify.type==4 && not empty oaNotify.remarks}">
-                <a href="${ctx}/project/projectInfo/view?id=${oaNotify.remarks}" title="项目浏览">
+                <a href="${ctx}/project/projectInfo/view?id=${oaNotify.remarks}" title="项目浏览" style="text-decoration:none">
                     <i class="icon-file-alt icon-large"></i>
                 </a>
             </c:if>
