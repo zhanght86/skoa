@@ -266,17 +266,17 @@
 		var websocket;
 		
 		if ('WebSocket' in window) {
-			websocket = new WebSocket("${websocketPath}/webSocketServer");
+			websocket = new WebSocket(getUrl("${websocketPath}/webSocketServer"));
 		} else if ('MozWebSocket' in window) {
-			websocket = new MozWebSocket("${websocketPath}/webSocketServer");
+			websocket = new MozWebSocket(getUrl("${websocketPath}/webSocketServer"));
 		} else {
-			websocket = new SockJS("${websocketPath}/sockjs/webSocketServer");
+			websocket = new SockJS(getUrl("${websocketPath}/sockjs/webSocketServer"));
 		}
 		websocket.onopen = function (event) {
 			console.log('Info: connection opened.');
 		};
 		websocket.onmessage = function (event) {
-			console.log('Received: ' + event.data);
+//			console.log('Received: ' + event.data);
 			var num=event.data;
 			if (num > 0){
 				$("#notifyNum,#notifyNum2").show().html("("+num+")");
@@ -290,15 +290,15 @@
 		websocket.onclose = function (event) {
 			console.log('Info: connection closed.'+event);
 		}
-		/*function getUrl(urlPath){
+		function getUrl(urlPath){
 			var url="";
 			if(window.location.protocol=="http:"){
-				url='ws://' + window.location.host + urlPath;
+				url='ws://' + urlPath;
 			}else{
-				url = 'wss://' + window.location.host + urlPath;
+				url = 'wss://'+ urlPath;
 			}
 			return url;
-		}*/
+		}
 	</script>
 </body>
 </html>

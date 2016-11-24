@@ -153,8 +153,7 @@ public class LoginController extends BaseController{
 		}
 
 		//String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+adminPath;
-		String scheme="http".equals(request.getScheme())? "ws://":"wss://";
-		String websocketPath=scheme+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+adminPath;
+		String websocketPath=request.getServerName()+":"+request.getServerPort()+request.getContextPath()+adminPath;
 		request.setAttribute("websocketPath",websocketPath);
 		
 		// 如果是手机登录，则返回JSON字符串
