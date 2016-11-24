@@ -8,6 +8,7 @@ import com.thinkgem.jeesite.modules.project.entity.ProjectInfoProgress;
 import com.thinkgem.jeesite.modules.project.service.ProjectInfoProgressService;
 import com.thinkgem.jeesite.modules.project.service.ProjectInfoService;
 import com.thinkgem.jeesite.modules.sys.utils.ProjectInfoUtils;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.FileCopyUtils;
@@ -35,27 +36,10 @@ public class UserfilesDownloadServlet extends HttpServlet {
 	public void fileOutputStream(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		String filepath = req.getRequestURI();
-		//1.根据项目进度路径判断是否有访问权限
-		if(filepath.indexOf("/project/projectInfoProgress/")>=0){
-			String projectProgressId=req.getParameter("id");
-			if(StringUtils.isBlank(projectProgressId)){
-				req.setAttribute("exception", new FileNotFoundException("请求的文件不存在"));
-				req.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(req, resp);
-			}
-			//2.获取进度
-			ProjectInfoProgress projectInfoProgress=getProjectInfoProgressService().get(projectProgressId);
-			if(null==projectInfoProgress){
-				req.setAttribute("exception", new FileNotFoundException("请求的文件不存在"));
-				req.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(req, resp);
-			}
-			//3.获取项目,并还原项目的项目进度
-			ProjectInfo projectInfo=getProjectInfoService().get(projectInfoProgress.getProjectInfo());
-			projectInfo.setProjectProgress(projectInfoProgress.getStatusCurrent());
-			//4.判断该项目在某个项目进度下是否可以允许查看
-			if(!ProjectInfoUtils.viewableProject(projectInfo)){
-				req.setAttribute("exception", new RuntimeException("无权访问该文件"));
-				req.getRequestDispatcher("/WEB-INF/views/error/403.jsp").forward(req, resp);
-			}
+		String projectProgressId=req.getParameter("id");
+		if(!viewableProjectProgressFile(filepath,projectProgressId)){
+			req.setAttribute("exception", new RuntimeException("无权访问该文件"));
+			req.getRequestDispatcher("/WEB-INF/views/error/403.jsp").forward(req, resp);
 		}
 		int index = filepath.indexOf(Global.USERFILES_BASE_URL);
 		if(index >= 0) {
@@ -89,16 +73,49 @@ public class UserfilesDownloadServlet extends HttpServlet {
 		fileOutputStream(req, resp);
 	}
 
-	public ProjectInfoProgressService getProjectInfoProgressService() {
+	private ProjectInfoProgressService getProjectInfoProgressService() {
 		if (projectInfoProgressService == null){
 			projectInfoProgressService = SpringContextHolder.getBean(ProjectInfoProgressService.class);
 		}
 		return projectInfoProgressService;
 	}
-	public ProjectInfoService getProjectInfoService() {
+	private ProjectInfoService getProjectInfoService() {
 		if (projectInfoService == null){
 			projectInfoService = SpringContextHolder.getBean(ProjectInfoService.class);
 		}
 		return projectInfoService;
+	}
+
+	/**
+	 * 判断下载路径是否为 项目进度附件下载,若是,则需要根据当前用户及传递的进度id,来判断用户是否有权限下载该附件
+	 * @param filepath
+	 * @param projectProgressId
+	 * @return
+	 */
+	private boolean viewableProjectProgressFile(String filepath,String projectProgressId){
+		//1.根据项目进度路径判断是否有访问权限
+		if(filepath.indexOf("/project/projectInfoProgress/")>=0){
+			if(StringUtils.isBlank(projectProgressId)){
+				return false;
+			}
+
+			//2.判断是否登录用户;
+			if(StringUtils.isBlank(UserUtils.getUser().getId())){
+				return false;
+			}
+
+			//3.获取进度
+			ProjectInfoProgress projectInfoProgress=getProjectInfoProgressService().get(projectProgressId);
+			if(null==projectInfoProgress){
+				return false;
+			}
+			//4.获取项目,并还原项目的项目进度
+			ProjectInfo projectInfo=getProjectInfoService().get(projectInfoProgress.getProjectInfo());
+			projectInfo.setProjectProgress(projectInfoProgress.getStatusCurrent());
+			//5.判断该项目在某个项目进度下是否可以允许查看
+			return ProjectInfoUtils.viewableProject(projectInfo);
+
+		}
+		return true;
 	}
 }
