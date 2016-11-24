@@ -33,6 +33,11 @@
 					}
 				}
 			});
+			
+			$("#progressTable ol li a").each(function (index,domEle) {
+				var progressId=$(domEle).parent().parent().prev().attr("data-id");
+				$(domEle).attr('href',$(domEle).attr("href")+"?id="+progressId);
+			});
 
 		});
 
@@ -244,7 +249,7 @@
 		</div>
 		<c:if test="${!fns:isProjectInfoNew(projectInfo)}">
 			<div class="control-group">
-				<table class="table table-hover">
+				<table class="table table-hover" id="progressTable">
 					<thead>
 					<tr>
 						<th>序号</th>
@@ -264,7 +269,7 @@
 										${fns:getDictLabel(pp.statusOrigin, 'projectProgress', '暂无进度')}=>${fns:getDictLabel(pp.statusCurrent, 'projectProgress', '暂无进度')}
 								</td>
 								<td>
-									<input id="filepathProgress_${pp.id}" type="hidden" value="${pp.filepath}"/>
+									<input id="filepathProgress_${pp.id}" type="hidden" value="${pp.filepath}" data-id="${pp.id}"/>
 									<sys:ckfinder input="filepathProgress_${pp.id}" type="files" uploadPath="/project/projectInfoProgress" selectMultiple="true" readonly="true"/>
 								</td>
 								<td>${pp.remarks}</td>
