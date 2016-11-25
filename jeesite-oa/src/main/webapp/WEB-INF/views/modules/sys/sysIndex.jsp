@@ -266,11 +266,11 @@
 	var websocket;
 
 	if ('WebSocket' in window) {
-		websocket = new WebSocket(getUrl("${websocketPath}/webSocketServer"));
+		websocket = new WebSocket("${websocketBasePath}${fns:getAdminPath()}/webSocketServer");
 	} else if ('MozWebSocket' in window) {
-		websocket = new MozWebSocket(getUrl("${websocketPath}/webSocketServer"));
+		websocket = new MozWebSocket("${websocketBasePath}${fns:getAdminPath()}/webSocketServer");
 	} else {
-		websocket = new SockJS(getUrl("${websocketPath}/sockjs/webSocketServer"));
+		websocket = new SockJS("${websocketBasePath}${fns:getAdminPath()}/sockjs/webSocketServer");
 	}
 	websocket.onopen = function (event) {
 		console.log('Info: connection opened.');
@@ -290,7 +290,7 @@
 	websocket.onclose = function (event) {
 		console.log('Info: connection closed.'+event);
 	}
-	function getUrl(urlPath){
+	/*function getUrl(urlPath){
 		var url="";
 		if(window.location.protocol=="http:"){
 			url='ws://' + urlPath;
@@ -298,7 +298,7 @@
 			url = 'wss://'+ urlPath;
 		}
 		return url;
-	}
+	}*/
 </script>
 </body>
 </html>
