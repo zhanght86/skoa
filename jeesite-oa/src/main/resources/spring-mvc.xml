@@ -70,6 +70,9 @@
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="${web.view.prefix}"/>
 		<property name="suffix" value="${web.view.suffix}"/>
+		<!-- redirectHttp10Compatible:解决https环境下使用redirect重定向地址变为http的协议，无法访问服务的问题
+                   设置为false,即关闭了对http1.0协议的兼容支持 -->
+		<property name="redirectHttp10Compatible" value="false" />
 	</bean>
 	
 	<!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
