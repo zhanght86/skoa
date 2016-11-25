@@ -3,8 +3,12 @@ skoa部署生产服务器步骤
 
 2.创建脚本文件 deploy_skoa.sh;复制以下命令保存,此时不要执行./deploy_skoa.sh命令。
 #!/bin/bash
-cd skoa
-git checkout master
+branch="master";
+if [ -n "$1" ]; then
+branch="feature/"$1
+fi
+cd /home/shouke/skoa
+git checkout $branch
 git pull
 cd common-parent
 mvn clean install
