@@ -27,6 +27,7 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocke
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        //nginx Spring WebSocket中403错误解决;需要设置setAllowedOrigins(websocketHttpBasePath)
         registry.addHandler(systemWebSocketHandler(),adminPath+"/webSocketServer").addInterceptors(new WebSocketHandshakeInterceptor()).setAllowedOrigins(websocketHttpBasePath);
 
         registry.addHandler(systemWebSocketHandler(), adminPath+"/sockjs/webSocketServer").addInterceptors(new WebSocketHandshakeInterceptor()).setAllowedOrigins(websocketHttpBasePath)

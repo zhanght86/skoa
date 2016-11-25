@@ -47,20 +47,11 @@ public class ProjectNoteService extends CrudService<ProjectNoteDao, ProjectNote>
 	
 	@Transactional(readOnly = false)
 	public void save(ProjectNote projectNote) {
+		//1.先保存项目评论
+		super.save(projectNote);
+		//2.再做通知通告,发消息
 		if (StringUtils.isNotBlank(projectNote.getAtUserids())) {
-			String atUserids = projectNote.getAtUserids();
-			if(atUserids.contains(",")&&atUserids.length()>1){
-				if (atUserids.startsWith(",")) {
-					atUserids = atUserids.substring(1, atUserids.length());
-				}
-				if (atUserids.endsWith(",")) {
-					atUserids = atUserids.substring(0, atUserids.length() - 1);
-				}
-			}
-			projectNote.setAtUserids(atUserids);
-
 			ProjectInfo projectInfo=projectInfoDao.get(projectNote.getProjectId());
-			//String[] userids=atUserids.split(",");
 			//邮件通知等(预留)
 
 			//添加到我的通告
@@ -69,12 +60,10 @@ public class ProjectNoteService extends CrudService<ProjectNoteDao, ProjectNote>
 			oaNotify.setTitle(projectInfo.getProjectName());
 			oaNotify.setContent(projectNote.getContent());
 			oaNotify.setStatus("1");
-			oaNotify.setOaNotifyRecordIds(atUserids);
+			oaNotify.setOaNotifyRecordIds(projectNote.getAtUserids());
 			oaNotify.setRemarks(projectInfo.getId());
 			oaNotifyService.save(oaNotify);
-
 		}
-		super.save(projectNote);
 	}
 	
 	@Transactional(readOnly = false)

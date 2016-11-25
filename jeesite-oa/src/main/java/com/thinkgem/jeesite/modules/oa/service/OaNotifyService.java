@@ -3,18 +3,17 @@
  */
 package com.thinkgem.jeesite.modules.oa.service;
 
-import java.util.Date;
-
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.oa.dao.OaNotifyDao;
+import com.thinkgem.jeesite.modules.oa.dao.OaNotifyRecordDao;
+import com.thinkgem.jeesite.modules.oa.entity.OaNotify;
+import com.thinkgem.jeesite.modules.oa.entity.OaNotifyRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.oa.entity.OaNotify;
-import com.thinkgem.jeesite.modules.oa.entity.OaNotifyRecord;
-import com.thinkgem.jeesite.modules.oa.dao.OaNotifyDao;
-import com.thinkgem.jeesite.modules.oa.dao.OaNotifyRecordDao;
+import java.util.Date;
 
 /**
  * 通知通告Service
@@ -61,7 +60,7 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 	@Transactional(readOnly = false)
 	public void save(OaNotify oaNotify) {
 		super.save(oaNotify);
-		
+
 		// 更新发送接受人记录
 		oaNotifyRecordDao.deleteByOaNotifyId(oaNotify.getId());
 		if (oaNotify.getOaNotifyRecordList().size() > 0){

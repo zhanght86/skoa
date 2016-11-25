@@ -15,7 +15,6 @@ import com.thinkgem.jeesite.modules.project.entity.ProjectNote;
 import com.thinkgem.jeesite.modules.project.service.ProjectNoteService;
 import com.thinkgem.jeesite.modules.sys.dao.UserDao;
 import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.websocket.SystemWebSocketHandler;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,15 +42,8 @@ public class ProjectNoteController extends BaseController {
 
 	@Autowired
 	private ProjectNoteService projectNoteService;
-	@Autowired
-	private SystemWebSocketHandler systemWebSocketHandler;
 
 	protected JsonResultModel jsonResultModel=new JsonResultModel();
-
-	/*@Bean
-	public SystemWebSocketHandler systemWebSocketHandler() {
-		return new SystemWebSocketHandler();
-	}*/
 
 	@ModelAttribute
 	public ProjectNote get(@RequestParam(required=false) String id) {
@@ -108,20 +100,14 @@ public class ProjectNoteController extends BaseController {
 			//处理atUserids;传递过来的是loginName，我们需要转化为用户id
 			String atUserids = projectNote.getAtUserids();
 
-			List<User> userList=null;
 			if (StringUtils.isNotBlank(atUserids)) {
 				List<String> usesrids=Splitter.on(',').trimResults().omitEmptyStrings().splitToList(atUserids);
 				//查询出用户,获取ID
-				userList = userDao.findUserByLoginNames(usesrids);
+				List<User> userList = userDao.findUserByLoginNames(usesrids);
 				projectNote.setAtUserids(Collections3.extractToString(userList,"id",","));
 			}
 
 			projectNoteService.save(projectNote);
-
-			//websocket推送给在线用户 未阅读的消息数;
-			if(!Collections3.isEmpty(userList)) {
-				systemWebSocketHandler.sendOaNotifyCountMessageToUser(userList);
-			}
 
 			jsonResultModel.setStateSuccess();
 			Map resultMap=new HashMap();
