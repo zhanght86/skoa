@@ -19,12 +19,17 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocke
      */
     @Value("${adminPath}")
     protected String adminPath;
+    /**
+     * 链接websocket的路径
+     */
+    @Value("${oa.notify.websocketHttpBasePath}")
+    protected String websocketHttpBasePath;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(systemWebSocketHandler(),adminPath+"/webSocketServer").addInterceptors(new WebSocketHandshakeInterceptor());
+        registry.addHandler(systemWebSocketHandler(),adminPath+"/webSocketServer").addInterceptors(new WebSocketHandshakeInterceptor()).setAllowedOrigins(websocketHttpBasePath);
 
-        registry.addHandler(systemWebSocketHandler(), adminPath+"/sockjs/webSocketServer").addInterceptors(new WebSocketHandshakeInterceptor())
+        registry.addHandler(systemWebSocketHandler(), adminPath+"/sockjs/webSocketServer").addInterceptors(new WebSocketHandshakeInterceptor()).setAllowedOrigins(websocketHttpBasePath)
                 .withSockJS();
     }
 
