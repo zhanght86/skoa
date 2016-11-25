@@ -46,7 +46,8 @@
 				alertx("请输入要发布的内容！");
 				return;
 			}
-			confirmx("确定发布吗？", doSaveProjectNote);
+//			confirmx("确定发布吗？", doSaveProjectNote);
+			doSaveProjectNote();
 		}
 
 		function doSaveProjectNote() {
