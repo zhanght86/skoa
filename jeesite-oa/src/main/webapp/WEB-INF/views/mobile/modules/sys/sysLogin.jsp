@@ -10,6 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="${ctxStatic}/jingle/css/Jingle.css">
     <link rel="stylesheet" href="${ctxStatic}/jingle/css/app.css">
+	<link rel="icon" href="${ctxStatic}/favicon.ico">
 </head>
 <body>
 <div id="aside_container">

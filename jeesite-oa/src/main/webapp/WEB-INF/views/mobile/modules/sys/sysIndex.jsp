@@ -27,7 +27,8 @@
    					J.showToast('退出成功！', 'success');
    					J.Router.goTo('#login_section');
    				});
-   			});
+   			},function () {
+            });
    		});
     </script>
 </section>
