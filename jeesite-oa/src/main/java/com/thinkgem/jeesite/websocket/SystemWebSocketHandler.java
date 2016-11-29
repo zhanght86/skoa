@@ -1,6 +1,6 @@
 package com.thinkgem.jeesite.websocket;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.oa.entity.OaNotify;
 import com.thinkgem.jeesite.modules.oa.service.OaNotifyService;
@@ -13,7 +13,7 @@ import org.springframework.web.socket.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 @Component
 public class SystemWebSocketHandler implements WebSocketHandler {
@@ -23,17 +23,16 @@ public class SystemWebSocketHandler implements WebSocketHandler {
     @Autowired
     private OaNotifyService oaNotifyService;
 
-    //这个会出现性能问题，最好用Map来存储，key用userid
-    //private static final ArrayList<WebSocketSession> userMap;
-    private static final Map<String,WebSocketSession> userMap;
+    //用户建立连接后的session,支持同一个用户在不同客户端建立websocket
+    private static final Set<WebSocketSession> sessions;
 
     static {
-        userMap = Maps.newConcurrentMap();
+        sessions = Sets.newConcurrentHashSet();
     }
     public SystemWebSocketHandler() {
     }
 
-	/**
+    /**
      * 连接成功时候，会触发页面上onopen方法
      * @param session
      * @throws Exception
@@ -41,11 +40,11 @@ public class SystemWebSocketHandler implements WebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         logger.debug("connect to the websocket success......");
-        //userMap.add(session);
+        //users.add(session);
         User user = (User) session.getAttributes().get(Constants.WEBSOCKET_USER);
 
         if(user!= null&& !StringUtils.isBlank(user.getId())){
-            userMap.put(user.getId(),session);
+            sessions.add(session);
             //查询未读消息
             OaNotify oaNotify=new OaNotify();
             oaNotify.setSelf(true);
@@ -56,6 +55,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
         }
     }
 
+    //每当客户端发送信息过来，都会由这个函数接收并处理。
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
 
@@ -68,10 +68,10 @@ public class SystemWebSocketHandler implements WebSocketHandler {
             session.close();
         }
         logger.debug("websocket connection closed......");
-        userMap.remove(session);
+        sessions.remove(session);
     }
 
-	/**
+    /**
      * 关闭连接时触发
      * @param session
      * @param closeStatus
@@ -80,7 +80,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         logger.debug("websocket connection closed......");
-        userMap.remove(session);
+        sessions.remove(session);
     }
 
     @Override
@@ -94,10 +94,10 @@ public class SystemWebSocketHandler implements WebSocketHandler {
      * @param message
      */
     public void sendMessageToUsers(TextMessage message) {
-        for (Map.Entry<String,WebSocketSession> entry: userMap.entrySet()) {
+        for (WebSocketSession user: sessions) {
             try {
-                if (entry.getValue().isOpen()) {
-                    entry.getValue().sendMessage(message);
+                if (user.isOpen()) {
+                    user.sendMessage(message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -112,11 +112,11 @@ public class SystemWebSocketHandler implements WebSocketHandler {
      * @param message
      */
     public void sendMessageToUser(String userId, TextMessage message) {
-        for (Map.Entry<String,WebSocketSession> entry: userMap.entrySet()) {
-            if (entry.getKey().equals(userId)) {
+        for (WebSocketSession user: sessions) {
+            if (((User)user.getAttributes().get(Constants.WEBSOCKET_USER)).getId().equals(userId)) {
                 try {
-                    if (entry.getValue().isOpen()) {
-                        entry.getValue().sendMessage(message);
+                    if (user.isOpen()) {
+                        user.sendMessage(message);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -126,22 +126,22 @@ public class SystemWebSocketHandler implements WebSocketHandler {
         }
     }
 
-	/**
+    /**
      * 对传入的users集合进行遍历,当是在线用户,就推送给他当前未读的消息数
      * @param users
      */
     public void sendOaNotifyCountMessageToUser(List<User> users) {
         OaNotify oaNotify=new OaNotify();
-        for(User user:users){
-            for (Map.Entry<String,WebSocketSession> entry: userMap.entrySet()) {
-                if (entry.getKey().equals(user.getId())) {
+        for(User user: users){
+            for (WebSocketSession session : sessions) {
+                if (((User)session.getAttributes().get(Constants.WEBSOCKET_USER)).getId().equals(user.getId())) {
                     try {
-                        if (entry.getValue().isOpen()) {
+                        if (session.isOpen()) {
                             oaNotify.setSelf(true);
                             oaNotify.setReadFlag("0");
                             oaNotify.setCurrentUser(user);
                             Long count=oaNotifyService.findCount(oaNotify);
-                            entry.getValue().sendMessage(new TextMessage(count + ""));
+                            session.sendMessage(new TextMessage(count + ""));
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
