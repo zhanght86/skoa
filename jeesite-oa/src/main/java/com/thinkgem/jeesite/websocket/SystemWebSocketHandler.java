@@ -94,10 +94,10 @@ public class SystemWebSocketHandler implements WebSocketHandler {
      * @param message
      */
     public void sendMessageToUsers(TextMessage message) {
-        for (WebSocketSession user: sessions) {
+        for (WebSocketSession session : sessions) {
             try {
-                if (user.isOpen()) {
-                    user.sendMessage(message);
+                if (session.isOpen()) {
+                    session.sendMessage(message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -112,11 +112,11 @@ public class SystemWebSocketHandler implements WebSocketHandler {
      * @param message
      */
     public void sendMessageToUser(String userId, TextMessage message) {
-        for (WebSocketSession user: sessions) {
-            if (((User)user.getAttributes().get(Constants.WEBSOCKET_USER)).getId().equals(userId)) {
+        for (WebSocketSession session : sessions) {
+            if (((User) session.getAttributes().get(Constants.WEBSOCKET_USER)).getId().equals(userId)) {
                 try {
-                    if (user.isOpen()) {
-                        user.sendMessage(message);
+                    if (session.isOpen()) {
+                        session.sendMessage(message);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
