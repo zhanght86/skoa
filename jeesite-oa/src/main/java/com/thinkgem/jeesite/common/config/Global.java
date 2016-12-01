@@ -78,6 +78,12 @@ public class Global {
 		}
 		return value;
 	}
+	/**
+	 * 获取websocket地址
+	 */
+	public static String getWebsocketBasePath() {
+		return getConfig("oa.notify.websocketBasePath");
+	}
 	
 	/**
 	 * 获取管理端根路径

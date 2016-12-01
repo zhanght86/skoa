@@ -262,43 +262,19 @@
 </script>
 <script src="${ctxStatic}/common/wsize.min.js" type="text/javascript"></script>
 <script src="${ctxStatic}/socketjs/sockjs-1.1.1.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/app/extractWebsocket.js" type="text/javascript"></script>
 <script>
-	var websocket;
-
-	if ('WebSocket' in window) {
-		websocket = new WebSocket("${websocketBasePath}${fns:getAdminPath()}/webSocketServer");
-	} else if ('MozWebSocket' in window) {
-		websocket = new MozWebSocket("${websocketBasePath}${fns:getAdminPath()}/webSocketServer");
-	} else {
-		websocket = new SockJS("${websocketBasePath}${fns:getAdminPath()}/sockjs/webSocketServer");
-	}
-	websocket.onopen = function (event) {
-		console.log('Info: connection opened.');
-	};
-	websocket.onmessage = function (event) {
-//			console.log('Received: ' + event.data);
-		var num=event.data;
-		if (num > 0){
-			$("#notifyNum,#notifyNum2").show().html("("+num+")");
-		}else{
-			$("#notifyNum,#notifyNum2").hide()
+	extractWebSocket({
+		websocketBasePath:"${ctxWebsocket}",
+		onmessage:function(event){
+			 var num=event.data;
+			 if (num > 0){
+			     $("#notifyNum,#notifyNum2").show().html("("+num+")");
+			 }else{
+			     $("#notifyNum,#notifyNum2").hide()
+			 }
 		}
-	};
-	websocket.onerror = function (event) {
-		console.log('Info: connection error.'+event);
-	};
-	websocket.onclose = function (event) {
-		console.log('Info: connection closed.'+event);
-	}
-	/*function getUrl(urlPath){
-		var url="";
-		if(window.location.protocol=="http:"){
-			url='ws://' + urlPath;
-		}else{
-			url = 'wss://'+ urlPath;
-		}
-		return url;
-	}*/
+	});
 </script>
 </body>
 </html>

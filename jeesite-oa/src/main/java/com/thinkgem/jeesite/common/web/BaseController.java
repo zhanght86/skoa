@@ -57,12 +57,6 @@ public abstract class BaseController {
 	 */
 	@Value("${urlSuffix}")
 	protected String urlSuffix;
-
-	/**
-	 * 链接websocket的路径
-	 */
-	@Value("${oa.notify.websocketBasePath}")
-	protected String websocketBasePath;
 	
 	/**
 	 * 验证Bean实例对象

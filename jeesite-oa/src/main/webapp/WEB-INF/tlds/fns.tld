@@ -12,6 +12,13 @@
   <uri>http://java.sun.com/jsp/jstl/functionss</uri>
 
   <function>
+    <description>获取websocket路径</description>
+    <name>getWebsocketBasePath</name>
+    <function-class>com.thinkgem.jeesite.common.config.Global</function-class>
+    <function-signature>java.lang.String getWebsocketBasePath()</function-signature>
+    <example>${fns:getAdminPath()}</example>
+  </function>
+  <function>
     <description>获取管理路径</description>
     <name>getAdminPath</name>
     <function-class>com.thinkgem.jeesite.common.config.Global</function-class>

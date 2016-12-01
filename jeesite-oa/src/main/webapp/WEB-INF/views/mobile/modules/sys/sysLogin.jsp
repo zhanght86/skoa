@@ -64,6 +64,8 @@
 <script type="text/javascript">var ctx = '${ctx}';</script>
 <script type="text/javascript" src="${ctxStatic}/jingle/js/app/app.js"></script>
 <!--<script src="http://192.168.2.153:8080/target/target-script-min.js#anonymous"></script>-->
+<script src="${ctxStatic}/socketjs/sockjs-1.1.1.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/app/extractWebsocket.js" type="text/javascript"></script>
 <script type="text/javascript">
 var sessionid = '${not empty fns:getPrincipal() ? fns:getPrincipal().sessionid : ""}';
 $('body').delegate('#login_section','pageinit',function(){
@@ -81,6 +83,16 @@ $('body').delegate('#login_section','pageinit',function(){
 					sessionid = data.sessionid;
 					J.showToast('登录成功！', 'success');
 					J.Router.goTo('#index_section?index');
+
+					//登陆成功后,建立websocket连接;
+					extractWebSocket({
+						websocketBasePath:"${ctxWebsocket}",
+						onmessage:function(event){
+							var num=event.data;
+							console.log(num);
+						}
+					});
+
 				}else{
 					J.showToast(data.message, 'error');
 					if (data.shiroLoginFailure == 'org.apache.shiro.authc.AuthenticationException'){
@@ -88,7 +100,6 @@ $('body').delegate('#login_section','pageinit',function(){
 					}
 					$('#validateCodeDiv a').click();
 				}
-				//console.log(data);
 			});
 		}
 		return false;

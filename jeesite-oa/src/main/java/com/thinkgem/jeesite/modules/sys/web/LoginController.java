@@ -151,8 +151,6 @@ public class LoginController extends BaseController{
 				return "redirect:" + adminPath + "/login";
 			}
 		}
-
-		request.setAttribute("websocketBasePath",websocketBasePath);
 		
 		// 如果是手机登录，则返回JSON字符串
 		if (principal.isMobileLogin()){
